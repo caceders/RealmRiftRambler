@@ -1,0 +1,89 @@
+[gd_scene load_steps=13 format=3 uid="uid://77648svjoync"]
+
+[ext_resource type="PackedScene" uid="uid://3e0cvi4n2eeo" path="res://Tools/EntityBases/entityBase.tscn" id="1_5asbe"]
+[ext_resource type="Texture2D" uid="uid://fgnfqglvb0ua" path="res://Assets/Minifantasy_Dungeon_Assets/Characters/Orc/Idle.png" id="2_nmw6k"]
+[ext_resource type="Script" path="res://Tools/Strafer/strafer.gd" id="2_pw06x"]
+[ext_resource type="PackedScene" uid="uid://ce7qxftvdryvx" path="res://Tools/Vision/vision.tscn" id="3_prodp"]
+[ext_resource type="Script" path="res://Tools/ChaserEvader/chaserEvader.gd" id="4_kmaa4"]
+[ext_resource type="Script" path="res://Tools/KnockBack/knockback.gd" id="5_snks4"]
+[ext_resource type="Script" path="res://Tools/AttackArea/attackArea.gd" id="7_3qpst"]
+[ext_resource type="Script" path="res://Tools/EntityBases/avoidanceAutoScaler.gd" id="7_xytw2"]
+[ext_resource type="Script" path="res://Tools/AttackController/attackController.gd" id="8_efu85"]
+[ext_resource type="Script" path="res://Tools/DamageSystem/damageDealer.gd" id="9_l1x1k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u4m0a"]
+atlas = ExtResource("2_nmw6k")
+region = Rect2(13, 44, 7, 7)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4lfg7"]
+radius = 8.0
+
+[node name="CreatureBase" instance=ExtResource("1_5asbe")]
+
+[node name="Shadow" parent="." index="0"]
+scale = Vector2(0.21875, 0.21875)
+offset = Vector2(-3.5, -1.17667)
+
+[node name="TopDownEntity2D" parent="." index="1" node_paths=PackedStringArray("navigation_agent")]
+navigation_agent = NodePath("../NavigationAgent2D")
+
+[node name="DamageReceiver" parent="." index="2"]
+enable_growth = true
+
+[node name="HealthBar" parent="." index="3"]
+offset_top = -12.01
+offset_bottom = -7.01
+
+[node name="Sprite2D" parent="." index="4"]
+texture = SubResource("AtlasTexture_u4m0a")
+offset = Vector2(0, -3.51)
+
+[node name="Strafer" type="Node2D" parent="." index="6" node_paths=PackedStringArray("navigation_agent", "entity")]
+script = ExtResource("2_pw06x")
+navigation_agent = NodePath("../NavigationAgent2D")
+entity = NodePath("../TopDownEntity2D")
+min_stand_still_time = 0.0
+max_stand_still_time = 20.0
+min_strafe_distance = 50.0
+max_strafe_distance = 100.0
+
+[node name="ChaserEvader" type="Node2D" parent="." index="7" node_paths=PackedStringArray("vision", "entity", "navigation_agent")]
+script = ExtResource("4_kmaa4")
+vision = NodePath("../Vision")
+entity = NodePath("../TopDownEntity2D")
+enabled = false
+navigation_agent = NodePath("../NavigationAgent2D")
+
+[node name="Vision" parent="." index="8" instance=ExtResource("3_prodp")]
+
+[node name="Knockback" type="Node2D" parent="." index="9" node_paths=PackedStringArray("entity")]
+script = ExtResource("5_snks4")
+entity = NodePath("../TopDownEntity2D")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="10" node_paths=PackedStringArray("hitbox")]
+path_desired_distance = 5.0
+target_desired_distance = 5.0
+path_postprocessing = 1
+script = ExtResource("7_xytw2")
+hitbox = NodePath("../HitBox")
+
+[node name="AttackArea" type="Area2D" parent="." index="11" node_paths=PackedStringArray("owner_body")]
+script = ExtResource("7_3qpst")
+owner_body = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" index="0"]
+shape = SubResource("CircleShape2D_4lfg7")
+
+[node name="AttackController" type="Node2D" parent="." index="12" node_paths=PackedStringArray("attack_area", "damage_dealer")]
+script = ExtResource("8_efu85")
+attack_area = NodePath("../AttackArea")
+damage_dealer = NodePath("../DamageDealer")
+
+[node name="DamageDealer" type="Node2D" parent="." index="13"]
+script = ExtResource("9_l1x1k")
+
+[node name="NavigationObstacle2D" parent="." index="15"]
+avoidance_enabled = false
+
+[connection signal="damage_received" from="DamageReceiver" to="Knockback" method="on_damage_taken"]
+[connection signal="velocity_computed" from="NavigationAgent2D" to="TopDownEntity2D" method="_on_velocity_computed"]

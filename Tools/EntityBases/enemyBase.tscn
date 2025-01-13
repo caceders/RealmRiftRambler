@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://h1jbxoqanmwo"]
+
+[ext_resource type="PackedScene" uid="uid://77648svjoync" path="res://Tools/EntityBases/creatureBase.tscn" id="1_tdxna"]
+[ext_resource type="Script" path="res://Tools/Hostility/hostility.gd" id="2_o8dx1"]
+
+[node name="EnemyBase" instance=ExtResource("1_tdxna")]
+wall_min_slide_angle = 0.261799
+
+[node name="Shadow" parent="." index="0"]
+offset = Vector2(-3.5, -1.37167)
+
+[node name="HealthBar" parent="." index="3"]
+offset_top = -12.205
+offset_bottom = -7.205
+
+[node name="Sprite2D" parent="." index="4"]
+offset = Vector2(0, -3.705)
+
+[node name="ChaserEvader" parent="." index="7"]
+chase = Array[String](["Player"])
+
+[node name="NavigationAgent2D" parent="." index="10"]
+avoidance_enabled = true
+
+[node name="AttackController" parent="." index="12"]
+attack_type = 2
+
+[node name="Hostility" type="Node2D" parent="." index="15" node_paths=PackedStringArray("entity", "vision", "strafer", "chaser_evader", "attack_controller", "attack_area", "damage_receiver")]
+script = ExtResource("2_o8dx1")
+entity = NodePath("../TopDownEntity2D")
+vision = NodePath("../Vision")
+strafer = NodePath("../Strafer")
+chaser_evader = NodePath("../ChaserEvader")
+attack_controller = NodePath("../AttackController")
+attack_area = NodePath("../AttackArea")
+damage_receiver = NodePath("../DamageReceiver")
+enabled = false
+hostile_groups = Array[String](["Player"])
+
+[node name="NavigationObstacle2D" parent="." index="16"]
+radius = 4.6
+
+[connection signal="damage_received" from="DamageReceiver" to="Hostility" method="_on_damage_taken" unbinds=3]

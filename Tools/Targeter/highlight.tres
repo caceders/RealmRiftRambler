@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c143cb2g4giku"]
+
+[ext_resource type="Shader" path="res://Tools/Targeter/highlight.gdshader" id="1_urxp6"]
+
+[resource]
+shader = ExtResource("1_urxp6")

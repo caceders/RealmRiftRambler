@@ -1,0 +1,42 @@
+[gd_scene load_steps=9 format=3 uid="uid://3e0cvi4n2eeo"]
+
+[ext_resource type="Script" path="res://Tools/DamageSystem/damageReceiver.gd" id="1_pii7l"]
+[ext_resource type="PackedScene" uid="uid://bk5tyajvilvvk" path="res://Scenes/healthBar.tscn" id="2_jlx41"]
+[ext_resource type="Script" path="res://Tools/TopDownEntity2D/topDownEntity2D.gd" id="3_5ucxe"]
+[ext_resource type="Texture2D" uid="uid://cu1b30gnc3b5o" path="res://Assets/Minifantasy_Dungeon_Assets/Props/Props.png" id="4_chngg"]
+[ext_resource type="Script" path="res://Tools/AnimationPlayerController/animationPlayerController.gd" id="5_8qhlv"]
+[ext_resource type="Script" path="res://Scenes/hitBox.gd" id="6_oimft"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]
+atlas = ExtResource("4_chngg")
+region = Rect2(80, 48, 8, 12)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tnm8p"]
+
+[node name="EntityBase" type="CharacterBody2D"]
+position = Vector2(58, 41)
+
+[node name="DamageReceiver" type="Node" parent="."]
+script = ExtResource("1_pii7l")
+start_amount = 50.0
+
+[node name="HealthBar" parent="." instance=ExtResource("2_jlx41")]
+offset_top = -10.0
+offset_bottom = -5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="TopDownEntity2D" type="Node" parent="." node_paths=PackedStringArray("body")]
+script = ExtResource("3_5ucxe")
+body = NodePath("..")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_ushcn")
+
+[node name="AnimationPlayerController" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_tnm8p")
+}
+script = ExtResource("5_8qhlv")
+
+[node name="HitBox" type="CollisionShape2D" parent="."]
+script = ExtResource("6_oimft")

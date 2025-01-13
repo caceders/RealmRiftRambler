@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://mgreyt5ch36q"]
+
+[ext_resource type="Texture2D" uid="uid://8erxg6bfbje1" path="res://Assets/MagicBall.png" id="1_w28ep"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_no3yy"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 5.53
+angle_min = -720.0
+angle_max = 959.5
+spread = 180.0
+flatness = 1.0
+initial_velocity_max = 50.0
+scale_min = 0.1
+scale_max = 0.1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kpjh0"]
+atlas = ExtResource("1_w28ep")
+region = Rect2(0, 0, 8, 8)
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+process_material = SubResource("ParticleProcessMaterial_no3yy")
+texture = SubResource("AtlasTexture_kpjh0")
+lifetime = 0.5
+randomness = 1.0

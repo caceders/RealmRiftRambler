@@ -1,0 +1,247 @@
+[gd_scene load_steps=16 format=3 uid="uid://3e0cvi4n2eeo"]
+
+[ext_resource type="Script" path="res://Tools/TopDownEntity2D/topDownEntity2D.gd" id="1_4ho6y"]
+[ext_resource type="Texture2D" uid="uid://bm633sh0gi7oi" path="res://Assets/Shadow.png" id="1_cn4cr"]
+[ext_resource type="Script" path="res://Tools/Shadow/shadow.gd" id="1_i42p2"]
+[ext_resource type="Script" path="res://Tools/DamageSystem/damageReceiver.gd" id="2_2j8ja"]
+[ext_resource type="PackedScene" uid="uid://bk5tyajvilvvk" path="res://Tools/ResourceBar/resourceBar.tscn" id="3_rm62l"]
+[ext_resource type="Texture2D" uid="uid://cu1b30gnc3b5o" path="res://Assets/Minifantasy_Dungeon_Assets/Props/Props.png" id="4_i5vyp"]
+[ext_resource type="Script" path="res://Tools/HitBox/hitBox.gd" id="5_5tvkh"]
+[ext_resource type="Script" path="res://Scripts/appearDisappear.gd" id="6_jjrbe"]
+[ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="7_luv08"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1xrw"]
+atlas = ExtResource("4_i5vyp")
+region = Rect2(200, 24, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]
+atlas = ExtResource("7_luv08")
+region = Rect2(234, 9, 9, 13)
+
+[sub_resource type="Animation" id="Animation_63m85"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_ushcn")]
+}
+
+[sub_resource type="Animation" id="Animation_ct5bu"]
+resource_name = "entityAppear"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_ushcn")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:atlas")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_luv08")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:region")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(234, 9, 9, 13), Rect2(202, 10, 12, 12), Rect2(172, 12, 8, 8)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_af7xm"]
+resource_name = "entityDisappear"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_ushcn")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:atlas")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_luv08")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:region")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(172, 12, 8, 8), Rect2(202, 10, 12, 12), Rect2(234, 9, 9, 13)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tnm8p"]
+_data = {
+"RESET": SubResource("Animation_63m85"),
+"entityAppear": SubResource("Animation_ct5bu"),
+"entityDisappear": SubResource("Animation_af7xm")
+}
+
+[node name="EntityBase" type="CharacterBody2D" groups=["Damagable"]]
+motion_mode = 1
+wall_min_slide_angle = 0.0
+
+[node name="Shadow" type="Sprite2D" parent="." node_paths=PackedStringArray("sprite")]
+modulate = Color(0, 0, 0, 0.0784314)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_cn4cr")
+offset = Vector2(-4, -1.36833)
+script = ExtResource("1_i42p2")
+sprite = NodePath("../Sprite2D")
+shadow_color = Color(0, 0, 0, 0.0784314)
+
+[node name="TopDownEntity2D" type="Node2D" parent="." node_paths=PackedStringArray("body")]
+script = ExtResource("1_4ho6y")
+body = NodePath("..")
+speed = 30.0
+
+[node name="DamageReceiver" type="Node2D" parent="."]
+script = ExtResource("2_2j8ja")
+enable_growth = false
+
+[node name="HealthBar" parent="." node_paths=PackedStringArray("resource", "sprite") instance=ExtResource("3_rm62l")]
+offset_top = -13.035
+offset_bottom = -8.03498
+resource = NodePath("../DamageReceiver")
+sprite = NodePath("../Sprite2D")
+metadata/_edit_use_anchors_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_d1xrw")
+offset = Vector2(0, -4.035)
+
+[node name="HitBox" type="CollisionShape2D" parent="."]
+script = ExtResource("5_5tvkh")
+
+[node name="AppearDisappear" type="Node2D" parent="." node_paths=PackedStringArray("entity_sprite", "appear_disappear_sprite")]
+script = ExtResource("6_jjrbe")
+entity_sprite = NodePath("../Sprite2D")
+appear_disappear_sprite = NodePath("AppearDisappearSprite")
+
+[node name="AppearDisappearAnimationPlayer" type="AnimationPlayer" parent="AppearDisappear"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_tnm8p")
+}
+
+[node name="AppearDisappearSprite" type="Sprite2D" parent="AppearDisappear"]
+visible = false
+texture = SubResource("AtlasTexture_ushcn")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
+radius = 2.0

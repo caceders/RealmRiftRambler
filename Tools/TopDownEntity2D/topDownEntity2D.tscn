@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6px8dc1xqq0e"]
+
+[ext_resource type="Script" path="res://Tools/TopDownEntity2D/topDownEntity2D.gd" id="1_vhoy2"]
+
+[node name="TopDownEntity2D" type="Node"]
+script = ExtResource("1_vhoy2")

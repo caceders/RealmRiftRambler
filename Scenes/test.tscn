@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3css1fymngw"]
+
+[ext_resource type="PackedScene" uid="uid://h1jbxoqanmwo" path="res://Tools/EntityBases/enemyBase.tscn" id="1_72s1f"]
+[ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="2_gnftl"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_socgf"]
+vertices = PackedVector2Array(284.383, 86.9219, -225.898, 133.492, -259.789, 81.3594, -242.656, -167.008, 267.633, -167.977)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-270, 84, -252, -177, 277, -178, 295, 96, -231, 144)])
+
+[node name="Node2D" type="Node2D"]
+
+[node name="EnemyBase" parent="." instance=ExtResource("1_72s1f")]
+
+[node name="Player" parent="." instance=ExtResource("2_gnftl")]
+position = Vector2(-14, 16)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_socgf")

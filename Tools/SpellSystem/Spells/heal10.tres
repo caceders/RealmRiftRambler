@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Spell" load_steps=8 format=3 uid="uid://jtrbqs3x4y4m"]
+
+[ext_resource type="Script" path="res://Tools/SpellSystem/spell.gd" id="1_w7320"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/spellComponent.gd" id="2_hf57s"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/healSpellComponent.gd" id="3_nfinj"]
+[ext_resource type="PackedScene" uid="uid://653whciscbi1" path="res://Tools/SpellSystem/OverlayAnimations/HealSpellOverlayAnimation.tscn" id="4_50ato"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/spellAnimationOverlay.gd" id="5_s1bfy"]
+
+[sub_resource type="Resource" id="Resource_8twwm"]
+script = ExtResource("3_nfinj")
+heal_amount = 10.0
+target = 0
+
+[sub_resource type="Resource" id="Resource_wek6a"]
+script = ExtResource("5_s1bfy")
+animation_packed_scene = ExtResource("4_50ato")
+target = 0
+
+[resource]
+script = ExtResource("1_w7320")
+spell_components = Array[ExtResource("2_hf57s")]([SubResource("Resource_8twwm"), SubResource("Resource_wek6a")])

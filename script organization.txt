@@ -1,0 +1,71 @@
+## Docsstring
+
+
+
+# region signals
+# endregion
+
+
+
+# region enums
+# endregion
+
+
+
+# region constants
+# endregion
+
+
+
+# region @export variables
+# endregion
+
+
+
+# region public variables
+# endregion
+
+
+
+# region private variables
+# endregion
+
+
+
+# region @onready variables
+# endregion
+
+
+
+# region optional built-in virtual _init method
+# endregion
+
+
+
+# region optional built-in virtual _enter_tree() method
+# endregion
+
+
+
+# region built-in virtual _ready method
+# endregion
+
+
+
+# region remaining built-in virtual methods
+# endregion
+
+
+
+# region public methods
+# endregion
+
+
+
+# region private methods
+# endregion
+
+
+
+# region subclasses
+# endregion

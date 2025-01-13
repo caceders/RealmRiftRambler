@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=3 uid="uid://bjioxiljujgja"]
+
+[ext_resource type="Script" path="res://Tools/SpellSystem/spellSequenceVisualizer.gd" id="1_a2xss"]
+[ext_resource type="Texture2D" uid="uid://c6vg0utqcmj0h" path="res://Assets/Minifantasy_Userinterface_Assets/Controls/Keyboard Mouse/Minifantasy_GuiKeyboardMouse.png" id="2_cx0l4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yvm3x"]
+atlas = ExtResource("2_cx0l4")
+region = Rect2(120, 136, 7, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_df6lh"]
+atlas = ExtResource("2_cx0l4")
+region = Rect2(136, 136, 7, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3abh5"]
+atlas = ExtResource("2_cx0l4")
+region = Rect2(128, 128, 7, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hx2cc"]
+atlas = ExtResource("2_cx0l4")
+region = Rect2(128, 136, 7, 8)
+
+[node name="SpellSequenceVisualizer" type="Node2D"]
+script = ExtResource("1_a2xss")
+left_texture = SubResource("AtlasTexture_yvm3x")
+right_texture = SubResource("AtlasTexture_df6lh")
+up_texture = SubResource("AtlasTexture_3abh5")
+down_texture = SubResource("AtlasTexture_hx2cc")

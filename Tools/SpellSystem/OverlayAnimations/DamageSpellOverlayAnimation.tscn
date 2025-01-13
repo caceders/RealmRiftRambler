@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://ba03pexhaeoed"]
+
+[ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="1_m8vgf"]
+
+[sub_resource type="Animation" id="Animation_5uuxq"]
+resource_name = "DamageSpell"
+length = 0.13
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture:region")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(32, 0, 32, 32), Rect2(0, 0, 32, 32), Rect2(224, 1, 32, 32)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_re7gi"]
+_data = {
+"DamageSpell": SubResource("Animation_5uuxq")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lmcek"]
+atlas = ExtResource("1_m8vgf")
+region = Rect2(32, 0, 32, 32)
+
+[node name="DamageSpellOverlayAnimation" type="Node2D"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_re7gi")
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_lmcek")

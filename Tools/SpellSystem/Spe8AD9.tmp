@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://dqvausww8jyv8"]
+
+[ext_resource type="Script" path="res://Tools/SpellSystem/spell.gd" id="1_wujkh"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/spellComponent.gd" id="2_w5dpy"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/damageSpellComponent.gd" id="3_ecioc"]
+
+[sub_resource type="Resource" id="Resource_rjr53"]
+script = ExtResource("3_ecioc")
+damage_amount = 1.0
+knockback = true
+target = 1
+
+[node name="Test" type="Node2D"]
+script = ExtResource("1_wujkh")
+spell_components = Array[ExtResource("2_w5dpy")]([SubResource("Resource_rjr53")])

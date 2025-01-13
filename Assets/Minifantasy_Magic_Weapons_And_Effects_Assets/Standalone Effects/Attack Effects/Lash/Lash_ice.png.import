@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://bcbnr3y8a2v71"
+path="res://.godot/imported/Lash_ice.png-d11b81e8af8423b609dcedaf88a72579.ctex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Attack Effects/Lash/Lash_ice.png"
+dest_files=["res://.godot/imported/Lash_ice.png-d11b81e8af8423b609dcedaf88a72579.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1
