@@ -34,7 +34,6 @@ chaser_evader = NodePath("../ChaserEvader")
 attack_controller = NodePath("../AttackController")
 attack_area = NodePath("../AttackArea")
 damage_receiver = NodePath("../DamageReceiver")
-enabled = false
 hostile_groups = Array[String](["Player"])
 
 [node name="NavigationObstacle2D" parent="." index="16"]

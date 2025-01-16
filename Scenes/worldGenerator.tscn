@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Tools/WorldGeneration/worldGeneration.gd" id="1_ms1o7"]
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="2_m5lj2"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="3_1fgxb"]
-[ext_resource type="Script" path="res://Scenes/camera_2d.gd" id="4_gsvvx"]
+[ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="4_gsvvx"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_bsstv"]
 noise_type = 3
@@ -12,12 +12,14 @@ frequency = 0.0184
 fractal_octaves = 1
 fractal_gain = 0.315
 
-[node name="WorldGenerator" type="Node2D"]
+[node name="WorldGenerator" type="Node2D" node_paths=PackedStringArray("base_tile_layer", "objects_tile_layer")]
 script = ExtResource("1_ms1o7")
 world_heigth = 200
 world_width = 200
 noise = SubResource("FastNoiseLite_bsstv")
 water_grass_edge = -0.25
+base_tile_layer = NodePath("Base")
+objects_tile_layer = NodePath("Objects")
 
 [node name="Base" type="TileMapLayer" parent="."]
 tile_set = ExtResource("2_m5lj2")

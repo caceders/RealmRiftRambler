@@ -30,7 +30,6 @@ signal resource_amount_removed
 
 @export var has_max_amount: bool = true
 @export var has_min_amount: bool = true
-@export var start_amount: float = 100
 @export var max_amount: float = 100
 @export var min_amount: float = 0
 ## Base growth in unit/seconds. Always applied unless other parameters tell it not to.
@@ -41,11 +40,12 @@ signal resource_amount_removed
 ## ACTIVE
 ## If growth should be enabled
 @export var enable_growth: bool = true
-## If decay should be enabled
+## If decay should be enabled	
 @export var enable_decay: bool = false
 
+@export var _amount: float = 100
 
-var amount: float = 100:
+var amount: float:
 	get: return get_amount()
 	set(value):
 		if value > _amount:
@@ -55,7 +55,6 @@ var amount: float = 100:
 		else:
 			return
 
-var _amount: float
 
 var _pause_growth: bool = false
 var _pause_decay: bool = false
@@ -68,7 +67,6 @@ var _pause_decay_timer : Timer
 #endregion
 
 func _ready():
-	_amount = start_amount
 
 	_pause_growth_timer = Timer.new()
 	_pause_growth_timer.one_shot = true

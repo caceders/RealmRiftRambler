@@ -1,26 +1,23 @@
-extends Node
+class_name WorldGeneration extends Node2D
 
+@export var startCoordintes: Vector2i = Vector2i(0,0)
 @export var world_heigth: int = 100
 @export var world_width: int = 100
 @export var noise: FastNoiseLite
 
 @export var water_grass_edge: float = 0.3
 
-@onready var base_tile_layer = $Base as TileMapLayer
-@onready var objects_tile_layer = $Objects as TileMapLayer
+@export var base_tile_layer: TileMapLayer
+@export var objects_tile_layer: TileMapLayer
 
 
 
 func generate_world():
-	noise.seed = randi()
-	# Grass
-	base_tile_layer.clear()
-	print("Generating world")
-	
-	var x_coord_begin: int = - round(float(world_width) / 2)
-	var x_coord_end: int = round(float(world_width) / 2)
-	var y_coord_begin: int = - round(float(world_heigth) / 2)
-	var y_coord_end: int = round(float(world_heigth) / 2)
+	# Grass	
+	var x_coord_begin: int = (startCoordintes.x)
+	var x_coord_end: int = (startCoordintes.x + world_heigth)
+	var y_coord_begin: int = (startCoordintes.y)
+	var y_coord_end: int = (startCoordintes.y + world_heigth)
 	
 	var grass_terrain_coords = []
 	for x in range(x_coord_begin, x_coord_end):
@@ -41,7 +38,7 @@ func generate_world():
 
 
 	# Objects
-	objects_tile_layer.clear()
+	objects_tile_layer.clear()	
 	for x in range(x_coord_begin, x_coord_end):
 		for y in range(y_coord_begin, y_coord_end):
 			if randf_range(0, 100) > 99 and noise.get_noise_2d(x, y) >= water_grass_edge:

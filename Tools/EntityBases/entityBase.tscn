@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://3e0cvi4n2eeo"]
+[gd_scene load_steps=19 format=3 uid="uid://3e0cvi4n2eeo"]
 
 [ext_resource type="Script" path="res://Tools/TopDownEntity2D/topDownEntity2D.gd" id="1_4ho6y"]
 [ext_resource type="Texture2D" uid="uid://bm633sh0gi7oi" path="res://Assets/Shadow.png" id="1_cn4cr"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://Tools/HitBox/hitBox.gd" id="5_5tvkh"]
 [ext_resource type="Script" path="res://Scripts/appearDisappear.gd" id="6_jjrbe"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="7_luv08"]
+[ext_resource type="PackedScene" uid="uid://dlv0o8iya373b" path="res://Tools/WorldGeneration/deloadPersistance.tscn" id="10_fbg38"]
+[ext_resource type="Script" path="res://Tools/WorldGeneration/persistantData.gd" id="11_jg4ph"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d1xrw"]
 atlas = ExtResource("4_i5vyp")
@@ -192,6 +194,11 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
+[sub_resource type="Resource" id="Resource_nq2ho"]
+script = ExtResource("11_jg4ph")
+node_path = "DamageReceiver"
+property = "_amount"
+
 [node name="EntityBase" type="CharacterBody2D" groups=["Damagable"]]
 motion_mode = 1
 wall_min_slide_angle = 0.0
@@ -245,3 +252,6 @@ texture = SubResource("AtlasTexture_ushcn")
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
 radius = 2.0
+
+[node name="DeloadPersistance" parent="." instance=ExtResource("10_fbg38")]
+deload_persistant_data = Array[ExtResource("11_jg4ph")]([SubResource("Resource_nq2ho")])
