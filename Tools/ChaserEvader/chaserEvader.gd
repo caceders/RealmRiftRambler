@@ -1,7 +1,8 @@
 class_name ChaserEvader extends Node2D
 
 const TEST_DISTANCE_INTERVAL = 10
-const UPDATE_TIME = .2
+const UPDATE_TIME = 1
+const MAX_TRIES_FIND_NEW_POSITION = 10
 
 enum BehaviorType{
 	CHASE,
@@ -25,7 +26,7 @@ enum BehaviorType{
 
 var _behavior : BehaviorType = BehaviorType.CHASE
 var _body_to_react_to : Node2D
-var _last_update_time : float = 0
+var _last_update_time : float = randf_range(0, UPDATE_TIME) #Spread out to gain performance
 
 func _ready():
 	vision.body_entered_sight.connect(_on_body_entered_vision)
@@ -35,8 +36,7 @@ func _physics_process(delta):
 	if _body_to_react_to == null:
 		return
 		
-	if not _body_to_react_to in vision.get_overlapping_bodies():
-		_body_to_react_to = null
+	if _body_to_react_to.global_position.distance_to(global_position) > vision.distance:
 		entity.direction = Vector2.ZERO
 	
 	if enabled and _body_to_react_to:
@@ -48,11 +48,15 @@ func _physics_process(delta):
 				var direction = _body_to_react_to.global_position.direction_to(global_position)
 				var distance = _body_to_react_to.global_position.distance_to(global_position) + vision.distance - distance_reduction
 				navigation_agent.target_position = global_position + direction * distance
+				var tries = 0
 				while not navigation_agent.is_target_reachable():
 					distance_reduction += TEST_DISTANCE_INTERVAL
 					direction = _body_to_react_to.global_position.direction_to(global_position)
 					distance = _body_to_react_to.global_position.distance_to(global_position) + vision.distance - distance_reduction
 					navigation_agent.target_position = global_position + direction * distance
+					tries += 1
+					if tries > MAX_TRIES_FIND_NEW_POSITION:
+						break
 				
 
 			elif _behavior == BehaviorType.CHASE:
@@ -61,11 +65,15 @@ func _physics_process(delta):
 				var direction = global_position.direction_to(_body_to_react_to.global_position)
 				var distance = global_position.distance_to(_body_to_react_to.global_position) - distance_reduction
 				navigation_agent.target_position = global_position + direction * distance
+				var tries = 0
 				while not navigation_agent.is_target_reachable(): 
 					distance_reduction += TEST_DISTANCE_INTERVAL
 					direction = global_position.direction_to(_body_to_react_to.global_position)
 					distance = global_position.distance_to(_body_to_react_to.global_position) - distance_reduction
 					navigation_agent.target_position = global_position + direction * distance
+					tries += 1
+					if tries > MAX_TRIES_FIND_NEW_POSITION:
+						break
 
 		entity.direction = global_position.direction_to(navigation_agent.get_next_path_position())
 	

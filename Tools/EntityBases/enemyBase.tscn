@@ -9,6 +9,9 @@ wall_min_slide_angle = 0.261799
 [node name="Shadow" parent="." index="0"]
 offset = Vector2(-3.5, -1.37167)
 
+[node name="DamageReceiver" parent="." index="2"]
+position = Vector2(-1, 0)
+
 [node name="HealthBar" parent="." index="3"]
 offset_top = -12.205
 offset_bottom = -7.205
@@ -39,4 +42,5 @@ hostile_groups = Array[String](["Player"])
 [node name="NavigationObstacle2D" parent="." index="16"]
 radius = 4.6
 
+[connection signal="damage_received" from="DamageReceiver" to="DamageReceiver" method="_on_damage_received" unbinds=3]
 [connection signal="damage_received" from="DamageReceiver" to="Hostility" method="_on_damage_taken" unbinds=3]

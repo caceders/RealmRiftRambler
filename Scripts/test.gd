@@ -1,19 +1,8 @@
-extends Node2D
+extends Node
 
-@export var chunkloader: chunkLoader
-@export var entity: Node2D
-@export var tile_map_layer : TileMapLayer
+@export var tileWorld: WorldChunkHandler
+@export var entityWorld: WorldChunkHandler
 
-var _string: String = ""
-
-func save():
-	if entity != null:
-		_string = chunkloader.serialize_entity(entity)
-		entity.queue_free()
-
-func load():
-	if entity == null:
-		entity = chunkloader.deserialize_entity(_string)
-		if entity != null:
-			tile_map_layer.add_child(entity)
-		
+func _process(delta):
+	tileWorld.chunk_load_store()
+	entityWorld.chunk_load_store()

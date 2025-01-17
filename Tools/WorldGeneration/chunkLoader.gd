@@ -1,9 +1,79 @@
-class_name chunkLoader extends Node
+class_name ChunkLoader extends TileMapLayer
 
-const CHUNK_SIZE = 16
+const TILE_SIZE_PIXELS = 8
+const CHUNK_SIZE_TILES = 8
+const CHUNK_SIZE_PIXELS = TILE_SIZE_PIXELS * CHUNK_SIZE_TILES
 
-@export var data_store_folder = "ChunkData"
 @export var tile_map_layer: TileMapLayer
+@export var camera_to_load_around: Camera2D
+
+func store_chunk(coord: Vector2i) -> String:
+	## Serialize tiles
+	var start_tile = coord * CHUNK_SIZE_TILES
+	var tiles = []
+	for x in range(start_tile.x, start_tile.x + CHUNK_SIZE_TILES):
+		for y in range(start_tile.y, start_tile.y + CHUNK_SIZE_TILES):
+			tiles.append(Vector2i(x,y))
+	
+	var tile_datas = []
+	for tile in tiles:
+		tile_datas.append(serialize_tile(tile))
+		## Remove tile
+		tile_map_layer.set_cell(tile)
+	
+	## Serialize entities
+	var all_entities = get_children()
+	var entities_in_chunk = []
+	for entity in all_entities:
+		if position_to_chunk(entity.global_position) == coord:
+			entities_in_chunk.append(entity)
+
+	var entity_datas = []
+	for entity in entities_in_chunk:
+		entity_datas.append(serialize_entity(entity))
+		entity.queue_free()
+
+	var chunk_data = {}
+	chunk_data["tiles"] = tile_datas
+	chunk_data["entities"] = entity_datas
+
+	var chunk_data_string = JSON.stringify(chunk_data)
+	return chunk_data_string
+
+func load_chunk(chunk_data_string: String):
+	var json = JSON.new()
+	var parse_result = json.parse(chunk_data_string)
+	if parse_result != OK:
+		return {}
+	var chunk_data = json.data as Dictionary
+	
+	## load tiles
+	for tile_datas_string in chunk_data["tiles"]:
+		var tile_data = deserialize_tile(tile_datas_string)
+		tile_map_layer.set_cell(str_to_var(tile_data["coordinate"]), str_to_var(tile_data["source_id"]), str_to_var(tile_data["atlas_coords"]), str_to_var(tile_data["alternative_tile"]))
+	
+	## load entities
+	for entity_data_string in chunk_data["entities"]:
+		var entity = deserialize_entity(entity_data_string)
+		add_child(entity)
+
+func serialize_tile(tile_coordinate: Vector2i) -> String:
+	var tile_data = {}
+	tile_data["coordinate"] = var_to_str(tile_coordinate)
+	tile_data["source_id"] = var_to_str(tile_map_layer.get_cell_source_id(tile_coordinate))
+	tile_data["atlas_coords"] = var_to_str(tile_map_layer.get_cell_atlas_coords(tile_coordinate))
+	tile_data["alternative_tile"] = var_to_str(tile_map_layer.get_cell_alternative_tile(tile_coordinate))
+	
+	var tile_data_string = JSON.stringify(tile_data)
+	return tile_data_string
+
+func deserialize_tile(tile_data_string: String) -> Dictionary:
+	var json = JSON.new()
+	var parse_result = json.parse(tile_data_string)
+	if parse_result != OK:
+		return {}
+	var tile_data = json.data as Dictionary
+	return tile_data
 
 func serialize_entity(node: Node2D) -> String:
 	var packed_scene = node.scene_file_path
@@ -18,7 +88,6 @@ func serialize_entity(node: Node2D) -> String:
 	entity_data["packed_scene"] = packed_scene
 	entity_data["position"] = var_to_str(node_position)
 	entity_data["persistant_data"] = var_to_str(deload_persistant_data)
-	print(entity_data["persistant_data"])
 	var entity_data_string = JSON.stringify(entity_data)
 	return entity_data_string
 
@@ -38,3 +107,7 @@ func deserialize_entity(entity_data_string) -> Node2D:
 			var subnode = entity.get_node(data.node_path)
 			subnode.set(data.property, data.value)
 	return entity
+
+func position_to_chunk(position: Vector2) -> Vector2i:
+	var chunk: Vector2i = position / CHUNK_SIZE_PIXELS
+	return chunk
