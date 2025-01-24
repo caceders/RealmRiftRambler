@@ -21,6 +21,7 @@ var map_generator: MapGenerator = MapGenerator.new()
 func _ready():
 	center = WorldChunkLoader.position_to_tile(center_entity.global_position)
 	clear_world()
+	generate()
 	
 
 func _process(delta):

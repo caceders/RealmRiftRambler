@@ -1,6 +1,6 @@
 class_name PlainsMapGenerator extends MapGenerator
 
-const WORLD_BORDER_WATER_SIZE = 20
+const WORLD_BORDER_WATER_SIZE = 50
 
 const GROUND_TILE_ATLAS = Vector2i(37, 11)
 const GRASS_TILE_ATLAS = Vector2i(3, 4)
@@ -21,7 +21,7 @@ const FLOWER_SEED_OFFSET = 23642542356
 
 const ENEMY_PATTERN_ID = 1
 const ENEMY_SEED_OFFSET = 4326225
-
+const MIN_SPAWN_DISTANCE_ENEMIES_SQUARED = 100
 ## Tilemmap is not perfectly edge or corner connected, but is designed for 2x2 terrains. When placing upscale the vector to place 2x2 tiles instead if just 1x1
 const MAP_DOWNSCALE = 2
 
@@ -179,8 +179,12 @@ func place_enemies(map_size, object_tile_map_layer, tiles_tile_map_layer, map_se
 				var can_spawn = true
 				var pattern = object_tile_map_layer.tile_set.get_pattern(ENEMY_PATTERN_ID) as TileMapPattern
 				var pattern_size = pattern.get_size()
-				for x_p in range( - pattern_size.x/2 - 1, pattern_size.x/2 + 1):
-					for y_p in range( - pattern_size.y/2 - 1, pattern_size.y/2 + 1):
+
+				if cell.distance_squared_to(center) < MIN_SPAWN_DISTANCE_ENEMIES_SQUARED:
+					can_spawn = false
+
+				for x_p in range(pattern_size.x):
+					for y_p in range(pattern_size.y):
 						if get_tile_is_occupied(cell + Vector2i(x_p, y_p)):
 							can_spawn = false
 				if can_spawn:

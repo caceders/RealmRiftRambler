@@ -5,5 +5,10 @@
 
 [node name="OrcBase" instance=ExtResource("1_kqb64")]
 
+[node name="Shadow" parent="." index="0"]
+offset = Vector2(-3.5, -1.37167)
+
 [node name="AnimationPlayerController" type="AnimationPlayer" parent="." index="18"]
 script = ExtResource("2_7kq3r")
+
+[connection signal="body_exited_sight" from="Vision" to="Hostility" method="_on_body_exit_vision"]

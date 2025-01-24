@@ -61,7 +61,6 @@ func _physics_process(delta):
 				_enter_state(StrafeState.IDLE)
 				return
 			entity.direction = global_position.direction_to(navigation_agent.get_next_path_position())
-			print(entity.direction)
 
 			return
 

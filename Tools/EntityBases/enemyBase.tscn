@@ -26,7 +26,6 @@ chase = Array[String](["Player"])
 
 [node name="NavigationAgent2D" parent="." index="10"]
 avoidance_enabled = true
-debug_enabled = true
 
 [node name="AttackController" parent="." index="12"]
 attack_type = 2
@@ -52,4 +51,3 @@ radius = 4.6
 
 [connection signal="damage_received" from="DamageReceiver" to="DamageReceiver" method="_on_damage_received" unbinds=3]
 [connection signal="damage_received" from="DamageReceiver" to="Hostility" method="_on_damage_taken" unbinds=3]
-[connection signal="body_exited_sight" from="Vision" to="Hostility" method="_on_body_exit_vision"]
