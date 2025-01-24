@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dlv0o8iya373b"]
-
-[ext_resource type="Script" path="res://Tools/WorldGeneration/deloadPersistance.gd" id="1_y3m4p"]
-
-[node name="DeloadPersistance" type="Node"]
-script = ExtResource("1_y3m4p")

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://ki2x6efh6e2e"]
+
+[ext_resource type="PackedScene" uid="uid://h1jbxoqanmwo" path="res://Tools/EntityBases/enemyBase.tscn" id="1_kqb64"]
+[ext_resource type="Script" path="res://Tools/AnimationPlayerController/animationPlayerController.gd" id="2_7kq3r"]
+
+[node name="OrcBase" instance=ExtResource("1_kqb64")]
+
+[node name="AnimationPlayerController" type="AnimationPlayer" parent="." index="18"]
+script = ExtResource("2_7kq3r")

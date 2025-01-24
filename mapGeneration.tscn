@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://bll2eifddoyuw"]
+
+[ext_resource type="Script" path="res://Tools/World/Generation/mapGeneratorHandler.gd" id="1_efkce"]
+[ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="1_kunv8"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="3_wsm24"]
+[ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="4_3ebl5"]
+[ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="5_i247n"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkHandler.gd" id="5_s72kq"]
+
+[node name="Node" type="Node"]
+
+[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("tile_tile_map_layer", "object_tile_map_layer", "tile_chunk_handler", "entity_chunk_handler", "center_entity")]
+script = ExtResource("1_efkce")
+size = 50
+tile_tile_map_layer = NodePath("Tiles")
+object_tile_map_layer = NodePath("Entities")
+tile_chunk_handler = NodePath("TileChunkHandler")
+entity_chunk_handler = NodePath("EntityChunkHandler")
+center_entity = NodePath("Entities/Player")
+
+[node name="Tiles" type="TileMapLayer" parent="World" node_paths=PackedStringArray("tile_map_layer", "camera_to_load_around")]
+tile_set = ExtResource("1_kunv8")
+script = ExtResource("3_wsm24")
+tile_map_layer = NodePath(".")
+camera_to_load_around = NodePath("../../Camera2D")
+
+[node name="Entities" type="TileMapLayer" parent="World" node_paths=PackedStringArray("tile_map_layer", "camera_to_load_around")]
+y_sort_enabled = true
+tile_set = ExtResource("1_kunv8")
+script = ExtResource("3_wsm24")
+tile_map_layer = NodePath(".")
+camera_to_load_around = NodePath("../../Camera2D")
+
+[node name="Player" parent="World/Entities" instance=ExtResource("4_3ebl5")]
+position = Vector2(0, 0)
+
+[node name="TileChunkHandler" type="Node" parent="World" node_paths=PackedStringArray("world_chunk_loader", "center")]
+script = ExtResource("5_s72kq")
+chunk_folder = "TileChunks"
+world_chunk_loader = NodePath("../Tiles")
+center = NodePath("../../Camera2D")
+
+[node name="EntityChunkHandler" type="Node" parent="World" node_paths=PackedStringArray("world_chunk_loader", "center")]
+script = ExtResource("5_s72kq")
+world_chunk_loader = NodePath("../Entities")
+center = NodePath("../../Camera2D")
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("follow")]
+script = ExtResource("5_i247n")
+follow = NodePath("../World/Entities/Player")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+scale = Vector2(0.2, 0.2)
+transform = Transform2D(0.2, 0, 0, 0.2, 0, 0)
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="CanvasLayer/Control/AspectRatioContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Generate world"
+
+[connection signal="button_down" from="CanvasLayer/Control/AspectRatioContainer/Button" to="World" method="generate"]

@@ -33,6 +33,9 @@ func _ready():
 	vision.body_exited_sight.connect(_on_body_exited_vision)
 
 func _physics_process(delta):
+	if not enabled:
+		return
+		
 	if _body_to_react_to == null:
 		return
 		

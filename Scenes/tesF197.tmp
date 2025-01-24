@@ -1,15 +1,17 @@
 [gd_scene load_steps=8 format=4 uid="uid://b3css1fymngw"]
 
-[ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="1_mnnpo"]
-[ext_resource type="Script" path="res://Tools/World/Generation/mapGeneratorHandler.gd" id="1_pyovk"]
+[ext_resource type="Script" path="res://Tools/WorldGeneration/chunkLoader.gd" id="1_mnnpo"]
+[ext_resource type="Script" path="res://Scripts/test.gd" id="1_pyovk"]
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="1_vvw83"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="2_py4de"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="5_vp5go"]
 [ext_resource type="PackedScene" uid="uid://h1jbxoqanmwo" path="res://Tools/EntityBases/enemyBase.tscn" id="6_7fu8y"]
-[ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkHandler.gd" id="6_l757y"]
+[ext_resource type="Script" path="res://Scripts/worldChunkHandler.gd" id="7_2di0n"]
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Node2D" node_paths=PackedStringArray("tileWorld", "entityWorld")]
 script = ExtResource("1_pyovk")
+tileWorld = NodePath("TileWorldHandler")
+entityWorld = NodePath("EntityWorldHandler")
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("follow")]
 zoom = Vector2(2, 2)
@@ -57,13 +59,15 @@ rotation = -0.0114626
 [node name="EnemyBase8" parent="Entities" instance=ExtResource("6_7fu8y")]
 position = Vector2(590, 247)
 
-[node name="TileWorldHandler" type="Node" parent="." node_paths=PackedStringArray("center")]
-script = ExtResource("6_l757y")
+[node name="TileWorldHandler" type="Node" parent="." node_paths=PackedStringArray("chunk_loader", "center")]
+script = ExtResource("7_2di0n")
 chunk_folder = "TileChunks"
+chunk_loader = NodePath("../Tiles")
 center = NodePath("../Player")
 
-[node name="EntityWorldHandler" type="Node" parent="." node_paths=PackedStringArray("center")]
-script = ExtResource("6_l757y")
+[node name="EntityWorldHandler" type="Node" parent="." node_paths=PackedStringArray("chunk_loader", "center")]
+script = ExtResource("7_2di0n")
+chunk_loader = NodePath("../Entities")
 center = NodePath("../Player")
 
 [node name="Player" parent="." instance=ExtResource("5_vp5go")]

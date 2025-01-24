@@ -9,8 +9,8 @@
 [ext_resource type="Script" path="res://Tools/HitBox/hitBox.gd" id="5_5tvkh"]
 [ext_resource type="Script" path="res://Scripts/appearDisappear.gd" id="6_jjrbe"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="7_luv08"]
-[ext_resource type="PackedScene" uid="uid://dlv0o8iya373b" path="res://Tools/WorldGeneration/deloadPersistance.tscn" id="10_fbg38"]
-[ext_resource type="Script" path="res://Tools/WorldGeneration/persistantData.gd" id="11_jg4ph"]
+[ext_resource type="PackedScene" uid="uid://dlv0o8iya373b" path="res://Tools/World/Load and deload/deloadPersistance.tscn" id="10_fbg38"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="11_jg4ph"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d1xrw"]
 atlas = ExtResource("4_i5vyp")
@@ -200,6 +200,7 @@ node_path = "DamageReceiver"
 property = "_amount"
 
 [node name="EntityBase" type="CharacterBody2D" groups=["Damagable"]]
+position = Vector2(-1, 0)
 motion_mode = 1
 wall_min_slide_angle = 0.0
 

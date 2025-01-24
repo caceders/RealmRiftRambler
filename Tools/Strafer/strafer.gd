@@ -54,12 +54,15 @@ func _physics_process(delta):
 	if not enabled:
 		return
 	match _active_state:
-
+		StrafeState.IDLE:
+			return
 		StrafeState.WALKING:
 			if navigation_agent.is_target_reached():
 				_enter_state(StrafeState.IDLE)
 				return
 			entity.direction = global_position.direction_to(navigation_agent.get_next_path_position())
+			print(entity.direction)
+
 			return
 
 func _enter_state(state: StrafeState):
@@ -96,10 +99,11 @@ func _enter_state(state: StrafeState):
 						_enter_state(StrafeState.IDLE)
 					return
 			return
-					
+				
 
 func enable():
 	enabled = true
+	_stand_still_timer.start(randf_range(min_stand_still_time, max_stand_still_time))
 
 func disable():
 	enabled = false

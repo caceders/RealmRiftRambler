@@ -91,6 +91,11 @@ func _look_for_targets():
                 _enter_state(HostiltiyState.HUNTING)
                 return
 
+func _on_body_exit_vision(body):
+    if _target == body:
+        _target = null
+
+
 func _on_damage_taken():
     if is_stunable:
         entity.stun()

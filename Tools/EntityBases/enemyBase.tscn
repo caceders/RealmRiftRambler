@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://Tools/Hostility/hostility.gd" id="2_o8dx1"]
 
 [node name="EnemyBase" instance=ExtResource("1_tdxna")]
+position = Vector2(0, 0)
 wall_min_slide_angle = 0.261799
 
 [node name="Shadow" parent="." index="0"]
@@ -20,10 +21,12 @@ offset_bottom = -7.205
 offset = Vector2(0, -3.705)
 
 [node name="ChaserEvader" parent="." index="7"]
+enabled = true
 chase = Array[String](["Player"])
 
 [node name="NavigationAgent2D" parent="." index="10"]
 avoidance_enabled = true
+debug_enabled = true
 
 [node name="AttackController" parent="." index="12"]
 attack_type = 2
@@ -37,10 +40,16 @@ chaser_evader = NodePath("../ChaserEvader")
 attack_controller = NodePath("../AttackController")
 attack_area = NodePath("../AttackArea")
 damage_receiver = NodePath("../DamageReceiver")
+enabled = null
 hostile_groups = Array[String](["Player"])
+strafe_on_non_hostile_mode = null
+is_stunable = null
+attack_amount = null
+attack_knockback = null
 
 [node name="NavigationObstacle2D" parent="." index="16"]
 radius = 4.6
 
 [connection signal="damage_received" from="DamageReceiver" to="DamageReceiver" method="_on_damage_received" unbinds=3]
 [connection signal="damage_received" from="DamageReceiver" to="Hostility" method="_on_damage_taken" unbinds=3]
+[connection signal="body_exited_sight" from="Vision" to="Hostility" method="_on_body_exit_vision"]
