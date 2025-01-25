@@ -165,6 +165,10 @@ func _movement():
 
 func _on_damage_received(_amount: float, p_knockback: bool, damage_dealer: DamageDealer):
 	_damaged_flag = true
+	if _last_movement_direction == Direction.LEFT:
+		animation_player_controller.play_overlay_animation("playerHurtLeft", 2 )
+	else:
+		animation_player_controller.play_overlay_animation("playerHurtRight", 2 )
 
 
 func _animate_spellcast():

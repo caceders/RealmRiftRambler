@@ -1,5 +1,9 @@
 class_name AttackController extends Node2D
 
+signal charge_started
+signal charge_end
+signal attack_started
+
 enum AttackType{
 	NEAREST,
 	ALL,
@@ -21,6 +25,7 @@ var _attack_duration_timer : Timer
 var _attack_charge_timer : Timer
 
 func _ready():
+
 	_stun_timer = Timer.new()
 	_stun_timer.one_shot = true
 	add_child(_stun_timer)
@@ -37,7 +42,10 @@ func _ready():
 	_attack_charge_timer.one_shot = true
 	add_child(_attack_charge_timer)
 
+	_attack_charge_timer.timeout.connect(_attack_charge_timer_timeout)
+
 func charge_attack():
+	charge_started.emit()
 	_attack_charge_timer.start(attack_charge)
 
 func reset_charge():
@@ -47,6 +55,7 @@ func is_charge_finished():
 	return _attack_charge_timer.time_left == 0
 
 func attack(amount: float, knockback: bool, body = null):
+	attack_started.emit()
 	if can_attack():
 		if attack_type == AttackType.NEAREST:
 			attack_area.attack_nearest_body_in_group(amount, knockback, damage_dealer)
@@ -82,3 +91,6 @@ func is_attacking():
 func stun():
 	cancel_attack()
 	_stun_timer.start(stun_time)
+
+func _attack_charge_timer_timeout():
+	charge_end.emit()

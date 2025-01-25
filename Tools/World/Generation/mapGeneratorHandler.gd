@@ -25,7 +25,8 @@ func _ready():
 	
 
 func _process(delta):
-	center = WorldChunkLoader.position_to_tile(center_entity.global_position)
+	if center_entity != null:
+		center = WorldChunkLoader.position_to_tile(center_entity.global_position)
 	
 func generate():
 	clear_world()

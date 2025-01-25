@@ -10,18 +10,27 @@ const GRASS_SEED_OFFSET = 100023415
 const WATER_TILE_ATLAS = Vector2i(26, 1)
 const WATER_TILE_TERRAIN_ID = 2
 const WATER_SEED_OFFSET = 67948123589
+const WATER_NOISE_PLACEMENT_FLOOR = 0.3
 
 const FOREST_SEED_OFFSET = 5265762372623
 const TREE_TILE_ATLAS = Vector2i(26, 1)
 const TREE_TILE_TERRAIN_ID = 2
 const TREE_SEED_OFFSET = 23642542356
+const FOREST_NOISE_PLACEMENT_FLOOR = 0.2
+const TREE_NOISE_PLACEMENT_FLOOR = 0.3
+
 
 const FLOWER_TILE_ATLAS = [Vector2i(9, 9), Vector2i(10, 9), Vector2i(11, 9)]
 const FLOWER_SEED_OFFSET = 23642542356
+const FLOWER_NOISE_PLACEMENT_FLOOR = 0.3
+
 
 const ENEMY_PATTERN_ID = 1
 const ENEMY_SEED_OFFSET = 4326225
 const MIN_SPAWN_DISTANCE_ENEMIES_SQUARED = 100
+const ENEMY_NOISE_PLACEMENT_FLOOR = 0.63
+
+
 ## Tilemmap is not perfectly edge or corner connected, but is designed for 2x2 terrains. When placing upscale the vector to place 2x2 tiles instead if just 1x1
 const MAP_DOWNSCALE = 2
 
@@ -102,7 +111,7 @@ func place_water(map_size, tiles_tile_map_layer: TileMapLayer, map_seed, center)
 	water_noise.seed = map_seed + WATER_SEED_OFFSET + center_availability_offset
 
 	# Make sure center is unoccupied
-	while water_noise.get_noise_2d(center.x, center.y) > 0.3:
+	while water_noise.get_noise_2d(center.x, center.y) > WATER_NOISE_PLACEMENT_FLOOR:
 		center_availability_offset += 1 
 		water_noise.seed = map_seed + WATER_SEED_OFFSET
 
@@ -113,7 +122,7 @@ func place_water(map_size, tiles_tile_map_layer: TileMapLayer, map_seed, center)
 		for y in range(-downscaled_map, downscaled_map):
 			var cell = Vector2i(x,y)
 			
-			if water_noise.get_noise_2d(cell.x, cell.y) > 0.3:
+			if water_noise.get_noise_2d(cell.x, cell.y) > WATER_NOISE_PLACEMENT_FLOOR:
 				_water_tiles_downscaled.append(cell)
 				for x_i in range(MAP_DOWNSCALE):
 					for y_i in range(MAP_DOWNSCALE):
@@ -135,7 +144,7 @@ func plant_trees(map_size, object_tile_map_layer: TileMapLayer, tiles_tile_map_l
 	tree_noise.seed = map_seed + TREE_SEED_OFFSET + center_availability_offset
 
 	# Make sure center is unoccupied
-	while forest_noise.get_noise_2d(center.x, center.y) > 0 and tree_noise.get_noise_2d(center.x, center.y) > 0.3:
+	while forest_noise.get_noise_2d(center.x, center.y) > FOREST_NOISE_PLACEMENT_FLOOR and tree_noise.get_noise_2d(center.x, center.y) > TREE_NOISE_PLACEMENT_FLOOR:
 		center_availability_offset += 1 
 		forest_noise.seed = map_seed + FOREST_SEED_OFFSET + center_availability_offset
 		tree_noise.seed = map_seed + TREE_SEED_OFFSET + center_availability_offset
@@ -144,11 +153,11 @@ func plant_trees(map_size, object_tile_map_layer: TileMapLayer, tiles_tile_map_l
 	for x in range( -map_size, map_size):
 		for y in range(-map_size, map_size):	
 			var cell = Vector2i(x,y)
-			if forest_noise.get_noise_2d(cell.x, cell.y) > 0:
+			if forest_noise.get_noise_2d(cell.x, cell.y) > FOREST_NOISE_PLACEMENT_FLOOR:
 				_forest_tiles.append(cell)
 	
 	for cell in _forest_tiles:
-		if tree_noise.get_noise_2d(cell.x, cell.y) > 0.4 and not get_tile_is_occupied(cell):
+		if tree_noise.get_noise_2d(cell.x, cell.y) > TREE_NOISE_PLACEMENT_FLOOR and not get_tile_is_occupied(cell):
 			object_tile_map_layer.set_cell(cell, 1, Vector2i(0, 0), 0)
 
 func plant_flowers(map_size, object_tile_map_layer, tiles_tile_map_layer, map_seed, center):
@@ -162,7 +171,7 @@ func plant_flowers(map_size, object_tile_map_layer, tiles_tile_map_layer, map_se
 	for x in range( -map_size, map_size):
 		for y in range(-map_size, map_size):	
 			var cell = Vector2i(x,y)
-			if flower_noise.get_noise_2d(cell.x, cell.y) > .3 and not get_tile_is_occupied(cell):
+			if flower_noise.get_noise_2d(cell.x, cell.y) > FLOWER_NOISE_PLACEMENT_FLOOR and not get_tile_is_occupied(cell):
 				object_tile_map_layer.set_cell(cell, 2, FLOWER_TILE_ATLAS.pick_random(), 0)
 
 
@@ -175,7 +184,7 @@ func place_enemies(map_size, object_tile_map_layer, tiles_tile_map_layer, map_se
 	for x in range( -map_size, map_size):
 		for y in range(-map_size, map_size):	
 			var cell = Vector2i(x,y)
-			if enemy_noise.get_noise_2d(cell.x, cell.y) > 0.63 :
+			if enemy_noise.get_noise_2d(cell.x, cell.y) > ENEMY_NOISE_PLACEMENT_FLOOR :
 				var can_spawn = true
 				var pattern = object_tile_map_layer.tile_set.get_pattern(ENEMY_PATTERN_ID) as TileMapPattern
 				var pattern_size = pattern.get_size()
