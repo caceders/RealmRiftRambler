@@ -22,8 +22,8 @@
 [ext_resource type="PackedScene" uid="uid://bjioxiljujgja" path="res://Tools/SpellSystem/spellSequenceVisualizer.tscn" id="18_vkslu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cg8jx"]
-atlas = ExtResource("4_qjxco")
-region = Rect2(12, 12, 7, 7)
+atlas = ExtResource("7_wsqyt")
+region = Rect2(12, 44, 8, 7)
 
 [sub_resource type="Animation" id="Animation_h3nx4"]
 resource_name = "playerAttackLeft"
@@ -930,19 +930,18 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[node name="Player" groups=["Player"] instance=ExtResource("1_qws5j")]
+[node name="Player" groups=["Invisible", "Player"] instance=ExtResource("1_qws5j")]
 script = ExtResource("5_v07jb")
 
 [node name="Shadow" parent="." index="0"]
-scale = Vector2(0.21875, 0.21875)
-offset = Vector2(-3.5, 2.33333)
+offset = Vector2(-4, 2.33333)
 
 [node name="TopDownEntity2D" parent="." index="1"]
 speed = 50.0
 
-[node name="HealthBar" parent="." index="3" groups=["Damagable", "Invisible", "Player"]]
-offset_top = -8.50003
-offset_bottom = -3.50003
+[node name="HealthBar" parent="." index="3"]
+offset_top = -8.50002
+offset_bottom = -3.50002
 
 [node name="Sprite2D" parent="." index="4"]
 position = Vector2(0, -3.5)

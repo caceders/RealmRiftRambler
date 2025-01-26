@@ -27,6 +27,7 @@ var _target: Node2D
 var _hostility_state: HostiltiyState = HostiltiyState.IDLE
 
 func _ready():
+    vision.body_exited_sight.connect(_on_body_exit_vision)
     if strafe_on_non_hostile_mode: strafer.enable()
     else: strafer.disable()
 

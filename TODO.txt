@@ -1,0 +1,2 @@
+- Fix the chaser evader script to consider all entities in vision, not just the ones entering or exiting
+- Fix the healthbar oscillating between low and high - see the squirrel

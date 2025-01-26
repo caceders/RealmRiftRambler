@@ -200,13 +200,11 @@ _data = {
 }
 
 [node name="CreatureBase" instance=ExtResource("1_5asbe")]
+position = Vector2(-1, 1)
 
 [node name="Shadow" parent="." index="0"]
 scale = Vector2(0.21875, 0.21875)
 offset = Vector2(-3.5, -1.17667)
-
-[node name="TopDownEntity2D" parent="." index="1" node_paths=PackedStringArray("navigation_agent")]
-navigation_agent = NodePath("../NavigationAgent2D")
 
 [node name="DamageReceiver" parent="." index="2"]
 enable_growth = true
@@ -219,46 +217,36 @@ offset_bottom = -7.01
 texture = SubResource("AtlasTexture_u4m0a")
 offset = Vector2(0, -3.51)
 
-[node name="Strafer" type="Node2D" parent="." index="6" node_paths=PackedStringArray("navigation_agent", "entity")]
+[node name="Strafer" type="Node2D" parent="." index="6"]
 script = ExtResource("2_pw06x")
-navigation_agent = NodePath("../NavigationAgent2D")
-entity = NodePath("../TopDownEntity2D")
 min_stand_still_time = 0.0
 max_stand_still_time = 20.0
 min_strafe_distance = 50.0
 max_strafe_distance = 100.0
 
-[node name="ChaserEvader" type="Node2D" parent="." index="7" node_paths=PackedStringArray("vision", "entity", "navigation_agent")]
+[node name="ChaserEvader" type="Node2D" parent="." index="7"]
 script = ExtResource("4_kmaa4")
-vision = NodePath("../Vision")
-entity = NodePath("../TopDownEntity2D")
 enabled = false
-navigation_agent = NodePath("../NavigationAgent2D")
 
 [node name="Vision" parent="." index="8" instance=ExtResource("3_prodp")]
 
-[node name="Knockback" type="Node2D" parent="." index="9" node_paths=PackedStringArray("entity")]
+[node name="Knockback" type="Node2D" parent="." index="9"]
 script = ExtResource("5_snks4")
-entity = NodePath("../TopDownEntity2D")
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="10" node_paths=PackedStringArray("hitbox")]
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." index="10"]
 path_desired_distance = 5.0
 target_desired_distance = 5.0
 path_postprocessing = 1
 script = ExtResource("7_xytw2")
-hitbox = NodePath("../HitBox")
 
-[node name="AttackArea" type="Area2D" parent="." index="11" node_paths=PackedStringArray("owner_body")]
+[node name="AttackArea" type="Area2D" parent="." index="11"]
 script = ExtResource("7_3qpst")
-owner_body = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" index="0"]
 shape = SubResource("CircleShape2D_4lfg7")
 
-[node name="AttackController" type="Node2D" parent="." index="12" node_paths=PackedStringArray("attack_area", "damage_dealer")]
+[node name="AttackController" type="Node2D" parent="." index="12"]
 script = ExtResource("8_efu85")
-attack_area = NodePath("../AttackArea")
-damage_dealer = NodePath("../DamageDealer")
 
 [node name="DamageDealer" type="Node2D" parent="." index="13"]
 script = ExtResource("9_l1x1k")

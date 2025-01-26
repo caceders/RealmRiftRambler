@@ -25,10 +25,10 @@ const FLOWER_SEED_OFFSET = 23642542356
 const FLOWER_NOISE_PLACEMENT_FLOOR = 0.3
 
 
-const ENEMY_PATTERN_ID = 0
-const ENEMY_SEED_OFFSET = 4326225
+const CREATURE_PATTERN_ID = [0, 2]
+const CREATURE_SEED_OFFSET = 4326225
 const MIN_SPAWN_DISTANCE_ENEMIES_SQUARED = 100
-const ENEMY_NOISE_PLACEMENT_FLOOR = 0.63
+const CREATURE_NOISE_PLACEMENT_FLOOR = 0.55
 
 
 ## Tilemmap is not perfectly edge or corner connected, but is designed for 2x2 terrains. When placing upscale the vector to place 2x2 tiles instead if just 1x1
@@ -176,17 +176,17 @@ func plant_flowers(map_size, object_tile_map_layer, tiles_tile_map_layer, map_se
 
 
 func place_enemies(map_size, object_tile_map_layer, tiles_tile_map_layer, map_seed, center):
-	var enemy_noise = FastNoiseLite.new() as FastNoiseLite
-	enemy_noise.frequency = 1
+	var creature_noise = FastNoiseLite.new() as FastNoiseLite
+	creature_noise.frequency = 1
 
-	enemy_noise.seed = map_seed + ENEMY_SEED_OFFSET
+	creature_noise.seed = map_seed + CREATURE_SEED_OFFSET
 
 	for x in range( -map_size, map_size):
 		for y in range(-map_size, map_size):	
 			var cell = Vector2i(x,y)
-			if enemy_noise.get_noise_2d(cell.x, cell.y) > ENEMY_NOISE_PLACEMENT_FLOOR :
+			if creature_noise.get_noise_2d(cell.x, cell.y) > CREATURE_NOISE_PLACEMENT_FLOOR :
 				var can_spawn = true
-				var pattern = object_tile_map_layer.tile_set.get_pattern(ENEMY_PATTERN_ID) as TileMapPattern
+				var pattern = object_tile_map_layer.tile_set.get_pattern(CREATURE_PATTERN_ID.pick_random()) as TileMapPattern
 				var pattern_size = pattern.get_size()
 
 				if cell.distance_squared_to(center) < MIN_SPAWN_DISTANCE_ENEMIES_SQUARED:

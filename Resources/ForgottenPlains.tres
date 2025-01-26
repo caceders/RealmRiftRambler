@@ -1,15 +1,19 @@
-[gd_resource type="TileSet" load_steps=120 format=3 uid="uid://dlyimdyaxm8tl"]
+[gd_resource type="TileSet" load_steps=122 format=3 uid="uid://dlyimdyaxm8tl"]
 
 [ext_resource type="Texture2D" uid="uid://cs1u72onf5x2j" path="res://Assets/Minifantasy_ForgottenPlains_Assets/Tileset/Minifantasy_ForgottenPlainsTiles.png" id="1_1otus"]
 [ext_resource type="Texture2D" uid="uid://w5mbknj65jft" path="res://Assets/Minifantasy_ForgottenPlains_Assets/props/Minifantasy_ForgottenPlainsProps.png" id="2_1c663"]
 [ext_resource type="PackedScene" uid="uid://cfbfuftomdxnb" path="res://Scenes/tree.tscn" id="2_nksxs"]
 [ext_resource type="PackedScene" uid="uid://ki2x6efh6e2e" path="res://Tools/EntityBases/enemies/orcBase.tscn" id="3_s3rd0"]
+[ext_resource type="PackedScene" uid="uid://couhlepbf8cgj" path="res://Tools/EntityBases/animals/squirrelBase.tscn" id="4_eialt"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_6c88h"]
 tile_data = PackedInt32Array(131072, 1, 131072, 65537, 1, 131072, 2, 1, 131072, 131074, 1, 131072, 65539, 1, 131072)
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_vkhah"]
 tile_data = PackedInt32Array(0, 1, 65536, 393217, 1, 65536, 131075, 1, 65536, 262149, 1, 65536, 65542, 1, 65536, 458758, 1, 65536, 327688, 1, 65536, 131081, 1, 65536, 196620, 1, 65536)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_4ooxu"]
+tile_data = PackedInt32Array(0, 1, 196608)
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ok2vt"]
 vertices = PackedVector2Array(4, 4, -4, 4, -4, -4, 4, -4)
@@ -3483,6 +3487,7 @@ texture_region_size = Vector2i(8, 8)
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_1kebr"]
 scenes/1/scene = ExtResource("2_nksxs")
 scenes/2/scene = ExtResource("3_s3rd0")
+scenes/3/scene = ExtResource("4_eialt")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_y2gg1"]
 texture = ExtResource("2_1c663")
@@ -3646,3 +3651,4 @@ sources/2 = SubResource("TileSetAtlasSource_y2gg1")
 sources/1 = SubResource("TileSetScenesCollectionSource_1kebr")
 pattern_0 = SubResource("TileMapPattern_6c88h")
 pattern_1 = SubResource("TileMapPattern_vkhah")
+pattern_2 = SubResource("TileMapPattern_4ooxu")

@@ -189,7 +189,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[node name="EnemyBase" instance=ExtResource("1_tdxna")]
+[node name="EnemyBase" groups=["Hostile"] instance=ExtResource("1_tdxna")]
 position = Vector2(0, 0)
 wall_min_slide_angle = 0.261799
 
@@ -226,15 +226,8 @@ libraries = {
 [node name="AppearDisappearSprite" parent="AppearDisappear" index="1"]
 texture = SubResource("AtlasTexture_ushcn")
 
-[node name="Hostility" type="Node2D" parent="." index="15" node_paths=PackedStringArray("entity", "vision", "strafer", "chaser_evader", "attack_controller", "attack_area", "damage_receiver")]
+[node name="Hostility" type="Node2D" parent="." index="15"]
 script = ExtResource("2_o8dx1")
-entity = NodePath("../TopDownEntity2D")
-vision = NodePath("../Vision")
-strafer = NodePath("../Strafer")
-chaser_evader = NodePath("../ChaserEvader")
-attack_controller = NodePath("../AttackController")
-attack_area = NodePath("../AttackArea")
-damage_receiver = NodePath("../DamageReceiver")
 hostile_groups = Array[String](["Player"])
 
 [node name="NavigationObstacle2D" parent="." index="16"]
