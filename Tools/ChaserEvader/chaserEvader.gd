@@ -1,6 +1,5 @@
 class_name ChaserEvader extends Node2D
 
-const TEST_DISTANCE_INTERVAL = 10
 const UPDATE_TIME = .5
 const MAX_TRIES_FIND_NEW_POSITION = 10
 
@@ -70,31 +69,24 @@ func _process(delta):
 	if react_to_body == null:
 		return
 
-	# Run away or towards body - or as far/near as possible
-	var distance_reduction = 0
+	# Run away or towards body - if no path is found just move as close/far as possible
 	var direction: Vector2
 	var distance: float
-	var tries = 0
 	if behavior == BehaviorType.CHASE:
-		while true:
-			direction = global_position.direction_to(react_to_body.global_position)
-			distance = global_position.distance_to(react_to_body.global_position) - distance_reduction
-			navigation_agent.target_position = global_position + direction * distance
-			entity.direction = global_position.direction_to(navigation_agent.get_next_path_position())
-			distance_reduction += TEST_DISTANCE_INTERVAL
-			tries += 1
-			if navigation_agent.is_target_reachable() or tries > MAX_TRIES_FIND_NEW_POSITION:
-				break
+		direction = global_position.direction_to(react_to_body.global_position)
+		distance = global_position.distance_to(react_to_body.global_position)
+		navigation_agent.target_position = global_position + direction * distance
+		entity.direction = global_position.direction_to(navigation_agent.get_next_path_position())
+		if not navigation_agent.is_target_reachable():
+			entity.direction = direction
+
 	elif behavior == BehaviorType.EVADE:
-		while true:
-			direction = react_to_body.global_position.direction_to(global_position)
-			distance = react_to_body.global_position.distance_to(global_position) + vision.distance - distance_reduction
-			navigation_agent.target_position = global_position + direction * distance
-			entity.direction = global_position.direction_to(navigation_agent.get_next_path_position())
-			distance_reduction += TEST_DISTANCE_INTERVAL
-			tries += 1
-			if navigation_agent.is_target_reachable() or tries > MAX_TRIES_FIND_NEW_POSITION:
-				break
+		direction = react_to_body.global_position.direction_to(global_position)
+		distance = react_to_body.global_position.distance_to(global_position) + vision.distance
+		navigation_agent.target_position = global_position + direction * distance
+		entity.direction = global_position.direction_to(navigation_agent.get_next_path_position())
+		if not navigation_agent.is_target_reachable():
+			entity.direction = direction
 
 	
 
