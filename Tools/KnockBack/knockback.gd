@@ -1,6 +1,7 @@
 class_name Knockback extends Node2D
 
-@export var entity: TopDownEntity2D
+@onready var entity: TopDownEntity2D = self.get_parent().get_node("TopDownEntity2D")
+
 @export var enable_knockback: bool = true
 
 func knockback(from_entity: Node2D):

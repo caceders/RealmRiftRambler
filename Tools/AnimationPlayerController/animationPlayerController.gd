@@ -4,7 +4,7 @@ class_name AnimationPlayerController extends AnimationPlayer
 
 
 # region private variables
-var _base_animation: String
+var _base_animation: String = ""
 
 var _current_overlay_animation_priority: int = 0
 var _is_playing_overlay_animation: bool = false

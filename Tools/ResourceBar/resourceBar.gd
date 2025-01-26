@@ -2,7 +2,6 @@
 
 extends Control
 
-const RESOURCE_BAR_OFFSET = Vector2(0, -5)  # Offset above the sprite in pixels
 const POSITIONAL_CORRECTION_LERP = 20
 const BAR_FILL_CHANGE_PERCENTAGE_PER_SECOND = 300
 
@@ -11,9 +10,11 @@ enum ResourceBarType{
 	BIG_RED,
 }
 
+@onready var sprite: Sprite2D = self.get_parent().get_node("Sprite2D")
+
 @export var resource_bar_type : ResourceBarType = ResourceBarType.SMALL_RED
-@export var resource: ResourcePool
-@export var sprite: Sprite2D
+@export var resource: ResourcePool 
+@export var resource_bar_offset: Vector2 = Vector2(0, -5)  # Offset above the sprite in pixels
 
 func _process(delta):
 	var _bars : Array[Node] = get_children()
@@ -32,7 +33,7 @@ func _process(delta):
 			# Get the sprite's bounding box
 			var sprite_rect = sprite.get_rect()
 			# Calculate the new position
-			var new_position = Vector2(0, sprite.offset.y + (-sprite_rect.size.y / 2)) + RESOURCE_BAR_OFFSET
+			var new_position = Vector2(0, sprite.offset.y + (-sprite_rect.size.y / 2)) + resource_bar_offset
 			self.position = self.position.lerp(new_position, 1 - exp(delta * -POSITIONAL_CORRECTION_LERP))
 			bar.max_value = resource.max_amount
 

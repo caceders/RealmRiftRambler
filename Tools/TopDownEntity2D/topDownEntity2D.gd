@@ -11,8 +11,15 @@ const VELOCITY_FLOOR = 5
 
 
 # region @export variables
-@export var navigation_agent : NavigationAgent2D
-@export var body: CharacterBody2D 
+@onready var navigation_agent : NavigationAgent2D = get_navigation_agent_if_availabe()
+func get_navigation_agent_if_availabe():
+	if not self.get_parent().has_node("NavigationAgent2D"):
+		return null
+	else:
+		return self.get_parent().get_node("NavigationAgent2D")
+
+@onready var body: CharacterBody2D = self.get_parent()
+
 @export var direction: Vector2
 @export var speed: float = 50
 @export var impulse_size: float = 100

@@ -1,6 +1,6 @@
 class_name 	AttackArea extends Area2D
 
-@export var owner_body: CollisionObject2D
+@onready var owner_body: CollisionObject2D = self.get_parent()
 
 func attack_body(amount, knockback, damage_dealer, body):
 	var target_damage_receiver = body.get_node("DamageReceiver")

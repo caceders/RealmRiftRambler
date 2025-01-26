@@ -13,8 +13,8 @@ enum StrafeCentrumType{
 	SET_POSITION,
 }
 
-@export var navigation_agent : NavigationAgent2D
-@export var entity: TopDownEntity2D
+@onready var navigation_agent : NavigationAgent2D = self.get_parent().get_node("NavigationAgent2D")
+@onready var entity: TopDownEntity2D = self.get_parent().get_node("TopDownEntity2D")
 
 @export var enabled: bool = true
 
@@ -27,12 +27,15 @@ enum StrafeCentrumType{
 @export var max_strafe_distance: float = 50
 
 @export var strafe_weight: Vector2 = Vector2(0, 0)
+@export var strafe_cenrtum_is_spawn_position: bool = true
 @export var strafe_centrum_position: Vector2 = Vector2(0, 0)
 
 var _active_state: StrafeState = StrafeState.IDLE
 var _stand_still_timer : Timer
 
 func _ready():
+	if strafe_cenrtum_is_spawn_position:
+		strafe_centrum_position = global_position
 	_stand_still_timer = Timer.new()
 	_stand_still_timer.one_shot = true
 	add_child(_stand_still_timer)

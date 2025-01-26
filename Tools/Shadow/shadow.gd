@@ -2,7 +2,7 @@
 class_name Shadow extends Sprite2D
 
 const SHADOW_PIXEL_SCALE = 32
-@export var sprite: Sprite2D
+@onready var sprite: Sprite2D = self.get_parent().get_node("Sprite2D")
 @export var shadow_color: Color = Color(0, 0, 0, 0.5) # Dark and semi-transparent
 
 func _process(delta):

@@ -3,7 +3,7 @@
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="1_8m1l6"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="3_uxjxf"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="4_g6g7v"]
-[ext_resource type="PackedScene" uid="uid://ki2x6efh6e2e" path="res://Tools/EntityBases/enemies/orcBase.tscn" id="4_jxpco"]
+[ext_resource type="PackedScene" uid="uid://ki2x6efh6e2e" path="res://Tools/EntityBases/enemies/orcBase.tscn" id="4_melts"]
 
 [node name="World" type="Node2D"]
 
@@ -25,8 +25,8 @@ position = Vector2(-164, 24)
 script = ExtResource("4_g6g7v")
 follow = NodePath("../Player")
 
-[node name="OrcBase" parent="Objects" instance=ExtResource("4_jxpco")]
-position = Vector2(-40, 18)
+[node name="OrcBase" parent="." instance=ExtResource("4_melts")]
+position = Vector2(-117, 77)
 
-[node name="OrcBase2" parent="Objects" instance=ExtResource("4_jxpco")]
-position = Vector2(-163, 113)
+[node name="OrcBase2" parent="." instance=ExtResource("4_melts")]
+position = Vector2(6, 63)

@@ -6,13 +6,13 @@ enum HostiltiyState {
     ATTACKING,
 }
 
-@export var entity : TopDownEntity2D
-@export var vision : Vision
-@export var strafer: Strafer
-@export var chaser_evader: ChaserEvader
-@export var attack_controller: AttackController
-@export var attack_area: AttackArea
-@export var damage_receiver: DamageReceiver
+@onready var entity : TopDownEntity2D = self.get_parent().get_node("TopDownEntity2D")
+@onready var vision : Vision = self.get_parent().get_node("Vision")
+@onready var strafer: Strafer = self.get_parent().get_node("Strafer")
+@onready var chaser_evader: ChaserEvader = self.get_parent().get_node("ChaserEvader")
+@onready var attack_controller: AttackController = self.get_parent().get_node("AttackController")
+@onready var attack_area: AttackArea = self.get_parent().get_node("AttackArea")
+@onready var damage_receiver: DamageReceiver = self.get_parent().get_node("DamageReceiver")
 
 @export var enabled: bool = true
 @export var hostile_groups: Array[String]= []

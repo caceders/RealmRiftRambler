@@ -15,10 +15,12 @@
 load_path = "res://.godot/imported/Props.png-c7944563d39be824387a0897a9e56fbf.ctex"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ck5b7"]
+resource_local_to_scene = true
 atlas = SubResource("CompressedTexture2D_p7e8f")
 region = Rect2(200, 24, 8, 8)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]
+resource_local_to_scene = true
 atlas = ExtResource("7_luv08")
 region = Rect2(234, 9, 9, 13)
 
@@ -190,6 +192,7 @@ tracks/4/keys = {
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tnm8p"]
+resource_local_to_scene = true
 _data = {
 "RESET": SubResource("Animation_63m85"),
 "entityAppear": SubResource("Animation_ct5bu"),
@@ -206,29 +209,26 @@ position = Vector2(-1, 0)
 motion_mode = 1
 wall_min_slide_angle = 0.0
 
-[node name="Shadow" type="Sprite2D" parent="." node_paths=PackedStringArray("sprite")]
+[node name="Shadow" type="Sprite2D" parent="."]
 modulate = Color(0, 0, 0, 0.0784314)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_cn4cr")
 offset = Vector2(-4, -1.36833)
 script = ExtResource("1_i42p2")
-sprite = NodePath("../Sprite2D")
 shadow_color = Color(0, 0, 0, 0.0784314)
 
-[node name="TopDownEntity2D" type="Node2D" parent="." node_paths=PackedStringArray("body")]
+[node name="TopDownEntity2D" type="Node2D" parent="."]
 script = ExtResource("1_4ho6y")
-body = NodePath("..")
 speed = 30.0
 
 [node name="DamageReceiver" type="Node2D" parent="."]
 script = ExtResource("2_2j8ja")
 enable_growth = false
 
-[node name="HealthBar" parent="." node_paths=PackedStringArray("resource", "sprite") instance=ExtResource("3_rm62l")]
+[node name="HealthBar" parent="." node_paths=PackedStringArray("resource") instance=ExtResource("3_rm62l")]
 offset_top = -13.035
 offset_bottom = -8.03498
 resource = NodePath("../DamageReceiver")
-sprite = NodePath("../Sprite2D")
 metadata/_edit_use_anchors_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -238,9 +238,9 @@ offset = Vector2(0, -4.035)
 [node name="HitBox" type="CollisionShape2D" parent="."]
 script = ExtResource("5_5tvkh")
 
-[node name="AppearDisappear" type="Node2D" parent="." node_paths=PackedStringArray("entity_sprite", "appear_disappear_sprite")]
+[node name="AppearDisappear" type="Node2D" parent="." node_paths=PackedStringArray("appear_disappear_animation_player", "appear_disappear_sprite")]
 script = ExtResource("6_jjrbe")
-entity_sprite = NodePath("../Sprite2D")
+appear_disappear_animation_player = NodePath("AppearDisappearAnimationPlayer")
 appear_disappear_sprite = NodePath("AppearDisappearSprite")
 
 [node name="AppearDisappearAnimationPlayer" type="AnimationPlayer" parent="AppearDisappear"]

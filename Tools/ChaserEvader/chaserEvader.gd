@@ -9,10 +9,12 @@ enum BehaviorType{
 	EVADE,
 }
 
-@export var vision: Vision
-@export var entity: TopDownEntity2D
+@onready var vision: Vision = self.get_parent().get_node("Vision")
+@onready var entity: TopDownEntity2D = self.get_parent().get_node("TopDownEntity2D")
+@onready var navigation_agent : NavigationAgent2D = self.get_parent().get_node("NavigationAgent2D")
+
+
 @export var enabled: bool = true
-@export var navigation_agent : NavigationAgent2D
 ## Chase groups
 @export var chase : Array[String] = []
 ## Evade groups

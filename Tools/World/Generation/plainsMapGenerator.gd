@@ -14,7 +14,7 @@ const WATER_NOISE_PLACEMENT_FLOOR = 0.3
 
 const FOREST_SEED_OFFSET = 5265762372623
 const TREE_TILE_ATLAS = Vector2i(26, 1)
-const TREE_TILE_TERRAIN_ID = 2
+const TREE_TILE_TERRAIN_ID = 1
 const TREE_SEED_OFFSET = 23642542356
 const FOREST_NOISE_PLACEMENT_FLOOR = 0.2
 const TREE_NOISE_PLACEMENT_FLOOR = 0.3
@@ -25,7 +25,7 @@ const FLOWER_SEED_OFFSET = 23642542356
 const FLOWER_NOISE_PLACEMENT_FLOOR = 0.3
 
 
-const ENEMY_PATTERN_ID = 1
+const ENEMY_PATTERN_ID = 0
 const ENEMY_SEED_OFFSET = 4326225
 const MIN_SPAWN_DISTANCE_ENEMIES_SQUARED = 100
 const ENEMY_NOISE_PLACEMENT_FLOOR = 0.63
@@ -158,7 +158,7 @@ func plant_trees(map_size, object_tile_map_layer: TileMapLayer, tiles_tile_map_l
 	
 	for cell in _forest_tiles:
 		if tree_noise.get_noise_2d(cell.x, cell.y) > TREE_NOISE_PLACEMENT_FLOOR and not get_tile_is_occupied(cell):
-			object_tile_map_layer.set_cell(cell, 1, Vector2i(0, 0), 0)
+			object_tile_map_layer.set_cell(cell, 1, Vector2i(0, 0), TREE_TILE_TERRAIN_ID)
 
 func plant_flowers(map_size, object_tile_map_layer, tiles_tile_map_layer, map_seed, center):
 	var flower_noise = FastNoiseLite.new() as FastNoiseLite

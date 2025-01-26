@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4aoph5yntwan"]
+
+[ext_resource type="Script" path="res://Tools/AttackArea/attackArea.gd" id="1_yf1cc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4lfg7"]
+radius = 8.0
+
+[node name="AttackArea" type="Area2D" node_paths=PackedStringArray("owner_body")]
+script = ExtResource("1_yf1cc")
+owner_body = NodePath("")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_4lfg7")

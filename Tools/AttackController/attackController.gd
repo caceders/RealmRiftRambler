@@ -10,10 +10,10 @@ enum AttackType{
 	SPECIFIC,
 }
 
-@export var attack_area: AttackArea
-@export var damage_dealer: DamageDealer
-@export var attack_type: AttackType = AttackType.NEAREST
+@onready var attack_area: AttackArea = self.get_parent().get_node("AttackArea")
+@onready var damage_dealer: DamageDealer = self.get_parent().get_node("DamageDealer")
 
+@export var attack_type: AttackType = AttackType.NEAREST
 @export var stun_time: float = .3
 @export var attack_cooldown: float = 1
 @export var attack_duration: float = .2
