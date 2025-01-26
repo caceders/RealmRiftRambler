@@ -3,8 +3,9 @@ class_name 	AttackArea extends Area2D
 @onready var owner_body: CollisionObject2D = self.get_parent()
 
 func attack_body(amount, knockback, damage_dealer, body):
-	var target_damage_receiver = body.get_node("DamageReceiver")
-	damage_dealer.deal_damage(amount, knockback, target_damage_receiver)
+	if body != null:
+		var target_damage_receiver = body.get_node("DamageReceiver")
+		damage_dealer.deal_damage(amount, knockback, target_damage_receiver)
 
 func attack_nearest_body_in_group(amount, knockback, damage_dealer, group = "Damagable"):
 	var bodies_in_group = []
