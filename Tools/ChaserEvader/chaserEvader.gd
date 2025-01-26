@@ -1,7 +1,7 @@
 class_name ChaserEvader extends Node2D
 
 const TEST_DISTANCE_INTERVAL = 10
-const UPDATE_TIME = 1
+const UPDATE_TIME = .5
 const MAX_TRIES_FIND_NEW_POSITION = 10
 
 enum BehaviorType{
@@ -26,123 +26,102 @@ enum BehaviorType{
 ## If both a group to chase and one to evade is in sight what to prioritize?
 @export var prioritize: BehaviorType = BehaviorType.CHASE
 
-var _behavior : BehaviorType = BehaviorType.CHASE
-var _body_to_react_to : Node2D
 var _last_update_time : float = randf_range(0, UPDATE_TIME) #Spread out to gain performance
 
-func _ready():
-	vision.body_entered_sight.connect(_on_body_entered_vision)
-	vision.body_exited_sight.connect(_on_body_exited_vision)
+func _process(delta):
 
-func _physics_process(delta):
-	if not enabled:
+	# Check if its time to look for entitites - performance issues if done on every frame
+	if not enabled or Time.get_unix_time_from_system() < _last_update_time + UPDATE_TIME:
 		return
-		
-	if _body_to_react_to == null:
+	_last_update_time = Time.get_unix_time_from_system()
+
+	var bodies_in_sight = vision.get_bodies_in_sight()
+	bodies_in_sight.sort_custom(sort_distance)
+	var behavior: BehaviorType
+	var react_to_body: Node2D
+
+	for body in bodies_in_sight:
+		if prioritize == BehaviorType.CHASE:
+			if is_body_chase(body):
+				react_to_body = body
+				behavior = BehaviorType.CHASE
+				break
+		if prioritize == BehaviorType.EVADE:
+			if is_body_evade(body):
+				react_to_body = body
+				behavior = BehaviorType.EVADE
+				break
+	
+	if react_to_body == null:
+		# Same as above but switched to check for the unprioritized part
+		for body in bodies_in_sight:
+			if prioritize == BehaviorType.CHASE:
+				if is_body_chase(body):
+					react_to_body = body
+					behavior = BehaviorType.CHASE
+					break
+			if prioritize == BehaviorType.EVADE:
+				if is_body_evade(body):
+					react_to_body = body
+					behavior = BehaviorType.EVADE
+					break
+
+	# If still no body of interest return
+	if react_to_body == null:
 		return
-		
-	if _body_to_react_to.global_position.distance_to(global_position) > vision.distance:
-		entity.direction = Vector2.ZERO
-	
-	if enabled and _body_to_react_to:
-		if Time.get_unix_time_from_system() > _last_update_time + UPDATE_TIME:
-			_last_update_time = Time.get_unix_time_from_system()
-			if _behavior == BehaviorType.EVADE:
-				# Run away until body is out of sight - or as far as possible
-				var distance_reduction = 0
-				var direction = _body_to_react_to.global_position.direction_to(global_position)
-				var distance = _body_to_react_to.global_position.distance_to(global_position) + vision.distance - distance_reduction
-				navigation_agent.target_position = global_position + direction * distance
-				var tries = 0
-				while not navigation_agent.is_target_reachable():
-					distance_reduction += TEST_DISTANCE_INTERVAL
-					direction = _body_to_react_to.global_position.direction_to(global_position)
-					distance = _body_to_react_to.global_position.distance_to(global_position) + vision.distance - distance_reduction
-					navigation_agent.target_position = global_position + direction * distance
-					tries += 1
-					if tries > MAX_TRIES_FIND_NEW_POSITION:
-						break
-				
 
-			elif _behavior == BehaviorType.CHASE:
-				# Run to body - or as near as possible
-				var distance_reduction = 0
-				var direction = global_position.direction_to(_body_to_react_to.global_position)
-				var distance = global_position.distance_to(_body_to_react_to.global_position) - distance_reduction
-				navigation_agent.target_position = global_position + direction * distance
-				var tries = 0
-				while not navigation_agent.is_target_reachable(): 
-					distance_reduction += TEST_DISTANCE_INTERVAL
-					direction = global_position.direction_to(_body_to_react_to.global_position)
-					distance = global_position.distance_to(_body_to_react_to.global_position) - distance_reduction
-					navigation_agent.target_position = global_position + direction * distance
-					tries += 1
-					if tries > MAX_TRIES_FIND_NEW_POSITION:
-						break
+	# Run away or towards body - or as far/near as possible
+	var distance_reduction = 0
+	var direction: Vector2
+	var distance: float
+	var tries = 0
+	if behavior == BehaviorType.CHASE:
+		while true:
+			direction = global_position.direction_to(react_to_body.global_position)
+			distance = global_position.distance_to(react_to_body.global_position) - distance_reduction
+			navigation_agent.target_position = global_position + direction * distance
+			entity.direction = global_position.direction_to(navigation_agent.get_next_path_position())
+			distance_reduction += TEST_DISTANCE_INTERVAL
+			tries += 1
+			if navigation_agent.is_target_reachable() or tries > MAX_TRIES_FIND_NEW_POSITION:
+				break
+	elif behavior == BehaviorType.EVADE:
+		while true:
+			direction = react_to_body.global_position.direction_to(global_position)
+			distance = react_to_body.global_position.distance_to(global_position) + vision.distance - distance_reduction
+			navigation_agent.target_position = global_position + direction * distance
+			entity.direction = global_position.direction_to(navigation_agent.get_next_path_position())
+			distance_reduction += TEST_DISTANCE_INTERVAL
+			tries += 1
+			if navigation_agent.is_target_reachable() or tries > MAX_TRIES_FIND_NEW_POSITION:
+				break
 
-		entity.direction = global_position.direction_to(navigation_agent.get_next_path_position())
 	
 
-func _on_body_entered_vision(body):
-	if prioritize == BehaviorType.CHASE:
-		# Chase
-		if body in chase_specific:
-			_behavior = BehaviorType.CHASE
-			_body_to_react_to = body
-		for group in chase:
-			if _body_to_react_to != null:
-				if group in _body_to_react_to.get_groups():
-					_behavior = BehaviorType.CHASE
-			elif group in body.get_groups():
-				_behavior = BehaviorType.CHASE
-				_body_to_react_to = body
-				return
-		# Evade
-		if body in evade_specific:
-			_behavior = BehaviorType.EVADE
-			_body_to_react_to = body
-		for group in evade:	
-			if _body_to_react_to != null:
-				if group in _body_to_react_to.get_groups():
-					_behavior = BehaviorType.EVADE
-			elif group in body.get_groups():
-				_behavior = BehaviorType.EVADE
-				_body_to_react_to = body
-				return
+func is_body_chase(body: Node2D):
+	if body in chase_specific:
+		return true
+
+	var body_groups = body.get_groups()
+	for group in body_groups:
+		if group in chase:
+			return true
 	
-	elif prioritize == BehaviorType.EVADE:
-		# Evade
-		if body in evade_specific:
-			_behavior = BehaviorType.EVADE
-			_body_to_react_to = body
-		for group in evade:
-			if _body_to_react_to != null:
-				if group in _body_to_react_to.get_groups():
-					_behavior = BehaviorType.EVADE
-			elif group in body.get_groups():
-				_behavior = BehaviorType.EVADE
-				_body_to_react_to = body
-				return
+	return false
 
-		# Chase
-		if body in chase_specific:
-			_behavior = BehaviorType.CHASE
-			_body_to_react_to = body
-		for group in chase:
-			if _body_to_react_to != null:
-				if group in _body_to_react_to.get_groups():
-					_behavior = BehaviorType.CHASE
-			elif group in body.get_groups():
-				_behavior = BehaviorType.CHASE
-				_body_to_react_to = body
-				return
+func is_body_evade(body: Node2D):
+	if body in evade_specific:
+		return true
 
-func _on_body_exited_vision(body):
-	if body == _body_to_react_to:
-		entity.direction = Vector2.ZERO
+	var body_groups = body.get_groups()
+	for group in body_groups:
+		if group in evade:
+			return true
+	
+	return false
 
-func get_reactive_body():
-	return _body_to_react_to
+func sort_distance(body1: Node2D, body2: Node2D):
+	return global_position.distance_squared_to(body1.global_position) > global_position.distance_squared_to(body2.global_position)
 
 func enable():
 	enabled = true

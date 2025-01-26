@@ -33,4 +33,4 @@ position = Vector2(-117, 77)
 position = Vector2(6, 63)
 
 [node name="RabbitBase" parent="Objects" instance=ExtResource("5_m2ck1")]
-position = Vector2(-48, 119)
+position = Vector2(13, 184)

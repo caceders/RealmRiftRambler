@@ -263,4 +263,3 @@ texture = SubResource("AtlasTexture_ushcn")
 avoidance_enabled = false
 
 [connection signal="damage_received" from="DamageReceiver" to="Knockback" method="on_damage_taken"]
-[connection signal="velocity_computed" from="NavigationAgent2D" to="TopDownEntity2D" method="_on_velocity_computed"]

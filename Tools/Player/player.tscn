@@ -930,7 +930,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[node name="Player" groups=["Invisible", "Player"] instance=ExtResource("1_qws5j")]
+[node name="Player" groups=["Player"] instance=ExtResource("1_qws5j")]
 script = ExtResource("5_v07jb")
 
 [node name="Shadow" parent="." index="0"]
@@ -940,8 +940,8 @@ offset = Vector2(-4, 2.33333)
 speed = 50.0
 
 [node name="HealthBar" parent="." index="3"]
-offset_top = -8.50002
-offset_bottom = -3.50002
+offset_top = -8.5
+offset_bottom = -3.5
 
 [node name="Sprite2D" parent="." index="4"]
 position = Vector2(0, -3.5)
