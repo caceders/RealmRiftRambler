@@ -7,11 +7,8 @@ enum MapType {
 @export var size: int = 200
 @export var map_type: MapType = MapType.MAP_PLAINS
 
-@export var tile_tile_map_layer: WorldChunkLoader
+@export var ground_tile_map_layer: WorldChunkLoader
 @export var object_tile_map_layer: WorldChunkLoader
-
-@export var tile_chunk_handler: WorldChunkHandler
-@export var entity_chunk_handler: WorldChunkHandler
 
 @export var center_entity: Node2D
 @export var center: Vector2i = Vector2i(0,0)
@@ -19,40 +16,22 @@ enum MapType {
 var map_generator: MapGenerator = MapGenerator.new()
 
 func _ready():
-	center = WorldChunkLoader.position_to_tile(center_entity.global_position)
+	center = ground_tile_map_layer.position_to_tile(center_entity.global_position)
 	clear_world()
 	generate()
+	ground_tile_map_layer.update_preloaded_chunks()
+	object_tile_map_layer.update_preloaded_chunks()
 	
-
-func _process(delta):
-	if center_entity != null:
-		center = WorldChunkLoader.position_to_tile(center_entity.global_position)
 	
 func generate():
 	clear_world()
-
 	match map_type:
 		MapType.MAP_PLAINS:	
 			map_generator = PlainsMapGenerator.new()
 	
 	if map_generator != null:
 		var map_seed: int = randi()
-		map_generator.generate_world(size, object_tile_map_layer, tile_tile_map_layer, map_seed, center)
-
-		store_world()
-
-func store_world():
-
-	var chunks_to_store = WorldChunkLoader.get_chunks_in(center + Vector2i(size, size), center + Vector2i(-size, -size))
-	for chunk in chunks_to_store:
-		tile_chunk_handler.chunks_to_store.append(chunk)
-		entity_chunk_handler.chunks_to_store.append(chunk)
-	
-	tile_chunk_handler.store_chunks()
-	entity_chunk_handler.store_chunks()
-
-	tile_chunk_handler.load_and_generate_chunks()
-	entity_chunk_handler.load_and_generate_chunks()
+		map_generator.generate_world(size, object_tile_map_layer, ground_tile_map_layer, map_seed, center)
 
 func clear_world():
 	var tile_chunk_folder = DirAccess.open("TileChunks")

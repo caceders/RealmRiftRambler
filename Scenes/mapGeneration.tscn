@@ -1,53 +1,41 @@
-[gd_scene load_steps=7 format=3 uid="uid://bll2eifddoyuw"]
+[gd_scene load_steps=6 format=3 uid="uid://bll2eifddoyuw"]
 
 [ext_resource type="Script" path="res://Tools/World/Generation/mapGeneratorHandler.gd" id="1_ixaeu"]
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="2_xjehb"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="3_0irx8"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="4_xtbmq"]
-[ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkHandler.gd" id="5_j2bbk"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="6_gbxhf"]
 
 [node name="Node" type="Node"]
 
-[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("tile_tile_map_layer", "object_tile_map_layer", "tile_chunk_handler", "entity_chunk_handler", "center_entity")]
+[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("ground_tile_map_layer", "object_tile_map_layer", "center_entity")]
 script = ExtResource("1_ixaeu")
-size = 100
-tile_tile_map_layer = NodePath("Tiles")
+size = 50
+center = null
+ground_tile_map_layer = NodePath("Ground")
 object_tile_map_layer = NodePath("Entities")
-tile_chunk_handler = NodePath("TileChunkHandler")
-entity_chunk_handler = NodePath("EntityChunkHandler")
 center_entity = NodePath("Entities/Player")
 
-[node name="Tiles" type="TileMapLayer" parent="World" node_paths=PackedStringArray("tile_map_layer", "camera_to_load_around")]
+[node name="Ground" type="TileMapLayer" parent="World" node_paths=PackedStringArray("center_camera")]
 tile_set = ExtResource("2_xjehb")
 script = ExtResource("3_0irx8")
-tile_map_layer = NodePath(".")
-camera_to_load_around = NodePath("../../Camera2D")
+load_distance = null
+center_camera = NodePath("../../Camera2D")
 
-[node name="Entities" type="TileMapLayer" parent="World" node_paths=PackedStringArray("tile_map_layer", "camera_to_load_around")]
+[node name="Entities" type="TileMapLayer" parent="World" node_paths=PackedStringArray("center_camera")]
 y_sort_enabled = true
 tile_set = ExtResource("2_xjehb")
 script = ExtResource("3_0irx8")
-tile_map_layer = NodePath(".")
-camera_to_load_around = NodePath("../../Camera2D")
+load_distance = null
+center_camera = NodePath("../../Camera2D")
 
 [node name="Player" parent="World/Entities" instance=ExtResource("4_xtbmq")]
 position = Vector2(0, 0)
 
-[node name="TileChunkHandler" type="Node" parent="World" node_paths=PackedStringArray("world_chunk_loader", "center")]
-script = ExtResource("5_j2bbk")
-chunk_folder = "TileChunks"
-world_chunk_loader = NodePath("../Tiles")
-center = NodePath("../../Camera2D")
-
-[node name="EntityChunkHandler" type="Node" parent="World" node_paths=PackedStringArray("world_chunk_loader", "center")]
-script = ExtResource("5_j2bbk")
-world_chunk_loader = NodePath("../Entities")
-center = NodePath("../../Camera2D")
-
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("follow")]
 script = ExtResource("6_gbxhf")
 follow = NodePath("../World/Entities/Player")
+debug = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 scale = Vector2(0.2, 0.2)

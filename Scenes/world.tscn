@@ -1,10 +1,195 @@
-[gd_scene load_steps=6 format=4 uid="uid://dml54no3evuav"]
+[gd_scene load_steps=13 format=4 uid="uid://dml54no3evuav"]
 
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="1_8m1l6"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="3_uxjxf"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="4_g6g7v"]
-[ext_resource type="PackedScene" uid="uid://ki2x6efh6e2e" path="res://Tools/EntityBases/enemies/orcBase.tscn" id="4_melts"]
+[ext_resource type="Texture2D" uid="uid://b5f8pru1elgqw" path="res://Assets/Minifantasy_Wildlife_Assets/Non-Aggressive/Squirrel/SquirrelDmg.png" id="5_hvhpq"]
 [ext_resource type="PackedScene" uid="uid://couhlepbf8cgj" path="res://Tools/EntityBases/animals/squirrelBase.tscn" id="5_m2ck1"]
+[ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="6_codcp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ku8l"]
+resource_local_to_scene = true
+atlas = ExtResource("5_hvhpq")
+region = Rect2(13, 45, 9, 6)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]
+atlas = ExtResource("6_codcp")
+region = Rect2(234, 9, 9, 13)
+
+[sub_resource type="Animation" id="Animation_63m85"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_ushcn")]
+}
+
+[sub_resource type="Animation" id="Animation_ct5bu"]
+resource_name = "entityAppear"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_ushcn")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:atlas")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_codcp")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:region")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(234, 9, 9, 13), Rect2(202, 10, 12, 12), Rect2(172, 12, 8, 8)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_af7xm"]
+resource_name = "entityDisappear"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_ushcn")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:atlas")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_codcp")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:region")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(172, 12, 8, 8), Rect2(202, 10, 12, 12), Rect2(234, 9, 9, 13)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8s17o"]
+resource_local_to_scene = true
+_data = {
+"RESET": SubResource("Animation_63m85"),
+"entityAppear": SubResource("Animation_ct5bu"),
+"entityDisappear": SubResource("Animation_af7xm")
+}
 
 [node name="World" type="Node2D"]
 
@@ -26,11 +211,21 @@ position = Vector2(-164, 24)
 script = ExtResource("4_g6g7v")
 follow = NodePath("../Player")
 
-[node name="OrcBase" parent="Objects" instance=ExtResource("4_melts")]
-position = Vector2(-117, 77)
-
-[node name="OrcBase2" parent="Objects" instance=ExtResource("4_melts")]
-position = Vector2(6, 63)
-
 [node name="RabbitBase" parent="Objects" instance=ExtResource("5_m2ck1")]
 position = Vector2(13, 184)
+
+[node name="Shadow" parent="Objects/RabbitBase" index="0"]
+offset = Vector2(-2, -1.08)
+
+[node name="Sprite2D" parent="Objects/RabbitBase" index="4"]
+texture = SubResource("AtlasTexture_0ku8l")
+
+[node name="Strafer" parent="Objects/RabbitBase" index="6"]
+strafe_centrum_type = 1
+
+[node name="AppearDisappearAnimationPlayer" parent="Objects/RabbitBase/AppearDisappear" index="0"]
+libraries = {
+"": SubResource("AnimationLibrary_8s17o")
+}
+
+[editable path="Objects/RabbitBase"]

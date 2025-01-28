@@ -1,7 +1,5 @@
 class_name PlainsMapGenerator extends MapGenerator
 
-const WORLD_BORDER_WATER_SIZE = 50
-
 const GROUND_TILE_ATLAS = Vector2i(37, 11)
 const GRASS_TILE_ATLAS = Vector2i(3, 4)
 const GRASS_TILE_TERRAIN_ID = 5
@@ -42,6 +40,7 @@ var _water_tiles = []
 
 var _forest_tiles = []
 var _tree_tiles = []
+var _creature_tiles = []
 
 func generate_world(map_size, object_tile_map_layer: TileMapLayer, tiles_tile_map_layer: TileMapLayer, map_seed, center):
 
@@ -50,7 +49,7 @@ func generate_world(map_size, object_tile_map_layer: TileMapLayer, tiles_tile_ma
 	place_grass(map_size, tiles_tile_map_layer, map_seed)
 	plant_trees(map_size, object_tile_map_layer, tiles_tile_map_layer, map_seed, center)
 	plant_flowers(map_size, object_tile_map_layer, tiles_tile_map_layer, map_seed, center)
-	place_enemies(map_size, object_tile_map_layer, tiles_tile_map_layer, map_seed, center)
+	place_creatures(map_size, object_tile_map_layer, tiles_tile_map_layer, map_seed, center)
 
 	return
 
@@ -80,29 +79,7 @@ func place_grass(map_size, tiles_tile_map_layer: TileMapLayer, map_seed):
 	
 	tiles_tile_map_layer.set_cells_terrain_connect(_grass_tiles, 0, GRASS_TILE_TERRAIN_ID)
 
-
 func place_water(map_size, tiles_tile_map_layer: TileMapLayer, map_seed, center):
-	# Place water on world border
-	# TOP
-	for x in range( - map_size - WORLD_BORDER_WATER_SIZE, map_size + WORLD_BORDER_WATER_SIZE):
-		for y in range(- map_size - WORLD_BORDER_WATER_SIZE, - map_size):
-			var cell = Vector2i(x,y)
-			_water_tiles.append(cell)
-	# LEFT
-	for x in range( - map_size - WORLD_BORDER_WATER_SIZE, - map_size):
-		for y in range(- map_size - WORLD_BORDER_WATER_SIZE, map_size + WORLD_BORDER_WATER_SIZE):
-			var cell = Vector2i(x,y)
-			_water_tiles.append(cell)
-	# RIGHT
-	for x in range(map_size, map_size + WORLD_BORDER_WATER_SIZE):
-		for y in range(- map_size - WORLD_BORDER_WATER_SIZE, map_size + WORLD_BORDER_WATER_SIZE):
-			var cell = Vector2i(x,y)
-			_water_tiles.append(cell)
-	# UNDER
-	for x in range( - map_size - WORLD_BORDER_WATER_SIZE, map_size + WORLD_BORDER_WATER_SIZE):
-		for y in range(map_size, map_size + WORLD_BORDER_WATER_SIZE):
-			var cell = Vector2i(x,y)
-			_water_tiles.append(cell)
 
 	var water_noise = FastNoiseLite.new() as FastNoiseLite
 	var center_availability_offset = 0
@@ -130,7 +107,6 @@ func place_water(map_size, tiles_tile_map_layer: TileMapLayer, map_seed, center)
 
 	
 	tiles_tile_map_layer.set_cells_terrain_connect(_water_tiles, 0, WATER_TILE_TERRAIN_ID)
-
 
 func plant_trees(map_size, object_tile_map_layer: TileMapLayer, tiles_tile_map_layer: TileMapLayer, map_seed, center):
 	var forest_noise = FastNoiseLite.new() as FastNoiseLite
@@ -174,12 +150,14 @@ func plant_flowers(map_size, object_tile_map_layer, tiles_tile_map_layer, map_se
 			if flower_noise.get_noise_2d(cell.x, cell.y) > FLOWER_NOISE_PLACEMENT_FLOOR and not get_tile_is_occupied(cell):
 				object_tile_map_layer.set_cell(cell, 2, FLOWER_TILE_ATLAS.pick_random(), 0)
 
-
-func place_enemies(map_size, object_tile_map_layer, tiles_tile_map_layer, map_seed, center):
+func place_creatures(map_size, object_tile_map_layer, tiles_tile_map_layer, map_seed, center):
+	object_tile_map_layer.set_pattern(Vector2i(0,0), object_tile_map_layer.tile_set.get_pattern(0))
 	var creature_noise = FastNoiseLite.new() as FastNoiseLite
 	creature_noise.frequency = 1
 
 	creature_noise.seed = map_seed + CREATURE_SEED_OFFSET
+
+	var existing_entities = object_tile_map_layer.get_children()
 
 	for x in range( -map_size, map_size):
 		for y in range(-map_size, map_size):	
@@ -192,34 +170,14 @@ func place_enemies(map_size, object_tile_map_layer, tiles_tile_map_layer, map_se
 				if cell.distance_squared_to(center) < MIN_SPAWN_DISTANCE_ENEMIES_SQUARED:
 					can_spawn = false
 
-				for x_p in range(pattern_size.x):
-					for y_p in range(pattern_size.y):
-						if get_tile_is_occupied(cell + Vector2i(x_p, y_p)):
-							can_spawn = false
+				for local_cell in pattern.get_used_cells():
+					if get_tile_is_occupied(cell + local_cell):
+						can_spawn = false
 				if can_spawn:
 					object_tile_map_layer.set_pattern(cell, pattern)
-					#object_tile_map_layer.set_cell(cell, 0, Vector2i(4,20))
+					var used_local_cells = pattern.get_used_cells()
+					for used_local_cell in used_local_cells:
+						_creature_tiles.append(used_local_cell + cell)
 
 func get_tile_is_occupied(cell: Vector2i):
-	return (cell in _water_tiles or cell in _tree_tiles)
-
-func is_upscaled_tile_next_to_water(cell: Vector2i):
-	if cell + Vector2i(-1,-1) in _water_tiles_downscaled:
-		return true
-	elif cell + Vector2i(-1,0) in _water_tiles_downscaled:
-		return true
-	elif cell + Vector2i(-1,1) in _water_tiles_downscaled:
-		return true
-	elif cell + Vector2i(0,-1) in _water_tiles_downscaled:
-		return true
-	elif cell + Vector2i(0,0) in _water_tiles_downscaled:
-		return true
-	elif cell + Vector2i(0,1) in _water_tiles_downscaled:
-		return true
-	elif cell + Vector2i(1,-1) in _water_tiles_downscaled:
-		return true
-	elif cell + Vector2i(1,0) in _water_tiles_downscaled:
-		return true
-	elif cell + Vector2i(1,1) in _water_tiles_downscaled:
-		return true
-	return false
+	return (cell in _water_tiles or cell in _tree_tiles or cell in _creature_tiles)

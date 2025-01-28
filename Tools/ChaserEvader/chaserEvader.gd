@@ -69,7 +69,7 @@ func _process(delta):
 	if react_to_body == null:
 		return
 
-	# Run away or towards body - if no path is found just move as close/far as possible
+	# Run away or towards body - ###if no path is found just move as close/far as possible###
 	var direction: Vector2
 	var distance: float
 	if behavior == BehaviorType.CHASE:

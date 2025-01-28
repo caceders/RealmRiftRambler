@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cs1u72onf5x2j" path="res://Assets/Minifantasy_ForgottenPlains_Assets/Tileset/Minifantasy_ForgottenPlainsTiles.png" id="1_1otus"]
 [ext_resource type="Texture2D" uid="uid://w5mbknj65jft" path="res://Assets/Minifantasy_ForgottenPlains_Assets/props/Minifantasy_ForgottenPlainsProps.png" id="2_1c663"]
-[ext_resource type="PackedScene" uid="uid://cfbfuftomdxnb" path="res://Scenes/tree.tscn" id="2_nksxs"]
+[ext_resource type="PackedScene" uid="uid://cfbfuftomdxnb" path="res://Tools/EntityBases/environment/tree.tscn" id="2_nksxs"]
 [ext_resource type="PackedScene" uid="uid://ki2x6efh6e2e" path="res://Tools/EntityBases/enemies/orcBase.tscn" id="3_s3rd0"]
 [ext_resource type="PackedScene" uid="uid://couhlepbf8cgj" path="res://Tools/EntityBases/animals/squirrelBase.tscn" id="4_eialt"]
 
