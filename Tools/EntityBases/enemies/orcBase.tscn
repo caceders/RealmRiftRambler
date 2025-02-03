@@ -880,9 +880,6 @@ offset_bottom = -7.20492
 [node name="Sprite2D" parent="." index="4"]
 texture = SubResource("AtlasTexture_gxiat")
 
-[node name="Strafer" parent="." index="6"]
-strafe_centrum_type = 1
-
 [node name="ChaserEvader" parent="." index="7"]
 chase = Array[String](["Player", "Animal"])
 

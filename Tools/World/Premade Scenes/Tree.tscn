@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bme1qtnuf18ar"]
+
+[ext_resource type="PackedScene" uid="uid://cfbfuftomdxnb" path="res://Tools/EntityBases/environment/tree.tscn" id="1_e6sjq"]
+[ext_resource type="Script" path="res://Tools/World/Premade Scenes/scenePlacer.gd" id="1_h7qyt"]
+
+[node name="Tree" type="Node2D"]
+script = ExtResource("1_h7qyt")
+
+[node name="EntityBase" parent="." instance=ExtResource("1_e6sjq")]
+position = Vector2(0, 0)

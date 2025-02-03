@@ -1,33 +1,81 @@
-[gd_scene load_steps=6 format=3 uid="uid://bll2eifddoyuw"]
+[gd_scene load_steps=17 format=3 uid="uid://bll2eifddoyuw"]
 
-[ext_resource type="Script" path="res://Tools/World/Generation/mapGeneratorHandler.gd" id="1_ixaeu"]
+[ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_mlt5n"]
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="2_xjehb"]
-[ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="3_0irx8"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="2_yigfc"]
+[ext_resource type="Script" path="res://Tools/World/Generation/worldChunkGenerator.gd" id="3_48v06"]
+[ext_resource type="PackedScene" uid="uid://bme1qtnuf18ar" path="res://Tools/World/Premade Scenes/Tree.tscn" id="4_iutsp"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/entityExitWorldHandler.gd" id="4_j2s7f"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="4_xtbmq"]
+[ext_resource type="PackedScene" uid="uid://blufndq12nju0" path="res://Tools/World/Premade Scenes/squirrel.tscn" id="5_cmqof"]
+[ext_resource type="PackedScene" uid="uid://ck2pv245v7w8p" path="res://Tools/World/Premade Scenes/orcCluster.tscn" id="5_qyk2f"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="6_gbxhf"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_eflll"]
+offset = Vector3(709.22, 723.94, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3nqic"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_v4piq"]
+frequency = 0.0049
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cu56j"]
+frequency = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vy26k"]
+frequency = 1.0
+offset = Vector3(0, 86.7, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_w6f8x"]
+frequency = 1.0
+offset = Vector3(190.95, 0, 0)
 
 [node name="Node" type="Node"]
 
-[node name="World" type="Node2D" parent="." node_paths=PackedStringArray("ground_tile_map_layer", "object_tile_map_layer", "center_entity")]
-script = ExtResource("1_ixaeu")
-size = 50
-center = null
+[node name="World" type="Node" parent="." node_paths=PackedStringArray("center_camera", "world_chunk_loader", "world_chunk_generator", "entity_exit_world_handler", "ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("1_mlt5n")
+load_distance = 3
+center_camera = NodePath("../Camera2D")
+world_chunk_loader = NodePath("WorldChunkLoader")
+world_chunk_generator = NodePath("WorldChunkGenerator")
+entity_exit_world_handler = NodePath("EntityExitWorldHandler")
 ground_tile_map_layer = NodePath("Ground")
-object_tile_map_layer = NodePath("Entities")
-center_entity = NodePath("Entities/Player")
+entity_tile_map_layer = NodePath("Entities")
 
-[node name="Ground" type="TileMapLayer" parent="World" node_paths=PackedStringArray("center_camera")]
+[node name="WorldChunkLoader" type="Node" parent="World" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("2_yigfc")
+ground_tile_map_layer = NodePath("../Ground")
+entity_tile_map_layer = NodePath("../Entities")
+
+[node name="WorldChunkGenerator" type="Node" parent="World" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("3_48v06")
+water_noise = SubResource("FastNoiseLite_eflll")
+water_generation_floor = 0.0
+grass_noise = SubResource("FastNoiseLite_3nqic")
+forest_noise = SubResource("FastNoiseLite_v4piq")
+forest_generation_floor = -0.005
+tree_noise = SubResource("FastNoiseLite_cu56j")
+tree_generation_floor = 0.335
+trees_packed_scenes = Array[PackedScene]([ExtResource("4_iutsp")])
+entity_noise = SubResource("FastNoiseLite_vy26k")
+entity_generation_floor = 0.65
+entity_packed_scenes = Array[PackedScene]([ExtResource("5_cmqof")])
+enemy_noise = SubResource("FastNoiseLite_w6f8x")
+enemy_generation_floor = 0.6
+enemy_packed_scenes = Array[PackedScene]([ExtResource("5_qyk2f")])
+ground_tile_map_layer = NodePath("../Ground")
+entity_tile_map_layer = NodePath("../Entities")
+
+[node name="EntityExitWorldHandler" type="Node" parent="World" node_paths=PackedStringArray("world_handler")]
+script = ExtResource("4_j2s7f")
+world_handler = NodePath("..")
+
+[node name="Ground" type="TileMapLayer" parent="World"]
 tile_set = ExtResource("2_xjehb")
-script = ExtResource("3_0irx8")
-load_distance = null
-center_camera = NodePath("../../Camera2D")
 
-[node name="Entities" type="TileMapLayer" parent="World" node_paths=PackedStringArray("center_camera")]
+[node name="Entities" type="TileMapLayer" parent="World"]
 y_sort_enabled = true
 tile_set = ExtResource("2_xjehb")
-script = ExtResource("3_0irx8")
-load_distance = null
-center_camera = NodePath("../../Camera2D")
 
 [node name="Player" parent="World/Entities" instance=ExtResource("4_xtbmq")]
 position = Vector2(0, 0)
@@ -56,5 +104,3 @@ offset_bottom = 40.0
 layout_mode = 2
 focus_mode = 0
 text = "Generate world"
-
-[connection signal="button_down" from="CanvasLayer/Control/AspectRatioContainer/Button" to="World" method="generate"]

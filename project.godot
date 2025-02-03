@@ -15,6 +15,10 @@ run/main_scene="res://Scenes/mapGeneration.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
+
 [display]
 
 window/stretch/mode="canvas_items"
@@ -23,6 +27,10 @@ window/stretch/scale=4.0
 [dotnet]
 
 project/assembly_name="Tools"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg")
 
 [input]
 

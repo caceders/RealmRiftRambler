@@ -1,6 +1,6 @@
 class_name Strafer extends Node2D
 
-const MAX_TRIES_FOR_NEW_AREA = 100
+const MAX_TRIES_FOR_NEW_AREA = 3
 
 
 enum StrafeState{
@@ -36,15 +36,19 @@ var _strafe_centrum_position: Vector2 = Vector2(0, 0)
 
 var _active_state: StrafeState = StrafeState.IDLE
 var _stand_still_timer : Timer
+var _has_sat_spawn_pos: bool = false
 
 func _ready():
-	if strafe_centrum_type == StrafeCentrumType.SPAWN_POSITION:
-		_strafe_centrum_position = global_position
 	_stand_still_timer = Timer.new()
 	_stand_still_timer.one_shot = true
 	add_child(_stand_still_timer)
 
+
+
 func _process(_delta):
+	if strafe_centrum_type == StrafeCentrumType.SPAWN_POSITION and not _has_sat_spawn_pos:
+		_has_sat_spawn_pos = true
+		_strafe_centrum_position = global_position
 	if not enabled:
 		return
 	match strafe_centrum_type:
@@ -64,21 +68,11 @@ func _process(_delta):
 			return
 
 		StrafeState.WALKING:
-			return
-
-func _physics_process(delta):
-	if not enabled:
-		return
-	match _active_state:
-		StrafeState.IDLE:
-			return
-		StrafeState.WALKING:
 			if navigation_agent.is_target_reached():
 				_enter_state(StrafeState.IDLE)
 				return
 			entity.direction = global_position.direction_to(navigation_agent.get_next_path_position())
 
-			return
 
 func _enter_state(state: StrafeState):
 	if not enabled:

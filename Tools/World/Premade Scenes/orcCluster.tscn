@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://ck2pv245v7w8p"]
+
+[ext_resource type="Script" path="res://Tools/World/Premade Scenes/scenePlacer.gd" id="1_4lcle"]
+[ext_resource type="PackedScene" uid="uid://ki2x6efh6e2e" path="res://Tools/EntityBases/enemies/orcBase.tscn" id="2_6y4c3"]
+
+[node name="OrcCluster" type="Node2D"]
+script = ExtResource("1_4lcle")
+
+[node name="OrcBase" parent="." instance=ExtResource("2_6y4c3")]
+position = Vector2(-18, -13)
+
+[node name="OrcBase2" parent="." instance=ExtResource("2_6y4c3")]
+position = Vector2(10, 9)
+
+[node name="OrcBase3" parent="." instance=ExtResource("2_6y4c3")]
+position = Vector2(8, -9)
+
+[node name="OrcBase4" parent="." instance=ExtResource("2_6y4c3")]
+position = Vector2(-9, 8)
