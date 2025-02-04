@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://77648svjoync"]
+[gd_scene load_steps=21 format=3 uid="uid://77648svjoync"]
 
 [ext_resource type="PackedScene" uid="uid://3e0cvi4n2eeo" path="res://Tools/EntityBases/entityBase.tscn" id="1_5asbe"]
 [ext_resource type="Texture2D" uid="uid://fgnfqglvb0ua" path="res://Assets/Minifantasy_Dungeon_Assets/Characters/Orc/Idle.png" id="2_nmw6k"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://Tools/AttackController/attackController.gd" id="8_efu85"]
 [ext_resource type="Script" path="res://Tools/DamageSystem/damageDealer.gd" id="9_l1x1k"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="11_t2c3l"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="12_xew88"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u4m0a"]
 resource_local_to_scene = true
@@ -199,6 +200,12 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
+[sub_resource type="Resource" id="Resource_ii6nr"]
+resource_local_to_scene = true
+script = ExtResource("12_xew88")
+node_path = "DamageReceiver"
+property = "_amount"
+
 [node name="CreatureBase" instance=ExtResource("1_5asbe")]
 position = Vector2(-1, 1)
 
@@ -265,5 +272,8 @@ texture = SubResource("AtlasTexture_ushcn")
 
 [node name="NavigationObstacle2D" parent="." index="15"]
 avoidance_enabled = false
+
+[node name="DeloadPersistance" parent="." index="16"]
+deload_persistant_data = Array[ExtResource("12_xew88")]([SubResource("Resource_ii6nr")])
 
 [connection signal="damage_received" from="DamageReceiver" to="Knockback" method="on_damage_taken"]

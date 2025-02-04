@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://d28n6ebqyns3n"]
+[gd_scene load_steps=43 format=3 uid="uid://d28n6ebqyns3n"]
 
 [ext_resource type="PackedScene" uid="uid://3e0cvi4n2eeo" path="res://Tools/EntityBases/entityBase.tscn" id="1_qws5j"]
 [ext_resource type="Texture2D" uid="uid://d1cqd567c4p3u" path="res://Assets/Minifantasy_Dungeon_Assets/Characters/Human/Idle.png" id="2_y1qmj"]
@@ -20,6 +20,10 @@
 [ext_resource type="PackedScene" uid="uid://cgvjmvcru4dfr" path="res://Tools/Targeter/targeter.tscn" id="17_ys7bc"]
 [ext_resource type="Resource" uid="uid://dctmcc743dlf4" path="res://Tools/SpellSystem/Spells/homingMagicProjectile.tres" id="18_le634"]
 [ext_resource type="PackedScene" uid="uid://bjioxiljujgja" path="res://Tools/SpellSystem/spellSequenceVisualizer.tscn" id="18_vkslu"]
+[ext_resource type="Resource" uid="uid://b4xaycf5c2r1n" path="res://Tools/SpellSystem/Spells/freezeEntity.tres" id="19_0xjny"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="21_sm8ex"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_quexu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cg8jx"]
 atlas = ExtResource("7_wsqyt")
@@ -930,11 +934,17 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
+[sub_resource type="Resource" id="Resource_4etwc"]
+resource_local_to_scene = true
+script = ExtResource("21_sm8ex")
+node_path = "DamageReceiver"
+property = "_amount"
+
 [node name="Player" groups=["Invisible", "Player"] instance=ExtResource("1_qws5j")]
 script = ExtResource("5_v07jb")
 
 [node name="Shadow" parent="." index="0"]
-offset = Vector2(-4, 2.33333)
+offset = Vector2(-3.5, 2.66667)
 
 [node name="TopDownEntity2D" parent="." index="1"]
 speed = 50.0
@@ -944,6 +954,8 @@ offset_top = -8.5
 offset_bottom = -3.5
 
 [node name="Sprite2D" parent="." index="4"]
+self_modulate = Color(1, 1, 1, 0.996078)
+material = SubResource("CanvasItemMaterial_quexu")
 position = Vector2(0, -3.5)
 texture = SubResource("AtlasTexture_cg8jx")
 offset = Vector2(0, 0)
@@ -988,14 +1000,19 @@ script = ExtResource("15_27cta")
 script = ExtResource("16_52exo")
 keycodes = {
 "down down": ExtResource("17_f3oq8"),
+"left right": ExtResource("19_0xjny"),
 "up up": ExtResource("18_le634")
 }
 
 [node name="Targeter" parent="." index="14" instance=ExtResource("17_ys7bc")]
-distance = 75
+distance = 175
+highlighter = Color(0.388235, 0.396078, 0.396078, 1)
 
 [node name="SpellSequenceVisualizer" parent="." index="16" node_paths=PackedStringArray("key_sequence_recoder") instance=ExtResource("18_vkslu")]
 key_sequence_recoder = NodePath("../KeySequenceRecoder")
+
+[node name="DeloadPersistance" parent="." index="17"]
+deload_persistant_data = Array[ExtResource("21_sm8ex")]([SubResource("Resource_4etwc")])
 
 [connection signal="damage_received" from="DamageReceiver" to="." method="_on_damage_received"]
 [connection signal="damage_received" from="DamageReceiver" to="Knockback" method="on_damage_taken"]

@@ -1,20 +1,21 @@
-[gd_scene load_steps=13 format=3 uid="uid://cfbfuftomdxnb"]
+[gd_scene load_steps=13 format=3 uid="uid://r3sr6s5l08wu"]
 
-[ext_resource type="PackedScene" uid="uid://3e0cvi4n2eeo" path="res://Tools/EntityBases/entityBase.tscn" id="1_h2scj"]
-[ext_resource type="Texture2D" uid="uid://w5mbknj65jft" path="res://Assets/Minifantasy_ForgottenPlains_Assets/props/Minifantasy_ForgottenPlainsProps.png" id="2_j1sis"]
-[ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="3_rqprm"]
-[ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="4_ypitu"]
+[ext_resource type="PackedScene" uid="uid://3e0cvi4n2eeo" path="res://Tools/EntityBases/entityBase.tscn" id="1_ipvcr"]
+[ext_resource type="Texture2D" uid="uid://w5mbknj65jft" path="res://Assets/Minifantasy_ForgottenPlains_Assets/props/Minifantasy_ForgottenPlainsProps.png" id="2_w76vt"]
+[ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="3_3jvfs"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="4_hcta6"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_tiwg8"]
-atlas = ExtResource("2_j1sis")
-region = Rect2(155, 3, 21, 25)
+[sub_resource type="AtlasTexture" id="AtlasTexture_ye7mo"]
+resource_local_to_scene = true
+atlas = ExtResource("2_w76vt")
+region = Rect2(3, 4, 10, 25)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_263me"]
-radius = 1.75
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4xla2"]
+size = Vector2(10, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]
 resource_local_to_scene = true
-atlas = ExtResource("3_rqprm")
+atlas = ExtResource("3_3jvfs")
 region = Rect2(234, 9, 9, 13)
 
 [sub_resource type="Animation" id="Animation_63m85"]
@@ -81,7 +82,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("3_rqprm")]
+"values": [ExtResource("3_3jvfs")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -145,7 +146,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0.1),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("3_rqprm")]
+"values": [ExtResource("3_3jvfs")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -184,7 +185,7 @@ tracks/4/keys = {
 "values": [false, true]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_p2dtf"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kaukh"]
 resource_local_to_scene = true
 _data = {
 "RESET": SubResource("Animation_63m85"),
@@ -192,41 +193,42 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_x5ggi"]
+[sub_resource type="Resource" id="Resource_scaby"]
 resource_local_to_scene = true
-script = ExtResource("4_ypitu")
+script = ExtResource("4_hcta6")
 node_path = "DamageReceiver"
 property = "_amount"
 
-[node name="EntityBase" instance=ExtResource("1_h2scj")]
+[node name="BigStandingStone1" instance=ExtResource("1_ipvcr")]
 
 [node name="Shadow" parent="." index="0"]
-scale = Vector2(0.65625, 0.65625)
-offset = Vector2(-12.5, -3)
+scale = Vector2(0.3125, 0.3125)
+offset = Vector2(-11.49, -9.34667)
 
-[node name="TopDownEntity2D" parent="." index="1"]
-is_static = true
+[node name="DamageReceiver" parent="." index="2"]
+max_amount = 300.0
+_amount = 300.0
 
 [node name="HealthBar" parent="." index="3"]
-offset_top = -27.5
-offset_bottom = -22.5
+offset_top = -30.1801
+offset_bottom = -25.1801
 
 [node name="Sprite2D" parent="." index="4"]
-texture = SubResource("AtlasTexture_tiwg8")
-offset = Vector2(0, -10)
+texture = SubResource("AtlasTexture_ye7mo")
+offset = Vector2(1.01, -12.68)
 
 [node name="HitBox" parent="." index="5"]
-position = Vector2(0.25, 0)
-shape = SubResource("CircleShape2D_263me")
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_4xla2")
 use_sprite_as_hitbox = false
 
 [node name="AppearDisappearAnimationPlayer" parent="AppearDisappear" index="0"]
 libraries = {
-"": SubResource("AnimationLibrary_p2dtf")
+"": SubResource("AnimationLibrary_kaukh")
 }
 
 [node name="AppearDisappearSprite" parent="AppearDisappear" index="1"]
 texture = SubResource("AtlasTexture_ushcn")
 
 [node name="DeloadPersistance" parent="." index="8"]
-deload_persistant_data = Array[ExtResource("4_ypitu")]([SubResource("Resource_x5ggi")])
+deload_persistant_data = Array[ExtResource("4_hcta6")]([SubResource("Resource_scaby")])

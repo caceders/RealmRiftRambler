@@ -1,18 +1,19 @@
-[gd_scene load_steps=26 format=3 uid="uid://ki2x6efh6e2e"]
+[gd_scene load_steps=27 format=3 uid="uid://ki2x6efh6e2e"]
 
 [ext_resource type="PackedScene" uid="uid://h1jbxoqanmwo" path="res://Tools/EntityBases/enemyBase.tscn" id="1_e02sq"]
 [ext_resource type="Script" path="res://Tools/EntityBases/enemies/basicEnemy.gd" id="2_usmj7"]
 [ext_resource type="Texture2D" uid="uid://cqesi1n8diot5" path="res://Assets/Minifantasy_Dungeon_Assets/Characters/Orc/Dmg.png" id="3_4yoqo"]
 [ext_resource type="Texture2D" uid="uid://cdsnhimxta5x8" path="res://Assets/Minifantasy_Dungeon_Assets/Characters/Orc/Attack.png" id="3_rjdf3"]
 [ext_resource type="Texture2D" uid="uid://fgnfqglvb0ua" path="res://Assets/Minifantasy_Dungeon_Assets/Characters/Orc/Idle.png" id="4_2cx1i"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="5_iy7hn"]
 [ext_resource type="Texture2D" uid="uid://bs1soxc80itm4" path="res://Assets/Minifantasy_Dungeon_Assets/Characters/Orc/Walk.png" id="5_t3hpq"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="18_nxxwc"]
 [ext_resource type="Script" path="res://Tools/AnimationPlayerController/animationPlayerController.gd" id="22_m08n7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gxiat"]
 resource_local_to_scene = true
-atlas = ExtResource("5_t3hpq")
-region = Rect2(12, 12, 7, 7)
+atlas = ExtResource("3_rjdf3")
+region = Rect2(12, 43, 8, 8)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]
 atlas = ExtResource("18_nxxwc")
@@ -865,17 +866,9 @@ _data = {
 [node name="OrcBase" instance=ExtResource("1_e02sq")]
 script = ExtResource("2_usmj7")
 
-[node name="Shadow" parent="." index="0"]
-scale = Vector2(0.21875, 0.21875)
-offset = Vector2(-3.5, -1.37167)
-
 [node name="DamageReceiver" parent="." index="2"]
 max_amount = 75.0
 _amount = 75.0
-
-[node name="HealthBar" parent="." index="3"]
-offset_top = -12.205
-offset_bottom = -7.20492
 
 [node name="Sprite2D" parent="." index="4"]
 texture = SubResource("AtlasTexture_gxiat")
@@ -893,6 +886,9 @@ texture = SubResource("AtlasTexture_ushcn")
 
 [node name="Hostility" parent="." index="15"]
 hostile_groups = Array[String](["Player", "Animal"])
+
+[node name="DeloadPersistance" parent="." index="17"]
+deload_persistant_data = Array[ExtResource("5_iy7hn")]([])
 
 [node name="AnimationPlayerController" type="AnimationPlayer" parent="." index="18"]
 libraries = {

@@ -1,9 +1,10 @@
-[gd_scene load_steps=21 format=3 uid="uid://couhlepbf8cgj"]
+[gd_scene load_steps=23 format=3 uid="uid://couhlepbf8cgj"]
 
 [ext_resource type="PackedScene" uid="uid://77648svjoync" path="res://Tools/EntityBases/creatureBase.tscn" id="1_2yo06"]
 [ext_resource type="Script" path="res://Tools/EntityBases/animals/basicAnimal.gd" id="2_vh30w"]
 [ext_resource type="Texture2D" uid="uid://b5f8pru1elgqw" path="res://Assets/Minifantasy_Wildlife_Assets/Non-Aggressive/Squirrel/SquirrelDmg.png" id="3_08h7e"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="4_kayob"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="5_5srcw"]
 [ext_resource type="Texture2D" uid="uid://07ox81m87ikv" path="res://Assets/Minifantasy_Wildlife_Assets/Non-Aggressive/Squirrel/SquirrelIdle.png" id="5_uvp2r"]
 [ext_resource type="Texture2D" uid="uid://s7ca10hju0s5" path="res://Assets/Minifantasy_Wildlife_Assets/Non-Aggressive/Squirrel/SquirrelWalk.png" id="6_5hpj3"]
 [ext_resource type="Script" path="res://Tools/AnimationPlayerController/animationPlayerController.gd" id="7_4otht"]
@@ -191,6 +192,12 @@ _data = {
 "entityAppear": SubResource("Animation_ct5bu"),
 "entityDisappear": SubResource("Animation_af7xm")
 }
+
+[sub_resource type="Resource" id="Resource_ii6nr"]
+resource_local_to_scene = true
+script = ExtResource("5_5srcw")
+node_path = "DamageReceiver"
+property = "_amount"
 
 [sub_resource type="Animation" id="Animation_ptapu"]
 resource_name = "animalHurtLeft"
@@ -468,9 +475,13 @@ texture = SubResource("AtlasTexture_wexjl")
 offset = Vector2(2.5, -3.08)
 
 [node name="Strafer" parent="." index="6"]
-max_stand_still_time = 5.0
-min_strafe_distance = 10.0
+enabled = null
+strafe_centrum_type = null
+max_stand_still_time = null
+min_strafe_distance = null
 max_strafe_distance = 40.0
+strafe_weight = null
+set_strafe_centrum_position = null
 
 [node name="ChaserEvader" parent="." index="7"]
 enabled = true
@@ -487,6 +498,9 @@ libraries = {
 
 [node name="AppearDisappearSprite" parent="AppearDisappear" index="1"]
 texture = SubResource("AtlasTexture_ushcn")
+
+[node name="DeloadPersistance" parent="." index="16"]
+deload_persistant_data = Array[ExtResource("5_5srcw")]([SubResource("Resource_ii6nr")])
 
 [node name="AnimationPlayerController" type="AnimationPlayer" parent="." index="17"]
 libraries = {

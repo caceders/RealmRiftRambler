@@ -19,6 +19,10 @@ var _chunks_to_generate : Array[Vector2i] = []
 var _chunks_to_update: Array[Vector2i] = []
 var _chunk_datas: Dictionary = {}
 
+
+func _ready():
+	generate_everything_immidiately()
+
 func _process(_delta):
 	update_chunk_arrays()
 	if Engine.get_frames_drawn() % 10 == 0:
@@ -27,9 +31,21 @@ func _process(_delta):
 			load_chunks()
 		elif not _chunks_to_generate.is_empty():
 			generate_chunks()
-		elif _chunks_to_load.is_empty():
+		elif not _chunks_to_store.is_empty():
 			store_chunks()
 	uppdate_terrains()
+	entity_exit_world_handler.handle_entities_outise_world_border()
+
+func generate_everything_immidiately():
+	update_chunk_arrays()
+	while not _chunks_to_load.is_empty():
+		load_chunks()
+	while not _chunks_to_generate.is_empty():
+		generate_chunks()
+	while not _chunks_to_store.is_empty():
+		store_chunks()
+	while not _chunks_to_update.is_empty():
+		uppdate_terrains()
 	entity_exit_world_handler.handle_entities_outise_world_border()
 
 func update_chunk_arrays():
@@ -127,6 +143,7 @@ func uppdate_terrains():
 		tiles.append_array(get_tiles_in(chunk))
 		chunks_handled += 1
 	BetterTerrain.update_terrain_cells(ground_tile_map_layer, tiles)
+	BetterTerrain.update_terrain_cells(entity_tile_map_layer, tiles)
 
 func re_store_chunk(chunk: Vector2i):
 	if _chunk_datas.has(chunk):

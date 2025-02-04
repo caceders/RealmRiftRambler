@@ -29,3 +29,6 @@ func get_all_occupied_tiles(tile_map_layer: TileMapLayer) -> Array[Vector2i]:
 		
 	
 	return tiles
+
+func _process(_delta):
+	unpack()

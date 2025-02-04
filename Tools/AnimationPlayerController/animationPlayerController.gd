@@ -2,6 +2,7 @@ class_name AnimationPlayerController extends AnimationPlayer
 
 ## A node for controlling the AnimatedSpriteController easily. Can smoothly play base animations and sudden overlay animations.
 
+@export var enabled = true
 
 # region private variables
 var _base_animation: String = ""
@@ -20,14 +21,27 @@ func _ready():
 
 # region remaining built-in virtual methods
 func _process(_add_constant_forcedelta):
+	if not enabled:
+		return
 	if not is_playing() and _base_animation != "":
 		play(_base_animation)
 # endregion
 
 
 # region public methods
+
+func enable():
+	enabled = true
+	play()
+
+func disable():
+	enabled = false
+	pause()
+
 ## Change the base animation to be playing.
 func play_base_animation(base_animation_name: String):
+	if not enabled:
+		return
 	self._base_animation = base_animation_name
 	if not _is_playing_overlay_animation:
 		play(_base_animation)
@@ -35,6 +49,8 @@ func play_base_animation(base_animation_name: String):
 ## Play an overlay animation and return to the base animation when finish. Alternatively add the animation to queue. The queue will play
 ## in the order of priority until empty, then it will return tp the base animation.
 func play_overlay_animation(overlay_animation: String, priority: int, join_queue: bool = false):
+	if not enabled:
+		return
 	if join_queue:
 		if _overlay_animation_queue.is_empty() and not _is_playing_overlay_animation:
 			play(overlay_animation)
@@ -54,6 +70,8 @@ func play_overlay_animation(overlay_animation: String, priority: int, join_queue
 
 # region private methods
 func _on_animation_finished(_param):
+	if not enabled:
+		return
 	if not _overlay_animation_queue.is_empty():
 		var next_animation = _overlay_animation_queue.pop_front()
 		_current_overlay_animation_priority = next_animation.priority

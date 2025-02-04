@@ -3793,65 +3793,15 @@ scenes/3/scene = ExtResource("4_eialt")
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_y2gg1"]
 texture = ExtResource("2_1c663")
 texture_region_size = Vector2i(8, 8)
-0:0/0 = 0
-1:0/0 = 0
-2:0/0 = 0
-3:0/0 = 0
-4:0/0 = 0
-5:0/0 = 0
 19:0/0 = 0
 20:0/0 = 0
 21:0/0 = 0
-0:1/0 = 0
-1:1/0 = 0
-2:1/0 = 0
-3:1/0 = 0
-4:1/0 = 0
-5:1/0 = 0
-6:1/0 = 0
-7:1/0 = 0
 19:1/0 = 0
 20:1/0 = 0
 21:1/0 = 0
-0:2/0 = 0
-1:2/0 = 0
-2:2/0 = 0
-3:2/0 = 0
-4:2/0 = 0
-5:2/0 = 0
-6:2/0 = 0
-7:2/0 = 0
-8:2/0 = 0
-9:2/0 = 0
-10:2/0 = 0
-11:2/0 = 0
-12:2/0 = 0
-13:2/0 = 0
-14:2/0 = 0
-15:2/0 = 0
-16:2/0 = 0
-17:2/0 = 0
 19:2/0 = 0
 20:2/0 = 0
 21:2/0 = 0
-0:3/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
-4:3/0 = 0
-5:3/0 = 0
-6:3/0 = 0
-7:3/0 = 0
-8:3/0 = 0
-9:3/0 = 0
-10:3/0 = 0
-11:3/0 = 0
-12:3/0 = 0
-13:3/0 = 0
-14:3/0 = 0
-15:3/0 = 0
-16:3/0 = 0
-17:3/0 = 0
 20:3/0 = 0
 21:3/0 = 0
 8:4/0 = 0
@@ -3915,20 +3865,86 @@ texture_region_size = Vector2i(8, 8)
 5:9/0 = 0
 6:9/0 = 0
 8:9/0 = 0
-9:9/next_alternative_id = 4
+9:9/next_alternative_id = 13
 9:9/0 = 0
-9:9/1 = 1
-9:9/2 = 2
-9:9/3 = 3
+9:9/0/probability = 0.1
+9:9/0/metadata/_better_terrain = {
+"type": 3
+}
+12:9/next_alternative_id = 2
 12:9/0 = 0
+12:9/0/probability = 0.1
+13:9/next_alternative_id = 2
 13:9/0 = 0
+13:9/0/probability = 0.1
 19:3/0 = 0
 14:8/size_in_atlas = Vector2i(1, 2)
+14:8/next_alternative_id = 2
 14:8/0 = 0
+14:8/0/probability = 0.1
 15:8/size_in_atlas = Vector2i(1, 2)
+15:8/next_alternative_id = 2
 15:8/0 = 0
-10:9/0 = 0
+15:8/0/probability = 0.1
+11:9/next_alternative_id = 2
 11:9/0 = 0
+11:9/0/probability = 0.1
+11:9/0/metadata/_better_terrain = {
+"type": 3
+}
+10:9/0 = 0
+10:9/0/probability = 0.1
+0:0/size_in_atlas = Vector2i(2, 4)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 7)
+0:0/0/metadata/_better_terrain = {
+"type": 4
+}
+2:0/size_in_atlas = Vector2i(2, 4)
+2:0/0 = 0
+2:0/0/texture_origin = Vector2i(0, 8)
+2:0/0/metadata/_better_terrain = {
+"type": 4
+}
+4:0/size_in_atlas = Vector2i(2, 4)
+4:0/0 = 0
+4:0/0/texture_origin = Vector2i(0, 8)
+4:0/0/metadata/_better_terrain = {
+"type": 4
+}
+6:0/size_in_atlas = Vector2i(2, 4)
+6:0/0 = 0
+6:0/0/texture_origin = Vector2i(0, 8)
+6:0/0/metadata/_better_terrain = {
+"type": 4
+}
+8:0/size_in_atlas = Vector2i(2, 4)
+8:0/0 = 0
+8:0/0/texture_origin = Vector2i(0, 8)
+8:0/0/metadata/_better_terrain = {
+"type": 4
+}
+10:0/size_in_atlas = Vector2i(2, 4)
+10:0/0 = 0
+10:0/0/texture_origin = Vector2i(0, 8)
+10:0/0/metadata/_better_terrain = {
+"type": 4
+}
+12:2/size_in_atlas = Vector2i(2, 2)
+12:2/0 = 0
+12:2/0/metadata/_better_terrain = {
+"type": 4
+}
+14:2/size_in_atlas = Vector2i(2, 2)
+14:2/0 = 0
+14:2/0/metadata/_better_terrain = {
+"type": 4
+}
+16:2/size_in_atlas = Vector2i(2, 2)
+16:2/0 = 0
+16:2/0/metadata/_better_terrain = {
+"type": 4
+}
 
 [resource]
 tile_size = Vector2i(8, 8)
@@ -3962,6 +3978,10 @@ metadata/_better_terrain = {
 }], ["Water", Color(0.560289, 0.87898, 0.0168507, 1), 0, [], {
 "path": ""
 }], ["Grass", Color(0.395471, 0.415142, 0.612208, 1), 0, [], {
+"path": ""
+}], ["Flowers", Color(1, 0, 0, 1), 0, [], {
+"path": ""
+}], ["StandingStone7", Color(0.626221, 0.434331, 0.799924, 1), 0, [], {
 "path": ""
 }]],
 "version": "0.2"

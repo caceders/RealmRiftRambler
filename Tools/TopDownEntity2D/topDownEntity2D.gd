@@ -30,6 +30,8 @@ func get_navigation_agent_if_availabe():
 @export var velocity_lerp_weight: float = 15
 ## If true will react to impulses through the impulse function.
 @export var reacts_to_impulses: bool = true
+## If false may react to impulses but won't move towards direction.
+@export var reacts_to_direction: bool = true
 # endregion
 
 
@@ -92,7 +94,7 @@ func stop():
 func _apply_new_velocity(delta_time):
 	if not is_static:
 		var target_velocity
-		if _frozen_timer.time_left != 0:
+		if _frozen_timer.time_left != 0 or not reacts_to_direction:
 			target_velocity = Vector2.ZERO
 		else:
 			target_velocity = speed * direction.normalized()

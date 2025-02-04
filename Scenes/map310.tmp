@@ -4,11 +4,11 @@
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="2_xjehb"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="2_yigfc"]
 [ext_resource type="Script" path="res://Tools/World/Generation/worldChunkGenerator.gd" id="3_48v06"]
-[ext_resource type="PackedScene" uid="uid://bme1qtnuf18ar" path="res://Tools/World/Premade Scenes/enivronment/tree.tscn" id="4_iutsp"]
+[ext_resource type="PackedScene" uid="uid://bme1qtnuf18ar" path="res://Tools/World/Premade Scenes/Tree.tscn" id="4_iutsp"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/entityExitWorldHandler.gd" id="4_j2s7f"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="4_xtbmq"]
-[ext_resource type="PackedScene" uid="uid://bb8lmg5gtda27" path="res://Tools/World/Premade Scenes/enivronment/StandingStones.tscn" id="5_6samn"]
-[ext_resource type="PackedScene" uid="uid://ck2pv245v7w8p" path="res://Tools/World/Premade Scenes/creatures/orcCluster.tscn" id="5_qyk2f"]
+[ext_resource type="PackedScene" uid="uid://blufndq12nju0" path="res://Tools/World/Premade Scenes/squirrel.tscn" id="5_cmqof"]
+[ext_resource type="PackedScene" uid="uid://ck2pv245v7w8p" path="res://Tools/World/Premade Scenes/orcCluster.tscn" id="5_qyk2f"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="6_gbxhf"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_eflll"]
@@ -20,14 +20,15 @@ offset = Vector3(709.22, 723.94, 0)
 frequency = 0.0475
 offset = Vector3(4.95, 149.45, 0)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_fbj0x"]
-frequency = 1.0
-
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_v4piq"]
 frequency = 0.0116
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_cu56j"]
 frequency = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vy26k"]
+frequency = 1.0
+offset = Vector3(0, 86.7, 0)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_w6f8x"]
 frequency = 1.0
@@ -57,14 +58,14 @@ water_generation_floor = 0.0
 grass_noise = SubResource("FastNoiseLite_3nqic")
 flower_noise = SubResource("FastNoiseLite_w251b")
 flower_generation_floor = 0.4
-standing_stone_noise = SubResource("FastNoiseLite_fbj0x")
-standing_stone_generation_floor = 0.6
-standing_stone_packed_scenes = Array[PackedScene]([ExtResource("5_6samn")])
 forest_noise = SubResource("FastNoiseLite_v4piq")
 forest_generation_floor = 0.125
 tree_noise = SubResource("FastNoiseLite_cu56j")
 tree_generation_floor = 0.37
 trees_packed_scenes = Array[PackedScene]([ExtResource("4_iutsp")])
+entity_noise = SubResource("FastNoiseLite_vy26k")
+entity_generation_floor = 0.65
+entity_packed_scenes = Array[PackedScene]([ExtResource("5_cmqof")])
 enemy_noise = SubResource("FastNoiseLite_w6f8x")
 enemy_generation_floor = 0.6
 enemy_packed_scenes = Array[PackedScene]([ExtResource("5_qyk2f")])
@@ -99,3 +100,13 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="CanvasLayer/Control/AspectRatioContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Generate world"

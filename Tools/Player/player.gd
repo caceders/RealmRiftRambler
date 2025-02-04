@@ -55,6 +55,10 @@ func _state_process():
 				_enter_state(State.SPELLCASTING)
 				return
 			if Input.is_action_just_pressed("switch target"):
+				targeter.start_lock_on()
+
+			if Input.is_action_just_released("switch target"):
+				targeter.end_lock_on()
 				targeter.select_next_target()
 			_movement()
 			return

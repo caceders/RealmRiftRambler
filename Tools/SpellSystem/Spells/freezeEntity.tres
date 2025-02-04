@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="Spell" load_steps=12 format=3 uid="uid://b4xaycf5c2r1n"]
+
+[ext_resource type="Script" path="res://Tools/SpellSystem/spell.gd" id="1_movqi"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/spellComponent.gd" id="2_ft2fn"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/parallellSpellComponent.gd" id="3_gclby"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/changeColorSpellComponent.gd" id="5_it0vf"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/freezeSpellComponent.gd" id="5_n70bx"]
+[ext_resource type="PackedScene" uid="uid://c8vbff5t327pf" path="res://Tools/SpellSystem/OverlayAnimations/FreezeSpellOverlayAnimation.tscn" id="6_xv3j4"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/spellAnimationOverlay.gd" id="7_qiia3"]
+
+[sub_resource type="Resource" id="Resource_a2guy"]
+resource_local_to_scene = true
+script = ExtResource("7_qiia3")
+animation_packed_scene = ExtResource("6_xv3j4")
+target = 1
+
+[sub_resource type="Resource" id="Resource_lx873"]
+resource_local_to_scene = true
+script = ExtResource("5_n70bx")
+target = 1
+time = 5.0
+
+[sub_resource type="Resource" id="Resource_4juef"]
+resource_local_to_scene = true
+script = ExtResource("5_it0vf")
+color = Color(0, 1, 1, 1)
+target = 1
+time = 5.0
+
+[sub_resource type="Resource" id="Resource_3h67j"]
+resource_local_to_scene = true
+script = ExtResource("3_gclby")
+spell_components = Array[ExtResource("2_ft2fn")]([SubResource("Resource_lx873"), SubResource("Resource_4juef")])
+
+[resource]
+script = ExtResource("1_movqi")
+spell_components = Array[ExtResource("2_ft2fn")]([SubResource("Resource_a2guy"), SubResource("Resource_3h67j")])

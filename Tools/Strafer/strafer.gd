@@ -1,7 +1,8 @@
 class_name Strafer extends Node2D
 
 const MAX_TRIES_FOR_NEW_AREA = 3
-
+const CHECK_FOR_STUCK_TIME_MS = 1000
+const CONSIDER_STUCK_DISTANCE_CHANGE = 20
 
 enum StrafeState{
 	IDLE,
@@ -38,6 +39,9 @@ var _active_state: StrafeState = StrafeState.IDLE
 var _stand_still_timer : Timer
 var _has_sat_spawn_pos: bool = false
 
+var _last_position: Vector2 = Vector2(0,0)
+var _last_position_set_time_ms: float = 0
+
 func _ready():
 	_stand_still_timer = Timer.new()
 	_stand_still_timer.one_shot = true
@@ -46,7 +50,7 @@ func _ready():
 
 
 func _process(_delta):
-	if strafe_centrum_type == StrafeCentrumType.SPAWN_POSITION and not _has_sat_spawn_pos:
+	if not _has_sat_spawn_pos:
 		_has_sat_spawn_pos = true
 		_strafe_centrum_position = global_position
 	if not enabled:
@@ -62,12 +66,22 @@ func _process(_delta):
 
 	match _active_state:
 		StrafeState.IDLE:
+			entity.direction = Vector2(0,0)
 			if _stand_still_timer.time_left == 0:
 				_enter_state(StrafeState.WALKING)
 				return
 			return
 
 		StrafeState.WALKING:
+			# Check if stuck:
+			if Time.get_ticks_msec() > CHECK_FOR_STUCK_TIME_MS + _last_position_set_time_ms:
+				_last_position_set_time_ms = Time.get_ticks_msec()
+				if global_position.distance_squared_to(_last_position) < CONSIDER_STUCK_DISTANCE_CHANGE:
+					_enter_state(StrafeState.IDLE)
+				else:
+					_last_position = global_position
+			
+			# Check if target is reached
 			if navigation_agent.is_target_reached():
 				_enter_state(StrafeState.IDLE)
 				return
@@ -85,6 +99,8 @@ func _enter_state(state: StrafeState):
 			return
 		StrafeState.WALKING:
 			var tries = 1
+			_last_position = entity.global_position
+			_last_position_set_time_ms = Time.get_ticks_msec()
 			while true:
 				var direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
 				var distance = randf_range(min_strafe_distance, max_strafe_distance)
