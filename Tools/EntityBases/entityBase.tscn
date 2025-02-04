@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bm633sh0gi7oi" path="res://Assets/Shadow.png" id="1_cn4cr"]
 [ext_resource type="Script" path="res://Tools/Shadow/shadow.gd" id="1_i42p2"]
 [ext_resource type="Script" path="res://Tools/DamageSystem/damageReceiver.gd" id="2_2j8ja"]
-[ext_resource type="PackedScene" uid="uid://bk5tyajvilvvk" path="res://Tools/ResourceBar/resourceBar.tscn" id="3_rm62l"]
+[ext_resource type="PackedScene" uid="uid://bk5tyajvilvvk" path="res://Tools/ResourcePool/ResourceBar/resourceBar.tscn" id="3_rm62l"]
 [ext_resource type="Script" path="res://Tools/HitBox/hitBox.gd" id="5_5tvkh"]
 [ext_resource type="Script" path="res://Scripts/appearDisappear.gd" id="6_jjrbe"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="7_luv08"]

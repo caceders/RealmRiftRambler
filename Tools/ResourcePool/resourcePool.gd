@@ -119,6 +119,10 @@ func pause_decay_for(time: float) -> void:
 	_pause_decay = false
 
 
+## Check if has amount
+func has_amount(p_amount: float):
+	return amount >= p_amount
+
 ## Internal method for increasing the _amount until reached max if given
 func _increase_amount(amount_to_add: float) -> void:
 	# If passed negative value raise error

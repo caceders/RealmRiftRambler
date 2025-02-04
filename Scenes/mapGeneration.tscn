@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bll2eifddoyuw"]
+[gd_scene load_steps=20 format=3 uid="uid://bll2eifddoyuw"]
 
 [ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_mlt5n"]
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="2_xjehb"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bb8lmg5gtda27" path="res://Tools/World/Premade Scenes/enivronment/StandingStones.tscn" id="5_6samn"]
 [ext_resource type="PackedScene" uid="uid://ck2pv245v7w8p" path="res://Tools/World/Premade Scenes/creatures/orcCluster.tscn" id="5_qyk2f"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="6_gbxhf"]
+[ext_resource type="PackedScene" uid="uid://blufndq12nju0" path="res://Tools/World/Premade Scenes/creatures/squirrel.tscn" id="6_vccap"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_eflll"]
 offset = Vector3(709.22, 723.94, 0)
@@ -28,6 +29,10 @@ frequency = 0.0116
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_cu56j"]
 frequency = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bdtso"]
+frequency = 1.0
+offset = Vector3(0, 811.59, 0)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_w6f8x"]
 frequency = 1.0
@@ -65,6 +70,9 @@ forest_generation_floor = 0.125
 tree_noise = SubResource("FastNoiseLite_cu56j")
 tree_generation_floor = 0.37
 trees_packed_scenes = Array[PackedScene]([ExtResource("4_iutsp")])
+animal_noise = SubResource("FastNoiseLite_bdtso")
+animal_generation_floor = 0.7
+animal_packed_scenes = Array[PackedScene]([ExtResource("6_vccap")])
 enemy_noise = SubResource("FastNoiseLite_w6f8x")
 enemy_generation_floor = 0.6
 enemy_packed_scenes = Array[PackedScene]([ExtResource("5_qyk2f")])
