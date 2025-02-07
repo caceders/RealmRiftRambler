@@ -36,11 +36,23 @@ var target: Node2D:
 func _ready():
 	body_exited.connect(on_body_exited)
 
-func _physics_process(_delta):
-	_targetable = get_overlapping_bodies()
+func _process(_delta):
+	var all_bodies = get_overlapping_bodies()
+	_targetable = []
+	# Remove non-targetable
+	var non_targets = []
+	for entity in all_bodies:
+		if "Targetable" in entity.get_groups():
+			_targetable.append(entity)
+	
+	# Remove owner
 	if get_parent() in _targetable:
 		_targetable.erase(get_parent())
+
+	
 	if not _targetable.is_empty():
+		for entity in non_targets:
+			_targetable.erase(entity)
 		_targetable.sort_custom(sort_distance)
 		if (_nearest != _targetable[0] and not _lock_on) or target == null:
 			_nearest = _targetable[0]

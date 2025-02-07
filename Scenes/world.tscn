@@ -211,7 +211,7 @@ y_sort_enabled = true
 tile_set = ExtResource("1_8m1l6")
 
 [node name="Player" parent="Objects" instance=ExtResource("3_uxjxf")]
-position = Vector2(-38, 142)
+position = Vector2(-38, 141)
 wall_min_slide_angle = 0.261799
 
 [node name="Camera2D" type="Camera2D" parent="Objects" node_paths=PackedStringArray("follow")]

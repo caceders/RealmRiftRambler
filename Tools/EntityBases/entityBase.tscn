@@ -199,13 +199,13 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_pi0bu"]
+[sub_resource type="Resource" id="Resource_dwkmx"]
 resource_local_to_scene = true
 script = ExtResource("11_jg4ph")
 node_path = "DamageReceiver"
 property = "_amount"
 
-[node name="EntityBase" type="CharacterBody2D" groups=["Damagable"]]
+[node name="EntityBase" type="CharacterBody2D" groups=["Damagable", "Targetable"]]
 position = Vector2(-1, 0)
 motion_mode = 1
 wall_min_slide_angle = 0.0
@@ -258,4 +258,4 @@ texture = SubResource("AtlasTexture_ushcn")
 radius = 2.0
 
 [node name="DeloadPersistance" parent="." instance=ExtResource("10_fbg38")]
-deload_persistant_data = Array[ExtResource("11_jg4ph")]([SubResource("Resource_pi0bu")])
+deload_persistant_data = Array[ExtResource("11_jg4ph")]([SubResource("Resource_dwkmx")])
