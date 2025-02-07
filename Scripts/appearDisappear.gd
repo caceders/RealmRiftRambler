@@ -12,18 +12,19 @@ extends Node2D
 
 func _ready():
 	if active:
-		Appear()
-		var damage_receiver = entity.get_node("DamageReceiver") as DamageReceiver
-		damage_receiver.resource_reached_min.connect(Disappear)
+		appear()
+		if entity.has_node("DamageReceiver"):
+			var damage_receiver = entity.get_node("DamageReceiver") as DamageReceiver
+			damage_receiver.resource_reached_min.connect(disappear)
 
 func _process(delta):
 	appear_disappear_sprite.offset = entity_sprite.offset
 
-func Appear():
+func appear():
 	if active:
 		appear_disappear_animation_player.play("entityAppear")
 
-func Disappear():
+func disappear():
 	if active:
 		appear_disappear_animation_player.play("entityDisappear")
 		await appear_disappear_animation_player.animation_finished

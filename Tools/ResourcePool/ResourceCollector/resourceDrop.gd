@@ -45,4 +45,4 @@ func on_body_entered(body: Node2D):
 	for resource_collector in resource_collectors:
 		if resource_collector.collect_resource_identifier == resource_identifier:
 			resource_collector.collect_resource(self)
-			queue_free()
+			$AppearDisappear.disappear()

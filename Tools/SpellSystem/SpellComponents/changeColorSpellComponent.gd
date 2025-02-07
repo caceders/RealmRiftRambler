@@ -13,13 +13,18 @@ func activate(spell_caster: SpellCaster):
 	match target:
 		AffectEntity.CASTER:
 			if spell_caster.parent != null:
-				sprite_2d = spell_caster.parent.get_node("Sprite2D") as Sprite2D
+				if spell_caster.parent.has_node("Sprite2D"):
+					sprite_2d = spell_caster.parent.get_node("Sprite2D") as Sprite2D
 				
 				
 		AffectEntity.TARGET:
 			if spell_caster.target != null:
-				sprite_2d = spell_caster.target.get_node("Sprite2D") as Sprite2D
+				if spell_caster.target.has_node("Sprite2D"):
+					sprite_2d = spell_caster.target.get_node("Sprite2D") as Sprite2D
 
+	if sprite_2d == null:
+		return
+	
 	sprite_2d.modulate = Color(sprite_2d.modulate.r + color.r, sprite_2d.modulate.g + color.g, sprite_2d.modulate.b + color.b)
 
 	if time == 0:

@@ -44,6 +44,7 @@ func activate(spell_caster: SpellCaster):
 	else:
 		_projectile.direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
 	_projectile.global_position = spell_caster.global_position
+
 	# Add activationarea
 	if _projectile.has_node("ActivationArea"):
 		_activation_area = _projectile.get_node("ActivationArea")
@@ -56,10 +57,10 @@ func activate(spell_caster: SpellCaster):
 		collider.shape = CircleShape2D.new()
 		# Scale activationarea
 		collider.shape.radius = max(sprite.texture.get_size().x/2, sprite.texture.get_size().y/2)
-
-	var tail = tail_packed_scene.instantiate()as Node2D
-	_projectile.add_child(tail)
-	_activation_area.body_entered.connect(_on_body_entered)
+	if tail_packed_scene != null:
+		var tail = tail_packed_scene.instantiate()as Node2D
+		_projectile.add_child(tail)
+		_activation_area.body_entered.connect(_on_body_entered)
 
 	await collided
 	projectilehit()

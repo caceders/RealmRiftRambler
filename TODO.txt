@@ -8,3 +8,4 @@ v Fix the healthbar oscillating between low and high - see the squirrel (implici
 v Fix bug where strafing entities are stuck on trees
 - Json.stringify is slow and world generation and tile serialization is slow. Only do this on enter and exit game
 	-i.e optimize world chunk handler to not use file system
+- Currently the targeter is able to target the ground tile layer. Fix

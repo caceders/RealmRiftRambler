@@ -14,8 +14,6 @@ func activate(spell_caster: SpellCaster):
 			if spell_caster.target != null:
 				entity = spell_caster.target
 				
-		_:
-			pass
 	if entity == null:
 		return
 

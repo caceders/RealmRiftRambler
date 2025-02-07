@@ -5,7 +5,7 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]
 atlas = ExtResource("2_5jabd")
-region = Rect2(172, 12, 8, 8)
+region = Rect2(234, 9, 9, 13)
 
 [sub_resource type="Animation" id="Animation_63m85"]
 length = 0.001
@@ -182,9 +182,9 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[node name="AppearDisappear" type="Node2D" node_paths=PackedStringArray("entity_sprite", "appear_disappear_sprite")]
+[node name="AppearDisappear" type="Node2D" node_paths=PackedStringArray("appear_disappear_animation_player", "appear_disappear_sprite")]
 script = ExtResource("1_fvaae")
-entity_sprite = NodePath("")
+appear_disappear_animation_player = NodePath("AppearDisappearAnimationPlayer")
 appear_disappear_sprite = NodePath("AppearDisappearSprite")
 
 [node name="AppearDisappearAnimationPlayer" type="AnimationPlayer" parent="."]
@@ -194,5 +194,4 @@ libraries = {
 }
 
 [node name="AppearDisappearSprite" type="Sprite2D" parent="."]
-visible = false
 texture = SubResource("AtlasTexture_ushcn")
