@@ -1,7 +1,7 @@
 class_name WorldHandler extends WorldChunkManipulator
 
-const UPDATE_FRAMES = 1
-const UPDATE_CHUNK_BATCH = 1
+const UPDATE_FRAMES = 2
+const UPDATE_CHUNK_BATCH = 2
 
 @export var load_distance : int = 5
 @export var center_camera: Camera2D
@@ -25,7 +25,7 @@ func _ready():
 
 func _process(_delta):
 	update_chunk_arrays()
-	if Engine.get_frames_drawn() % 10 == 0:
+	if Engine.get_frames_drawn() % UPDATE_FRAMES == 0:
 		# Prioritize loading chunks over generating and prioritize loading and generating chunks over storing
 		if not _chunks_to_load.is_empty():
 			load_chunks()

@@ -48,7 +48,6 @@ func _ready():
 	add_child(_stand_still_timer)
 
 
-
 func _process(_delta):
 	if not _has_sat_spawn_pos:
 		_has_sat_spawn_pos = true

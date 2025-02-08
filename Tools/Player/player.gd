@@ -54,12 +54,13 @@ func _state_process():
 			elif key_sequence_recoder.is_inputing_sequence():
 				_enter_state(State.SPELLCASTING)
 				return
-			if Input.is_action_just_pressed("switch target"):
-				targeter.start_lock_on()
-
-			if Input.is_action_just_released("switch target"):
-				targeter.end_lock_on()
+			elif Input.is_action_just_pressed("switch target"):
 				targeter.select_next_target()
+			if Input.is_action_just_pressed("lock on"):
+				if not targeter.lock_on:
+					targeter.start_lock_on()
+				elif targeter.lock_on:
+					targeter.end_lock_on()
 			_movement()
 			return
 		State.HURT:
@@ -146,6 +147,8 @@ func _movement():
 	# Set direction
 	var movement_direction = Input.get_vector("maneuver_left", "maneuver_right", "maneuver_up", "maneuver_down")
 	player_entity.direction = movement_direction
+	if movement_direction != Vector2.ZERO:
+		targeter.target_line = velocity
 
 	# Get direction for animation
 	if Input.is_action_pressed("maneuver_left"):

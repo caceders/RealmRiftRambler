@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://dml54no3evuav"]
+[gd_scene load_steps=15 format=4 uid="uid://dml54no3evuav"]
 
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="1_8m1l6"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="3_uxjxf"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://couhlepbf8cgj" path="res://Tools/EntityBases/animals/squirrelBase.tscn" id="5_m2ck1"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="6_codcp"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="7_8ho4l"]
-[ext_resource type="PackedScene" uid="uid://bwo2jvjefsg1u" path="res://Tools/ResourcePool/ResourceCollector/resourceDropBase.tscn" id="8_hxlf0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0ku8l"]
 resource_local_to_scene = true
@@ -212,6 +211,7 @@ tile_set = ExtResource("1_8m1l6")
 
 [node name="Player" parent="Objects" instance=ExtResource("3_uxjxf")]
 position = Vector2(-38, 141)
+collision_layer = 1
 wall_min_slide_angle = 0.261799
 
 [node name="Camera2D" type="Camera2D" parent="Objects" node_paths=PackedStringArray("follow")]
@@ -222,6 +222,7 @@ follow = NodePath("../Player")
 [node name="RabbitBase" parent="Objects" instance=ExtResource("5_m2ck1")]
 z_index = 1
 position = Vector2(13, 184)
+collision_layer = 1
 
 [node name="Shadow" parent="Objects/RabbitBase" index="0"]
 offset = Vector2(-0.5, -0.0799999)
@@ -247,20 +248,5 @@ texture = SubResource("AtlasTexture_ushcn")
 
 [node name="DeloadPersistance" parent="Objects/RabbitBase" index="16"]
 deload_persistant_data = Array[ExtResource("7_8ho4l")]([SubResource("Resource_6re48")])
-
-[node name="Area2D" parent="." instance=ExtResource("8_hxlf0")]
-position = Vector2(-62, 155)
-
-[node name="Area2D2" parent="." instance=ExtResource("8_hxlf0")]
-position = Vector2(-40, 180)
-
-[node name="Area2D3" parent="." instance=ExtResource("8_hxlf0")]
-position = Vector2(-131, 129)
-
-[node name="Area2D4" parent="." instance=ExtResource("8_hxlf0")]
-position = Vector2(-10, 128)
-
-[node name="Area2D5" parent="." instance=ExtResource("8_hxlf0")]
-position = Vector2(-89, 184)
 
 [editable path="Objects/RabbitBase"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://ki2x6efh6e2e"]
+[gd_scene load_steps=29 format=3 uid="uid://ki2x6efh6e2e"]
 
 [ext_resource type="PackedScene" uid="uid://h1jbxoqanmwo" path="res://Tools/EntityBases/enemyBase.tscn" id="1_e02sq"]
 [ext_resource type="Script" path="res://Tools/EntityBases/enemies/basicEnemy.gd" id="2_usmj7"]
@@ -193,6 +193,17 @@ _data = {
 "entityAppear": SubResource("Animation_ct5bu"),
 "entityDisappear": SubResource("Animation_af7xm")
 }
+
+[sub_resource type="Resource" id="Resource_evy1g"]
+resource_local_to_scene = true
+script = ExtResource("5_iy7hn")
+node_path = "DamageReceiver"
+property = "_amount"
+
+[sub_resource type="Resource" id="Resource_uknp2"]
+script = ExtResource("5_iy7hn")
+node_path = "Strafer"
+property = "other_node"
 
 [sub_resource type="Animation" id="Animation_0ndep"]
 resource_local_to_scene = true
@@ -866,12 +877,21 @@ _data = {
 [node name="OrcBase" instance=ExtResource("1_e02sq")]
 script = ExtResource("2_usmj7")
 
+[node name="Shadow" parent="." index="0"]
+offset = Vector2(-4, -1.03833)
+
 [node name="DamageReceiver" parent="." index="2"]
 max_amount = 75.0
 _amount = 75.0
 
 [node name="Sprite2D" parent="." index="4"]
 texture = SubResource("AtlasTexture_gxiat")
+
+[node name="Strafer" parent="." index="6"]
+enabled = true
+strafe_centrum_type = 2
+strafe_weight = Vector2(0, 0)
+set_strafe_centrum_position = Vector2(0, 0)
 
 [node name="ChaserEvader" parent="." index="7"]
 chase = Array[String](["Player", "Animal"])
@@ -888,10 +908,13 @@ texture = SubResource("AtlasTexture_ushcn")
 hostile_groups = Array[String](["Player", "Animal"])
 
 [node name="DeloadPersistance" parent="." index="17"]
-deload_persistant_data = Array[ExtResource("5_iy7hn")]([])
+deload_persistant_data = Array[ExtResource("5_iy7hn")]([SubResource("Resource_evy1g"), SubResource("Resource_uknp2")])
 
 [node name="AnimationPlayerController" type="AnimationPlayer" parent="." index="18"]
 libraries = {
 "": SubResource("AnimationLibrary_q4q68")
 }
 script = ExtResource("22_m08n7")
+
+[node name="ResourceDropSpawn" parent="." index="20"]
+amount = 10

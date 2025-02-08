@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bll2eifddoyuw"]
+[gd_scene load_steps=23 format=3 uid="uid://bll2eifddoyuw"]
 
 [ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_mlt5n"]
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="2_xjehb"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Tools/World/Load and deload/entityExitWorldHandler.gd" id="4_j2s7f"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="4_xtbmq"]
 [ext_resource type="PackedScene" uid="uid://bb8lmg5gtda27" path="res://Tools/World/Premade Scenes/enivronment/StandingStones.tscn" id="5_6samn"]
+[ext_resource type="PackedScene" uid="uid://b6udpdfnp1yx8" path="res://Tools/Buildings/buildingBase.tscn" id="5_8oexg"]
 [ext_resource type="PackedScene" uid="uid://ck2pv245v7w8p" path="res://Tools/World/Premade Scenes/creatures/orcCluster.tscn" id="5_qyk2f"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="6_gbxhf"]
 [ext_resource type="PackedScene" uid="uid://blufndq12nju0" path="res://Tools/World/Premade Scenes/creatures/squirrel.tscn" id="6_vccap"]
@@ -17,12 +18,23 @@ offset = Vector3(709.22, 723.94, 0)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3nqic"]
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rcy3y"]
+noise_type = 0
+frequency = 0.0049
+offset = Vector3(253.5, 0, 0)
+fractal_type = 2
+fractal_octaves = 1
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_w251b"]
 frequency = 0.0475
 offset = Vector3(4.95, 149.45, 0)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_fbj0x"]
 frequency = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7ovqk"]
+frequency = 1.0
+offset = Vector3(2.2, -18, 20.4)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_v4piq"]
 frequency = 0.0116
@@ -58,13 +70,18 @@ entity_tile_map_layer = NodePath("../Entities")
 [node name="WorldChunkGenerator" type="Node" parent="World" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("3_48v06")
 water_noise = SubResource("FastNoiseLite_eflll")
-water_generation_floor = 0.0
+water_generation_floor = 0.25
 grass_noise = SubResource("FastNoiseLite_3nqic")
+dirt_noise = SubResource("FastNoiseLite_rcy3y")
+dirt_generation_floor = 0.9
 flower_noise = SubResource("FastNoiseLite_w251b")
 flower_generation_floor = 0.4
 standing_stone_noise = SubResource("FastNoiseLite_fbj0x")
-standing_stone_generation_floor = 0.6
+standing_stone_generation_floor = 0.65
 standing_stone_packed_scenes = Array[PackedScene]([ExtResource("5_6samn")])
+building_noise = SubResource("FastNoiseLite_7ovqk")
+building_generation_floor = 0.75
+building_packed_scenes = Array[PackedScene]([ExtResource("5_8oexg")])
 forest_noise = SubResource("FastNoiseLite_v4piq")
 forest_generation_floor = 0.125
 tree_noise = SubResource("FastNoiseLite_cu56j")
@@ -74,7 +91,7 @@ animal_noise = SubResource("FastNoiseLite_bdtso")
 animal_generation_floor = 0.7
 animal_packed_scenes = Array[PackedScene]([ExtResource("6_vccap")])
 enemy_noise = SubResource("FastNoiseLite_w6f8x")
-enemy_generation_floor = 0.6
+enemy_generation_floor = 0.66
 enemy_packed_scenes = Array[PackedScene]([ExtResource("5_qyk2f")])
 ground_tile_map_layer = NodePath("../Ground")
 entity_tile_map_layer = NodePath("../Entities")
@@ -92,6 +109,7 @@ tile_set = ExtResource("2_xjehb")
 
 [node name="Player" parent="World/Entities" instance=ExtResource("4_xtbmq")]
 position = Vector2(0, 0)
+collision_layer = 1
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("follow")]
 script = ExtResource("6_gbxhf")

@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=3 uid="uid://c4lgb1id0r36q"]
+
+[ext_resource type="Texture2D" uid="uid://dys788ndfedgc" path="res://Assets/Minifantasy_Userinterface_Assets/Menus/Selectors/Minifantasy_GuiSelectors.png" id="1_ubu3a"]
+[ext_resource type="Script" path="res://Tools/Targeter/lockedOnDisplaySprite.gd" id="2_gx1o6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20ydf"]
+atlas = ExtResource("1_ubu3a")
+region = Rect2(32, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ajght"]
+atlas = ExtResource("1_ubu3a")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fl4il"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20ydf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ajght")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="LockedOnDisplaySprite" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_fl4il")
+frame_progress = 0.710942
+script = ExtResource("2_gx1o6")

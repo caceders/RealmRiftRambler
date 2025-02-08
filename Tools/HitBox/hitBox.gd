@@ -1,9 +1,15 @@
 class_name HitBox extends CollisionShape2D
 
-@onready var sprite : Sprite2D = self.get_parent().get_node("Sprite2D")
+@onready var sprite : Sprite2D
 @onready var circle_shape = CircleShape2D.new()
 
 @export var use_sprite_as_hitbox: bool = true
+
+func _ready():
+	if get_parent().has_node("Sprite2D"):
+		sprite = self.get_parent().get_node("Sprite2D")
+	else:
+		use_sprite_as_hitbox = false
 
 func _process(_delta):
 	if use_sprite_as_hitbox:

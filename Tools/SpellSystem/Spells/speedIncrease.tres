@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Spell" load_steps=5 format=3 uid="uid://ba8mwva58r4f2"]
+
+[ext_resource type="Script" path="res://Tools/SpellSystem/spell.gd" id="1_ryilu"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/spellComponent.gd" id="2_hll45"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/increaseSpeedSpellComponent.gd" id="3_4kpxn"]
+
+[sub_resource type="Resource" id="Resource_fjv3w"]
+script = ExtResource("3_4kpxn")
+target = 0
+time = 10.0
+speed_increase = 100.0
+
+[resource]
+script = ExtResource("1_ryilu")
+spell_components = Array[ExtResource("2_hll45")]([SubResource("Resource_fjv3w")])

@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://utp4nglghxno"]
+
+[ext_resource type="Script" path="res://Tools/ResourcePool/ResourceCollector/ResourceDropSpawn/resourceDropSpawn.gd" id="1_852q6"]
+[ext_resource type="PackedScene" uid="uid://bwo2jvjefsg1u" path="res://Tools/ResourcePool/ResourceCollector/resourceDropBase.tscn" id="2_ny547"]
+
+[node name="ResourceDropSpawn" type="Node2D"]
+script = ExtResource("1_852q6")
+resource = ExtResource("2_ny547")

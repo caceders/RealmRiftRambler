@@ -457,7 +457,7 @@ script = ExtResource("2_vh30w")
 
 [node name="Shadow" parent="." index="0"]
 scale = Vector2(0.28125, 0.28125)
-offset = Vector2(-2, -1.08)
+offset = Vector2(-0.5, -0.0799999)
 
 [node name="TopDownEntity2D" parent="." index="1"]
 speed = 50.0
@@ -475,13 +475,9 @@ texture = SubResource("AtlasTexture_wexjl")
 offset = Vector2(2.5, -3.08)
 
 [node name="Strafer" parent="." index="6"]
-enabled = null
-strafe_centrum_type = null
 max_stand_still_time = null
 min_strafe_distance = null
 max_strafe_distance = 40.0
-strafe_weight = null
-set_strafe_centrum_position = null
 
 [node name="ChaserEvader" parent="." index="7"]
 enabled = true
