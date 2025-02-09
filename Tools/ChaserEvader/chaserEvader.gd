@@ -25,6 +25,8 @@ enum BehaviorType{
 ## If both a group to chase and one to evade is in sight what to prioritize?
 @export var prioritize: BehaviorType = BehaviorType.CHASE
 
+var is_reacting: bool = false
+
 var _last_update_time : float = randf_range(0, UPDATE_TIME) #Spread out to gain performance
 
 func _process(delta):
@@ -34,6 +36,7 @@ func _process(delta):
 		return
 	_last_update_time = Time.get_unix_time_from_system()
 
+	is_reacting = false
 	var bodies_in_sight = vision.get_bodies_in_sight()
 	bodies_in_sight.sort_custom(sort_distance)
 	var behavior: BehaviorType

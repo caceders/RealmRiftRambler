@@ -64,8 +64,8 @@ func _ready():
 
 # region remaining built-in virtual methods
 func _physics_process(delta_time):
-	_apply_new_velocity(delta_time)
 	if not is_static:
+		_apply_new_velocity(delta_time)
 		body.move_and_slide()
 # endregion
 

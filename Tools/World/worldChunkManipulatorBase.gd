@@ -1,7 +1,7 @@
 class_name WorldChunkManipulator extends Node
 
 const TILE_SIZE_PIXELS = 8
-const CHUNK_SIZE_TILES = 16
+const CHUNK_SIZE_TILES = 6
 const CHUNK_SIZE_PIXELS = TILE_SIZE_PIXELS * CHUNK_SIZE_TILES
 
 @export var ground_tile_map_layer: TileMapLayer

@@ -1,60 +1,77 @@
-[gd_scene load_steps=23 format=3 uid="uid://bll2eifddoyuw"]
+[gd_scene load_steps=24 format=3 uid="uid://bll2eifddoyuw"]
 
 [ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_mlt5n"]
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="2_xjehb"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="2_yigfc"]
 [ext_resource type="Script" path="res://Tools/World/Generation/worldChunkGenerator.gd" id="3_48v06"]
-[ext_resource type="PackedScene" uid="uid://bme1qtnuf18ar" path="res://Tools/World/Premade Scenes/enivronment/tree.tscn" id="4_iutsp"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/entityExitWorldHandler.gd" id="4_j2s7f"]
+[ext_resource type="Script" path="res://Tools/World/Generation/generatable.gd" id="4_rfxx3"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="4_xtbmq"]
-[ext_resource type="PackedScene" uid="uid://bb8lmg5gtda27" path="res://Tools/World/Premade Scenes/enivronment/StandingStones.tscn" id="5_6samn"]
-[ext_resource type="PackedScene" uid="uid://b6udpdfnp1yx8" path="res://Tools/Buildings/buildingBase.tscn" id="5_8oexg"]
-[ext_resource type="PackedScene" uid="uid://ck2pv245v7w8p" path="res://Tools/World/Premade Scenes/creatures/orcCluster.tscn" id="5_qyk2f"]
+[ext_resource type="Script" path="res://Tools/World/Generation/sceneProbabilityPair.gd" id="5_muy7q"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="6_gbxhf"]
-[ext_resource type="PackedScene" uid="uid://blufndq12nju0" path="res://Tools/World/Premade Scenes/creatures/squirrel.tscn" id="6_vccap"]
+[ext_resource type="PackedScene" uid="uid://cfbfuftomdxnb" path="res://Tools/EntityBases/environment/tree.tscn" id="6_n4nde"]
+[ext_resource type="PackedScene" uid="uid://ck2pv245v7w8p" path="res://Tools/World/Premade Scenes/creatures/orcCluster.tscn" id="7_jnv4f"]
+[ext_resource type="PackedScene" uid="uid://blufndq12nju0" path="res://Tools/World/Premade Scenes/creatures/squirrel.tscn" id="8_tr1bi"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_eflll"]
-offset = Vector3(709.22, 723.94, 0)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vhhp5"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_3nqic"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_rcy3y"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_c2h7i"]
 noise_type = 0
-frequency = 0.0049
-offset = Vector3(253.5, 0, 0)
-fractal_type = 2
+frequency = 0.006
 fractal_octaves = 1
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_w251b"]
-frequency = 0.0475
-offset = Vector3(4.95, 149.45, 0)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_g77yq"]
+noise_type = 3
+frequency = 0.0063
+fractal_type = 3
+fractal_octaves = 1
+fractal_lacunarity = 2.005
+fractal_ping_pong_strength = 1.02
+domain_warp_type = 2
+domain_warp_amplitude = 40.895
+domain_warp_frequency = -0.02
+domain_warp_fractal_type = 0
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_fbj0x"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vmrip"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_uihb8"]
+noise_type = 3
+frequency = 0.025
+fractal_octaves = 3
+fractal_lacunarity = 114.21
+fractal_gain = 0.63
+domain_warp_frequency = 2.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_e1sxp"]
+fractal_octaves = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_fq18x"]
 frequency = 1.0
+fractal_octaves = 2
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_7ovqk"]
+[sub_resource type="Resource" id="Resource_18frr"]
+script = ExtResource("5_muy7q")
+scene = ExtResource("6_n4nde")
+weight = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wkc5x"]
 frequency = 1.0
-offset = Vector3(2.2, -18, 20.4)
+fractal_octaves = 3
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_v4piq"]
-frequency = 0.0116
+[sub_resource type="Resource" id="Resource_adb2p"]
+script = ExtResource("5_muy7q")
+scene = ExtResource("7_jnv4f")
+weight = 1.0
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_cu56j"]
-frequency = 1.0
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_bdtso"]
-frequency = 1.0
-offset = Vector3(0, 811.59, 0)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_w6f8x"]
-frequency = 1.0
-offset = Vector3(190.95, 0, 0)
+[sub_resource type="Resource" id="Resource_gisf1"]
+script = ExtResource("5_muy7q")
+scene = ExtResource("8_tr1bi")
+weight = 8.0
 
 [node name="Node" type="Node"]
 
 [node name="World" type="Node" parent="." node_paths=PackedStringArray("center_camera", "world_chunk_loader", "world_chunk_generator", "entity_exit_world_handler", "ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("1_mlt5n")
-load_distance = 2
 center_camera = NodePath("../Camera2D")
 world_chunk_loader = NodePath("WorldChunkLoader")
 world_chunk_generator = NodePath("WorldChunkGenerator")
@@ -67,34 +84,79 @@ script = ExtResource("2_yigfc")
 ground_tile_map_layer = NodePath("../Ground")
 entity_tile_map_layer = NodePath("../Entities")
 
-[node name="WorldChunkGenerator" type="Node" parent="World" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+[node name="WorldChunkGenerator" type="Node" parent="World" node_paths=PackedStringArray("generatables", "ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("3_48v06")
-water_noise = SubResource("FastNoiseLite_eflll")
-water_generation_floor = 0.25
-grass_noise = SubResource("FastNoiseLite_3nqic")
-dirt_noise = SubResource("FastNoiseLite_rcy3y")
-dirt_generation_floor = 0.9
-flower_noise = SubResource("FastNoiseLite_w251b")
-flower_generation_floor = 0.4
-standing_stone_noise = SubResource("FastNoiseLite_fbj0x")
-standing_stone_generation_floor = 0.65
-standing_stone_packed_scenes = Array[PackedScene]([ExtResource("5_6samn")])
-building_noise = SubResource("FastNoiseLite_7ovqk")
-building_generation_floor = 0.75
-building_packed_scenes = Array[PackedScene]([ExtResource("5_8oexg")])
-forest_noise = SubResource("FastNoiseLite_v4piq")
-forest_generation_floor = 0.125
-tree_noise = SubResource("FastNoiseLite_cu56j")
-tree_generation_floor = 0.37
-trees_packed_scenes = Array[PackedScene]([ExtResource("4_iutsp")])
-animal_noise = SubResource("FastNoiseLite_bdtso")
-animal_generation_floor = 0.7
-animal_packed_scenes = Array[PackedScene]([ExtResource("6_vccap")])
-enemy_noise = SubResource("FastNoiseLite_w6f8x")
-enemy_generation_floor = 0.66
-enemy_packed_scenes = Array[PackedScene]([ExtResource("5_qyk2f")])
+generatables = [NodePath("Generatables/GroundPlainsGeneratable"), NodePath("Generatables/PondGeneratable"), NodePath("Generatables/RoadsGeneratable"), NodePath("Generatables/GrassGeneratable"), NodePath("Generatables/FlowerGeneratable"), NodePath("Generatables/ForestGeneratable"), NodePath("Generatables/TreeGeneratable"), NodePath("Generatables/BeingsGeneratable")]
 ground_tile_map_layer = NodePath("../Ground")
 entity_tile_map_layer = NodePath("../Entities")
+
+[node name="Generatables" type="Node" parent="World/WorldChunkGenerator"]
+
+[node name="GroundPlainsGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables"]
+script = ExtResource("4_rfxx3")
+noise = SubResource("FastNoiseLite_vhhp5")
+generation_noise_floor = -4.06
+can_generate_on_anything = true
+
+[node name="PondGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables"]
+script = ExtResource("4_rfxx3")
+noise = SubResource("FastNoiseLite_c2h7i")
+generation_noise_floor = 0.7
+tile_type = 1
+can_generate_on_tiles = Array[int]([0])
+is_4x4 = true
+
+[node name="RoadsGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables"]
+script = ExtResource("4_rfxx3")
+noise = SubResource("FastNoiseLite_g77yq")
+generation_noise_floor = 0.96
+tile_type = 3
+can_generate_on_tiles = Array[int]([0, 2])
+is_4x4 = true
+
+[node name="GrassGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables"]
+script = ExtResource("4_rfxx3")
+noise = SubResource("FastNoiseLite_vmrip")
+generation_noise_floor = 0.0
+tile_type = 2
+can_generate_on_tiles = Array[int]([0])
+is_4x4 = true
+
+[node name="FlowerGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables"]
+script = ExtResource("4_rfxx3")
+noise = SubResource("FastNoiseLite_uihb8")
+generation_noise_floor = 0.3
+tile_type = 4
+tile_map_layer_type = 1
+can_generate_on_tiles = Array[int]([0, 2])
+
+[node name="ForestGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables"]
+script = ExtResource("4_rfxx3")
+noise = SubResource("FastNoiseLite_e1sxp")
+generation_noise_floor = 0.3
+tile_type = 6
+placement_type = 2
+can_generate_on_tiles = Array[int]([0, 2, 4])
+
+[node name="TreeGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables"]
+script = ExtResource("4_rfxx3")
+noise = SubResource("FastNoiseLite_fq18x")
+generation_noise_floor = 0.35
+tile_type = 6
+tile_map_layer_type = 1
+placement_type = 1
+can_generate_on_tiles = Array[int]([6])
+scenes = Array[ExtResource("5_muy7q")]([SubResource("Resource_18frr")])
+
+[node name="BeingsGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables"]
+script = ExtResource("4_rfxx3")
+noise = SubResource("FastNoiseLite_wkc5x")
+generation_noise_floor = 0.65
+tile_type = 7
+tile_map_layer_type = 1
+placement_type = 1
+can_generate_on_tiles = Array[int]([0, 2, 3, 4, 6])
+scenes = Array[ExtResource("5_muy7q")]([SubResource("Resource_adb2p"), SubResource("Resource_gisf1")])
 
 [node name="EntityExitWorldHandler" type="Node" parent="World" node_paths=PackedStringArray("world_handler")]
 script = ExtResource("4_j2s7f")

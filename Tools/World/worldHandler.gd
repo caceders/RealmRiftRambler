@@ -1,7 +1,6 @@
 class_name WorldHandler extends WorldChunkManipulator
 
-const UPDATE_FRAMES = 2
-const UPDATE_CHUNK_BATCH = 2
+const INCREASE_CHUNK_BATCH_CALCULATION_PER_CHUNK = 300
 
 @export var load_distance : int = 5
 @export var center_camera: Camera2D
@@ -9,6 +8,14 @@ const UPDATE_CHUNK_BATCH = 2
 @export var world_chunk_loader: WorldChunkLoader
 @export var world_chunk_generator: WorldChunkGenerator
 @export var entity_exit_world_handler: EntityExitWorldHandler
+
+const UPDATE_FRAMES = 3
+
+var update_chunk_batch: int:
+	get:
+		var num_chunks_to_treat = _chunks_to_store.size() + _chunks_to_load.size() + _chunks_to_generate.size()
+		var batch_size = 1 + (num_chunks_to_treat * num_chunks_to_treat/INCREASE_CHUNK_BATCH_CALCULATION_PER_CHUNK)
+		return batch_size
 
 var _center_chunk : Vector2i = Vector2i(0,0)
 var _active_chunks : Array[Vector2i] = []
@@ -22,17 +29,17 @@ var _chunk_datas: Dictionary = {}
 
 func _ready():
 	generate_everything_immidiately()
+	
 
 func _process(_delta):
 	update_chunk_arrays()
-	if Engine.get_frames_drawn() % UPDATE_FRAMES == 0:
-		# Prioritize loading chunks over generating and prioritize loading and generating chunks over storing
-		if not _chunks_to_load.is_empty():
-			load_chunks()
-		elif not _chunks_to_generate.is_empty():
-			generate_chunks()
-		elif not _chunks_to_store.is_empty():
-			store_chunks()
+	# Prioritize loading chunks over generating and prioritize loading and generating chunks over storing
+	if not _chunks_to_load.is_empty() and Engine.get_frames_drawn() % UPDATE_FRAMES == 0:
+		load_chunks()
+	elif not _chunks_to_generate.is_empty() and (Engine.get_frames_drawn() + UPDATE_FRAMES/3) % UPDATE_FRAMES == 0:
+		generate_chunks()
+	elif not _chunks_to_store.is_empty() and (Engine.get_frames_drawn() + (2*UPDATE_FRAMES/3)) % UPDATE_FRAMES == 0:
+		store_chunks()
 	uppdate_terrains()
 	entity_exit_world_handler.handle_entities_outise_world_border()
 
@@ -109,7 +116,7 @@ func update_chunk_arrays():
 
 func store_chunks():
 	var chunks_handled = 0
-	while not _chunks_to_store.is_empty() and chunks_handled < UPDATE_CHUNK_BATCH:
+	while not _chunks_to_store.is_empty() and chunks_handled < update_chunk_batch:
 		var chunk = _chunks_to_store.pop_back()
 		_chunk_datas[chunk] = world_chunk_loader.store_chunk(chunk)
 		_active_chunks.erase(chunk)
@@ -118,7 +125,7 @@ func store_chunks():
 
 func load_chunks():
 	var chunks_handled = 0
-	while not _chunks_to_load.is_empty() and chunks_handled < UPDATE_CHUNK_BATCH:
+	while not _chunks_to_load.is_empty() and chunks_handled < update_chunk_batch:
 		var chunk = _chunks_to_load.pop_back()
 		world_chunk_loader.load_chunk(_chunk_datas[chunk])
 		_active_chunks.append(chunk)
@@ -128,7 +135,7 @@ func load_chunks():
 
 func generate_chunks():
 	var chunks_handled = 0
-	while not _chunks_to_generate.is_empty() and chunks_handled < UPDATE_CHUNK_BATCH:
+	while not _chunks_to_generate.is_empty() and chunks_handled < update_chunk_batch:
 		var chunk = _chunks_to_generate.pop_back()
 		world_chunk_generator.generate_chunk(chunk)
 		_active_chunks.append(chunk)
@@ -138,7 +145,7 @@ func generate_chunks():
 func uppdate_terrains():
 	var tiles = []
 	var chunks_handled = 0
-	while not _chunks_to_update.is_empty() and chunks_handled < UPDATE_CHUNK_BATCH:
+	while not _chunks_to_update.is_empty() and chunks_handled < update_chunk_batch:
 		var chunk = _chunks_to_update.pop_back()
 		tiles.append_array(get_tiles_in(chunk))
 		chunks_handled += 1

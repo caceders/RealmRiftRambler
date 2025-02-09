@@ -1,0 +1,119 @@
+[gd_scene load_steps=13 format=3 uid="uid://bll2eifddoyuw"]
+
+[ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_mlt5n"]
+[ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="2_xjehb"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="2_yigfc"]
+[ext_resource type="Script" path="res://Tools/World/Generation/worldChunkGenerator.gd" id="3_48v06"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/entityExitWorldHandler.gd" id="4_j2s7f"]
+[ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="4_xtbmq"]
+[ext_resource type="Resource" uid="uid://dxj2rrfh02b7k" path="res://Tools/World/Generation/Generatable/PlainsGroundGeneratable.tres" id="5_wkb5a"]
+[ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="6_gbxhf"]
+[ext_resource type="Resource" uid="uid://wbmx8w1csk5q" path="res://Tools/World/Generation/Generatable/PondsGeneratable.tres" id="6_qrhpx"]
+[ext_resource type="Resource" uid="uid://b0kafcskte4l0" path="res://Tools/World/Generation/Generatable/RoadsGeneratable.tres" id="7_jeu84"]
+[ext_resource type="Resource" uid="uid://i2tqy6pe00s1" path="res://Tools/World/Generation/Generatable/PlainsGrassGeneratable.tres" id="8_0vf74"]
+
+[sub_resource type="GDScript" id="GDScript_aoxhs"]
+script/source = "class_name Generatable extends Resource
+
+enum TileMapLayerType {
+	GROUND,
+	ENTITIES,
+}
+
+enum PlacementType {
+	TERRAIN,
+	ENTITY,
+	TILE_TYPE_ONLY,
+}
+
+enum TileType {
+	GROUND,
+	WATER,
+	GRASS,
+	DIRT,
+	FLOWER,
+	## Non-terrains
+	STANDING_STONE,
+	FOREST,
+	ENTITY,
+}
+@export var name: String
+@export var noise: FastNoiseLite = FastNoiseLite.new()
+@export var generation_noise_floor: float = .5
+@export var tile_type: TileType
+@export var tile_map_layer_type: TileMapLayerType = TileMapLayerType.GROUND
+@export var placement_type: PlacementType
+@export var can_generate_on_anything: bool = false
+@export var can_generate_on_tiles: Array[TileType]
+@export var scenes: Array[SceneProbabilityPair] = []
+@export var is_4x4: bool = false
+
+func pick_random_scene_weighted() -> PackedScene:
+	var total_weights = 0
+	for scene_probability_pair in scenes:
+		total_weights += scene_probability_pair.weight
+	var random_point_in_total_weights = randf_range(0, total_weights)
+	var current_weight_top = 0
+	for scene_probability_pair in scenes:
+		current_weight_top += scene_probability_pair.weight
+		if random_point_in_total_weights < current_weight_top:
+			return scene_probability_pair.scene
+	return null
+
+class SceneProbabilityPair extends Resource:
+	@export var scene: PackedScene
+	@export var weight: float = 1
+"
+
+[node name="Node" type="Node"]
+
+[node name="World" type="Node" parent="." node_paths=PackedStringArray("center_camera", "world_chunk_loader", "world_chunk_generator", "entity_exit_world_handler", "ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("1_mlt5n")
+load_distance = 2
+center_camera = NodePath("../Camera2D")
+world_chunk_loader = NodePath("WorldChunkLoader")
+world_chunk_generator = NodePath("WorldChunkGenerator")
+entity_exit_world_handler = NodePath("EntityExitWorldHandler")
+ground_tile_map_layer = NodePath("Ground")
+entity_tile_map_layer = NodePath("Entities")
+
+[node name="WorldChunkLoader" type="Node" parent="World" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("2_yigfc")
+ground_tile_map_layer = NodePath("../Ground")
+entity_tile_map_layer = NodePath("../Entities")
+
+[node name="WorldChunkGenerator" type="Node" parent="World" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("3_48v06")
+generatables = Array[SubResource("GDScript_aoxhs")]([ExtResource("5_wkb5a"), ExtResource("6_qrhpx"), ExtResource("7_jeu84"), ExtResource("8_0vf74")])
+ground_tile_map_layer = NodePath("../Ground")
+entity_tile_map_layer = NodePath("../Entities")
+
+[node name="EntityExitWorldHandler" type="Node" parent="World" node_paths=PackedStringArray("world_handler")]
+script = ExtResource("4_j2s7f")
+world_handler = NodePath("..")
+
+[node name="Ground" type="TileMapLayer" parent="World"]
+tile_set = ExtResource("2_xjehb")
+
+[node name="Entities" type="TileMapLayer" parent="World"]
+y_sort_enabled = true
+tile_set = ExtResource("2_xjehb")
+
+[node name="Player" parent="World/Entities" instance=ExtResource("4_xtbmq")]
+position = Vector2(0, 0)
+collision_layer = 1
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("follow")]
+script = ExtResource("6_gbxhf")
+follow = NodePath("../World/Entities/Player")
+debug = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+scale = Vector2(0.2, 0.2)
+transform = Transform2D(0.2, 0, 0, 0.2, 0, 0)
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0

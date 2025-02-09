@@ -30,7 +30,7 @@ project/assembly_name="Tools"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/WFC/plugin.cfg", "res://addons/better-terrain/plugin.cfg", "res://addons/wfc/plugin.cfg")
+enabled=PackedStringArray("res://addons/WFC/plugin.cfg", "res://addons/better-terrain/plugin.cfg")
 
 [input]
 

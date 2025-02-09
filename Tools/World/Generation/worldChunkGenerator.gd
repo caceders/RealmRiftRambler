@@ -1,223 +1,86 @@
 class_name WorldChunkGenerator extends WorldChunkManipulator
 
-enum TileType {
-	GROUND,
-	WATER,
-	GRASS,
-	DIRT,
-	FLOWER,
-	STANDING_STONE,
-	FOREST,
-	ENTITY,
-}
-@export var noise_test: FastNoiseLite = FastNoiseLite.new()
-@export_group("Water")
-@export var water_noise: FastNoiseLite = FastNoiseLite.new()
-@export var water_generation_floor: float = .5
-
-@export_group("Grass")
-@export var grass_noise: FastNoiseLite = FastNoiseLite.new()
-@export var grass_generation_floor: float = 0
-
-@export_group("Dirt")
-@export var dirt_noise: FastNoiseLite = FastNoiseLite.new()
-@export var dirt_generation_floor: float = 0
-
-@export_group("Flower")
-@export var flower_noise: FastNoiseLite = FastNoiseLite.new()
-@export var flower_generation_floor: float = 0
-
-@export_group("Standing stones")
-@export var standing_stone_noise: FastNoiseLite = FastNoiseLite.new()
-@export var standing_stone_generation_floor: float = 0
-@export var standing_stone_packed_scenes: Array[PackedScene] = []
-
-@export_group("Buildings")
-@export var building_noise: FastNoiseLite = FastNoiseLite.new()
-@export var building_generation_floor: float = 0
-@export var building_packed_scenes: Array[PackedScene] = []
-
-@export_group("Forest")
-@export var forest_noise: FastNoiseLite = FastNoiseLite.new()
-@export var forest_generation_floor: float = 0
-
-@export_group("Tree")
-@export var tree_noise: FastNoiseLite = FastNoiseLite.new()
-@export var tree_generation_floor: float = .5
-@export var trees_packed_scenes: Array[PackedScene] = []
-
-@export_group("Animals")
-@export var animal_noise: FastNoiseLite = FastNoiseLite.new()
-@export var animal_generation_floor: float = .5
-@export var animal_packed_scenes: Array[PackedScene] = []
-
-@export_group("Enemy")
-@export var enemy_noise: FastNoiseLite = FastNoiseLite.new()
-@export var enemy_generation_floor: float = .5
-@export var enemy_packed_scenes: Array[PackedScene] = []
+@export var generatables: Array[Generatable] = []
 
 func generate_chunk(chunk_coordinate: Vector2i):
 	var tile_types = {}
 	var tiles = get_tiles_in(chunk_coordinate)
-	# Place ground
-	for tile in tiles:
-		BetterTerrain.set_cell(ground_tile_map_layer, tile, TileType.GROUND)
-		tile_types[tile] = TileType.GROUND
+
+	for generatable in generatables:
+		# Place generatable
+		for tile in tiles:
+			var noise_pos = tile
+			if generatable.is_4x4:
+				# make 4 by 4 tiles together to match with tileset
+				if noise_pos.x % 2 != 0: noise_pos.x -= 1
+				if noise_pos.y % 2 != 0: noise_pos.y -= 1
+
+			## Skip if noise not over generation floor
+			if generatable.noise.get_noise_2d(noise_pos.x, noise_pos.y) < generatable.generation_noise_floor:
+				continue
+
+			if generatable.placement_type == generatable.PlacementType.ENTITY:
+				_place_entity(tile, generatable, tile_types)
+			else:
+				## tile_types[tile] is not guaranteed to exist. Check if not exists or if generatable can generate on anything 
+				if not tile_types.has(tile) or generatable.can_generate_on_anything:
+					_place_tile(tile, generatable, tile_types)
+
+				## if generatable cannot generate on everything and tile has a tiletype then check the tiletype
+				elif tile_types[tile] in generatable.can_generate_on_tiles:
+					_place_tile(tile, generatable, tile_types)
+
+func _place_tile(tile, generatable, tile_types):
+	if generatable.placement_type == generatable.PlacementType.TERRAIN:
+		var tile_map_layer: TileMapLayer
+		if generatable.tile_map_layer_type == generatable.TileMapLayerType.GROUND:
+			tile_map_layer = ground_tile_map_layer
+		elif generatable.tile_map_layer_type == generatable.TileMapLayerType.ENTITIES:
+			tile_map_layer = entity_tile_map_layer
+		BetterTerrain.set_cell(tile_map_layer, tile, generatable.tile_type)
+		tile_types[tile] = generatable.tile_type
+
+	if generatable.placement_type == generatable.PlacementType.TILE_TYPE_ONLY:
+		tile_types[tile] = generatable.tile_type
+
+func _place_entity(tile: Vector2i, generatable: Generatable, tile_types: Dictionary):
 	
-	# Place water
-	for tile in tiles:
-		# make 4 by 4 tiles have water together to match with tileset
-		var noise_pos = tile
-		if noise_pos.x % 2 != 0: noise_pos.x -= 1
-		if noise_pos.y % 2 != 0: noise_pos.y -= 1
-
-		if water_noise.get_noise_2d(noise_pos.x, noise_pos.y) > water_generation_floor:
-			BetterTerrain.set_cell(ground_tile_map_layer, tile, TileType.WATER)
-			tile_types[tile] = TileType.WATER
-
-	# Place grass
-	for tile in tiles:
-		# make 4 by 4 tiles have grass together to match with tileset
-		var noise_pos = tile
-		if noise_pos.x % 2 != 0: noise_pos.x -= 1
-		if noise_pos.y % 2 != 0: noise_pos.y -= 1
-
-		if grass_noise.get_noise_2d(noise_pos.x, noise_pos.y) > grass_generation_floor and _could_tile_be_water_scaled(tile):
-			BetterTerrain.set_cell(ground_tile_map_layer, tile, TileType.GRASS)
-			tile_types[tile] = TileType.GRASS
-	
-	# Place roads
-	for tile in tiles:
-		# make 4 by 4 tiles have dirt together to match with tileset
-		var noise_pos = tile
-		if noise_pos.x % 2 != 0: noise_pos.x -= 1
-		if noise_pos.y % 2 != 0: noise_pos.y -= 1
-
-		if dirt_noise.get_noise_2d(noise_pos.x, noise_pos.y) > dirt_generation_floor and _could_tile_be_water_scaled(tile):
-			BetterTerrain.set_cell(ground_tile_map_layer, tile, TileType.DIRT)
-			tile_types[tile] = TileType.DIRT
-	
-	# Place flowers
-	for tile in tiles:
-		var noise_pos = tile
-
-		if flower_noise.get_noise_2d(noise_pos.x, noise_pos.y) > flower_generation_floor and not _could_tile_be_water(tile):
-			if tile_types[tile] != TileType.DIRT:
-				BetterTerrain.set_cell(entity_tile_map_layer, tile, TileType.FLOWER)
-				tile_types[tile] = TileType.FLOWER
-	
-	# Place standing stones
-	for tile in tiles:
-		var noise_pos = tile
-
-		if standing_stone_noise.get_noise_2d(noise_pos.x, noise_pos.y) > standing_stone_generation_floor and not _could_tile_be_water(tile):
-			if tile_types[tile] != TileType.DIRT:
-				_place_entity(tile, standing_stone_packed_scenes, tile_types)
-
-	# Place buildings
-	for tile in tiles:
-		var noise_pos = tile
-
-		if building_noise.get_noise_2d(noise_pos.x, noise_pos.y) > building_generation_floor and not _could_tile_be_water(tile):
-			if tile_types[tile] != TileType.DIRT:
-				_place_entity(tile, building_packed_scenes, tile_types)
-
-	# Place forest
-	for tile in tiles:
-		if forest_noise.get_noise_2d(tile.x, tile.y) > forest_generation_floor:
-			if _could_tile_be_water(tile) or tile_types[tile] == TileType.DIRT: continue
-			tile_types[tile] = TileType.FOREST
-
-	# Place trees
-	for tile in tiles:
-		if tree_noise.get_noise_2d(tile.x, tile.y) > tree_generation_floor and tile_types[tile] == TileType.FOREST:
-			_place_entity(tile, trees_packed_scenes, tile_types)
-
-	# Place animals
-	for tile in tiles:
-		if animal_noise.get_noise_2d(tile.x, tile.y) > animal_generation_floor:
-			_place_entity(tile, animal_packed_scenes, tile_types)
-
-	# Place enemies
-	for tile in tiles:
-		if enemy_noise.get_noise_2d(tile.x, tile.y) > enemy_generation_floor:
-			_place_entity(tile, enemy_packed_scenes, tile_types)
-
-func _place_entity(tile: Vector2i, packed_scenes: Array [PackedScene], tile_types: Dictionary):
-	if packed_scenes.is_empty():
-		return
-	var packed_scene = packed_scenes.pick_random()
-	if packed_scene == null:
-		return
+	var packed_scene = generatable.pick_random_scene_weighted()
 	var scene = packed_scene.instantiate() as Node2D
 	entity_tile_map_layer.add_child(scene)
 	var occupies_tiles = null
 	if scene is ScenePlacer:
 		occupies_tiles = scene.get_all_occupied_tiles(entity_tile_map_layer)
 	else:
-		occupies_tiles = get_all_occupied_tiles(scene)
+		occupies_tiles = _get_all_occupied_tiles(scene)
 	var can_spawn = true
-	for occupied_tile in occupies_tiles:
-		if tile_types.has(tile + occupied_tile):
-			if tile_types[tile + occupied_tile] == TileType.ENTITY or tile_types[tile] == TileType.DIRT:
-				can_spawn = false
-				break
+	if not generatable.can_generate_on_anything:
+		for occupied_tile in occupies_tiles:
+			if tile_types.has(tile + occupied_tile):
+				if not tile_types[tile + occupied_tile] in generatable.can_generate_on_tiles:
+					can_spawn = false
+					break
+			else:
+				var tile_type = _get_tile_pre_generation(tile)
+				if tile_type not in generatable.can_generate_on_tiles:
+					can_spawn = false
+					break
 
-		if _could_tile_be_water(tile + occupied_tile):
-			can_spawn = false
-			break
 
 	if can_spawn:
-		tile_types[tile] = TileType.ENTITY
+		tile_types[tile] = generatable.TileType.ENTITY
 		scene.position = entity_tile_map_layer.map_to_local(tile)
 	else:
 		scene.queue_free()
 
-func _could_tile_be_water(tile):
-	var noise_pos = tile
-	if noise_pos.x % 2 != 0: noise_pos.x -= 1
-	if noise_pos.y % 2 != 0: noise_pos.y -= 1
-	if water_noise.get_noise_2d(noise_pos.x, noise_pos.y) > water_generation_floor:
-		return true
-	return false
 
-func _is_tile_not_next_to_water(tile: Vector2i):
-	if _could_tile_be_water(tile): return false
-	if _could_tile_be_water(tile + Vector2i(1,0)): return false
-	if _could_tile_be_water(tile + Vector2i(0,1)): return false
-	if _could_tile_be_water(tile + Vector2i(-1,0)): return false
-	if _could_tile_be_water(tile + Vector2i(0,-1)): return false
-	return true
-
-func _could_tile_be_water_scaled(tile: Vector2i):
-	if tile.x % 2 != 0: tile.x -= 1
-	if tile.y % 2 != 0: tile.y -= 1
-	if _could_tile_be_water(tile + Vector2i(0,0)): return false
-	if _could_tile_be_water(tile + Vector2i(0,-1)): return false
-	if _could_tile_be_water(tile + Vector2i(-1,0)): return false
-	if _could_tile_be_water(tile + Vector2i(-1,-1)): return false
-
-
-
-	return true
-
-func _is_tile_occupied(tile_types: Dictionary, tile:Vector2i):
-	if tile_types[tile] == TileType.WATER : return true
-	if tile_types[tile] == TileType.ENTITY : return true
-	return false
-
-func get_all_occupied_tiles(entity: Node2D) -> Array[Vector2i]:
+func _get_all_occupied_tiles(entity: Node2D) -> Array[Vector2i]:
 	var tiles: Array[Vector2i] = []
 	if not entity.has_node("HitBox"):
 		return []
 	var hitbox = entity.get_node("HitBox") as HitBox
 	var top_left = (entity.global_position - hitbox.circle_shape.radius*Vector2.ONE/2)
 	var bottom_right = (entity.global_position + hitbox.circle_shape.radius*Vector2.ONE/2)
-	# var color_rect = ColorRect.new()
-	# color_rect.color = Color.RED
-	# color_rect.position = - hitbox.circle_shape.radius*Vector2.ONE/2
-	# color_rect.size = hitbox.circle_shape.radius*Vector2.ONE
-	# child.add_child(color_rect)  # Add the ColorRect to the scene
 	var start_tile = entity_tile_map_layer.local_to_map(top_left)
 	var end_tile = entity_tile_map_layer.local_to_map(bottom_right)
 	for x in range(start_tile.x, end_tile.x + 1):
@@ -226,3 +89,23 @@ func get_all_occupied_tiles(entity: Node2D) -> Array[Vector2i]:
 		
 	
 	return tiles
+
+func _get_tile_pre_generation(tile) -> Generatable.TileType:
+	var tile_type: Generatable.TileType
+	for generatable in generatables:
+		var noise_pos = tile
+		if generatable.is_4x4:
+			# make 4 by 4 tiles together to match with tileset
+			if noise_pos.x % 2 != 0: noise_pos.x -= 1
+			if noise_pos.y % 2 != 0: noise_pos.y -= 1
+
+		## Skip if noise not over generation floor
+		if generatable.noise.get_noise_2d(tile.x, tile.y) < generatable.generation_noise_floor:
+			continue
+		else:
+			if generatable.can_generate_on_anything or tile_type in generatable.can_generate_on_tiles:
+				if generatable.placement_type == generatable.PlacementType.TERRAIN:
+					tile_type = generatable.tile_type
+				if generatable.placement_type == generatable.PlacementType.TILE_TYPE_ONLY:
+					tile_type = generatable.tile_type
+	return tile_type

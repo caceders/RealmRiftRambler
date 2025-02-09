@@ -224,9 +224,6 @@ z_index = 1
 position = Vector2(13, 184)
 collision_layer = 1
 
-[node name="Shadow" parent="Objects/RabbitBase" index="0"]
-offset = Vector2(-0.5, -0.0799999)
-
 [node name="Sprite2D" parent="Objects/RabbitBase" index="4"]
 texture = SubResource("AtlasTexture_0ku8l")
 

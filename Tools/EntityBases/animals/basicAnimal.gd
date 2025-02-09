@@ -9,7 +9,10 @@ enum Direction {
 @onready var top_down_entity_2D: TopDownEntity2D = $TopDownEntity2D
 @onready var health: DamageReceiver = $DamageReceiver
 @onready var animation_player_controller: AnimationPlayerController = $AnimationPlayerController
+@onready var strafer: Strafer = $Strafer
+@onready var chaser_evader: ChaserEvader = $ChaserEvader
 
+var last_chaser_evader_is_reacting: bool = false
 var _last_movement_direction = Direction.LEFT
 
 func _ready():
@@ -36,3 +39,11 @@ func _process(delta):
 			animation_player_controller.play_base_animation("animalIdleRight")
 		else:
 			animation_player_controller.play_base_animation("animalIdleLeft")
+
+func strafe_or_chase_and_evade():
+	if last_chaser_evader_is_reacting != chaser_evader.is_reacting:
+		last_chaser_evader_is_reacting = chaser_evader.is_reacting
+		if last_chaser_evader_is_reacting:
+			strafer.disable()
+		else:
+			strafer.enable()
