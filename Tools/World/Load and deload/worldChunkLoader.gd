@@ -13,20 +13,26 @@ func store_chunk(coord: Vector2i):
 	var ground_tile_datas = []
 	for tile in tiles:
 		var tile_data = {}
+		var tile_id = BetterTerrain.get_cell(ground_tile_map_layer, tile)
+		# Dont store empty tiles
+		if tile_id == -1: continue
 		tile_data["coordinate"] = tile
-		tile_data["terrain_id"] = BetterTerrain.get_cell(ground_tile_map_layer, tile)
+		tile_data["terrain_id"] = tile_id
 		ground_tile_datas.append(tile_data)
 		# Remove tile
-		BetterTerrain.set_cell(entity_tile_map_layer, tile, -1)
+		BetterTerrain.set_cell(ground_tile_map_layer, tile, -1)
 	
 	var entity_tile_datas = []
 	for tile in tiles:
 		var tile_data = {}
+		var tile_id = BetterTerrain.get_cell(entity_tile_map_layer, tile)
+		# Dont store empty tiles
+		if tile_id == -1: continue
 		tile_data["coordinate"] = tile
-		tile_data["terrain_id"] = BetterTerrain.get_cell(entity_tile_map_layer, tile)
+		tile_data["terrain_id"] = tile_id
 		entity_tile_datas.append(tile_data)
 		# Remove tile
-		BetterTerrain.set_cell(ground_tile_map_layer, tile, -1)
+		BetterTerrain.set_cell(entity_tile_map_layer, tile, -1)
 	
 	
 	# Store entities
@@ -71,11 +77,11 @@ func store_chunk(coord: Vector2i):
 
 func load_chunk(chunk_data: Dictionary):
 
-	## load tiles
+	## load ground tiles
 	for tile_data in chunk_data["ground_tiles"]:
 		BetterTerrain.set_cell(ground_tile_map_layer, tile_data["coordinate"], tile_data["terrain_id"])
 	
-	## load tiles
+	## load entity tiles
 	for tile_data in chunk_data["entity_tiles"]:
 		BetterTerrain.set_cell(entity_tile_map_layer, tile_data["coordinate"], tile_data["terrain_id"])
 	

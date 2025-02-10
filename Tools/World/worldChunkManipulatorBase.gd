@@ -33,8 +33,8 @@ func get_chunks_in(tile_start: Vector2i, tile_end: Vector2i):
 func get_tiles_in(chunk_coord: Vector2i):
 	var tiles = []
 	var tiles_start = chunk_coord * CHUNK_SIZE_TILES
+	# Need to go from start to and inclusive end, therefore pluss vector one
 	var tiles_end = (chunk_coord + Vector2i.ONE) * CHUNK_SIZE_TILES
-	# Need to go from start to and inclusive end
 	for x in range(tiles_start.x, tiles_end.x):
 		for y in range(tiles_start.y, tiles_end.y):
 			tiles.append(Vector2i(x,y))

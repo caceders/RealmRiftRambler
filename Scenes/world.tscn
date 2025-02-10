@@ -228,12 +228,7 @@ collision_layer = 1
 texture = SubResource("AtlasTexture_0ku8l")
 
 [node name="Strafer" parent="Objects/RabbitBase" index="6"]
-enabled = true
 strafe_centrum_type = 1
-max_stand_still_time = 5.0
-min_strafe_distance = 10.0
-strafe_weight = Vector2(0, 0)
-set_strafe_centrum_position = Vector2(0, 0)
 
 [node name="AppearDisappearAnimationPlayer" parent="Objects/RabbitBase/AppearDisappear" index="0"]
 libraries = {

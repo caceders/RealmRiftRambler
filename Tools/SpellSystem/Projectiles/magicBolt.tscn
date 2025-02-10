@@ -32,6 +32,7 @@ _data = {
 script = ExtResource("1_ywngv")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -4)
 texture = SubResource("AtlasTexture_hrinv")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

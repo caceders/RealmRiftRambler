@@ -947,7 +947,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_tt7km"]
+[sub_resource type="Resource" id="Resource_pbo3t"]
 resource_local_to_scene = true
 script = ExtResource("21_sm8ex")
 node_path = "DamageReceiver"
@@ -1027,7 +1027,7 @@ lock_on_display_sprite_packed_scene = ExtResource("16_85ul6")
 key_sequence_recoder = NodePath("../KeySequenceRecoder")
 
 [node name="DeloadPersistance" parent="." index="17"]
-deload_persistant_data = Array[ExtResource("21_sm8ex")]([SubResource("Resource_tt7km")])
+deload_persistant_data = Array[ExtResource("21_sm8ex")]([SubResource("Resource_pbo3t")])
 
 [node name="ResourceCollector" type="Node2D" parent="." index="18"]
 script = ExtResource("18_ckd2h")

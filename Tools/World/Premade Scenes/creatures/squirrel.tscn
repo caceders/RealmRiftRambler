@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://blufndq12nju0"]
-
-[ext_resource type="Script" path="res://Tools/World/Premade Scenes/scenePlacer.gd" id="1_w1ax6"]
-[ext_resource type="PackedScene" uid="uid://couhlepbf8cgj" path="res://Tools/EntityBases/animals/squirrelBase.tscn" id="1_w7iny"]
-
-[node name="Squirrel" type="Node2D"]
-script = ExtResource("1_w1ax6")
-
-[node name="SquirrelBase" parent="." instance=ExtResource("1_w7iny")]
