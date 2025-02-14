@@ -28,6 +28,7 @@ enum Direction {
 @onready var key_sequence_recoder: keySequenceRecoder = $KeySequenceRecoder
 @onready var sequence_decoder: SequenceDecoder = $SequenceDecoder
 @onready var targeter: Targeter = $Targeter
+@onready var interactor: Interactor = $Interactor
 
 var _active_state = State.PASSIVE
 var _last_movement_direction = Direction.LEFT
@@ -62,6 +63,13 @@ func _state_process():
 				elif targeter.lock_on:
 					targeter.end_lock_on()
 			_movement()
+			if Input.is_action_just_pressed("interact"):
+				var target_children = targeter.target.get_children()
+				for child in target_children:
+					if child is Interactable:
+						var interactable = child as Interactable
+						interactable.interact(interactor)
+
 			return
 		State.HURT:
 			_enter_state(State.PASSIVE)

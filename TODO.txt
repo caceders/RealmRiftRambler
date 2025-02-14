@@ -1,11 +1,3 @@
-v Fix the chaser evader script to consider all entities in vision, not just the ones entering or exiting
-v Fix the healthbar oscillating between low and high - see the squirrel (implicitly fixed?)
-- Add more interesting objects in world map
-- Create more types of enemies
-- Create more spells
-- Create some kind of currency - bones?
-- Enhance the world generation. Make a more complete system
-v Fix bug where strafing entities are stuck on trees
-- Json.stringify is slow and world generation and tile serialization is slow. Only do this on enter and exit game
-	-i.e optimize world chunk handler to not use file system
-- Currently the targeter is able to target the ground tile layer. Fix
+- Clean up everything
+	-	Clean up world generation
+	-	Clean up loading and deload system

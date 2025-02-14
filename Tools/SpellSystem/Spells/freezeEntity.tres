@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="Spell" load_steps=12 format=3 uid="uid://b4xaycf5c2r1n"]
 
-[ext_resource type="Script" path="res://Tools/SpellSystem/spell.gd" id="1_movqi"]
-[ext_resource type="Script" path="res://Tools/SpellSystem/spellComponent.gd" id="2_ft2fn"]
-[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/parallellSpellComponent.gd" id="3_gclby"]
-[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/changeColorSpellComponent.gd" id="5_it0vf"]
-[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/freezeSpellComponent.gd" id="5_n70bx"]
-[ext_resource type="PackedScene" uid="uid://c8vbff5t327pf" path="res://Tools/SpellSystem/OverlayAnimations/FreezeSpellOverlayAnimation.tscn" id="6_xv3j4"]
-[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/spellAnimationOverlay.gd" id="7_qiia3"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/spell.gd" id="1_movqi"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/spellComponent.gd" id="2_ft2fn"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/SpellComponents/parallellSpellComponent.gd" id="3_gclby"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/SpellComponents/changeColorSpellComponent.gd" id="5_it0vf"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/SpellComponents/freezeSpellComponent.gd" id="5_n70bx"]
+[ext_resource type="PackedScene" uid="uid://c8vbff5t327pf" path="res://Tools/SpellSystem/Spells/OverlayAnimations/FreezeSpellOverlayAnimation.tscn" id="6_xv3j4"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/SpellComponents/spellAnimationOverlay.gd" id="7_qiia3"]
 
 [sub_resource type="Resource" id="Resource_a2guy"]
 resource_local_to_scene = true

@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://bbm5p2cd0r48e"]
+
+[ext_resource type="Script" path="res://Tools/World/Generation/Generatables/premadeGeneratable.gd" id="1_f0k5m"]
+[ext_resource type="Script" path="res://Tools/World/tileMapLayerWithExtraTileData.gd" id="3_7cnyv"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="4_ch0pk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4oxqj"]
+frequency = 1.0
+
+[node name="PremadeGeneratable" type="Node" node_paths=PackedStringArray("world_chunk_loader", "premade_ground_tile_map_layer", "premade_entity_tile_map_layer")]
+script = ExtResource("1_f0k5m")
+world_chunk_loader = NodePath("WorldChunkLoader")
+premade_ground_tile_map_layer = NodePath("PremadeGroundTilemap")
+premade_entity_tile_map_layer = NodePath("PremadeEntityTilemap")
+noise = SubResource("FastNoiseLite_4oxqj")
+
+[node name="PremadeGroundTilemap" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+script = ExtResource("3_7cnyv")
+
+[node name="PremadeEntityTilemap" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+script = ExtResource("3_7cnyv")
+
+[node name="WorldChunkLoader" type="Node" parent="." node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("4_ch0pk")
+ground_tile_map_layer = NodePath("../PremadeGroundTilemap")
+entity_tile_map_layer = NodePath("../PremadeEntityTilemap")

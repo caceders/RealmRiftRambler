@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://Tools/HitBox/hitBox.gd" id="5_5tvkh"]
 [ext_resource type="Script" path="res://Scripts/appearDisappear.gd" id="6_jjrbe"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="7_luv08"]
-[ext_resource type="PackedScene" uid="uid://dlv0o8iya373b" path="res://Tools/World/Load and deload/deloadPersistance.tscn" id="10_fbg38"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/deloadPersistance.gd" id="9_anfqf"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="11_jg4ph"]
 [ext_resource type="Script" path="res://Tools/ResourcePool/ResourceCollector/ResourceDropSpawn/resourceDropSpawnOnDeath.gd" id="11_w3y4c"]
 [ext_resource type="PackedScene" uid="uid://utp4nglghxno" path="res://Tools/ResourcePool/ResourceCollector/ResourceDropSpawn/resourceDropSpawn.tscn" id="12_wimrl"]
@@ -201,14 +201,13 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_ol3o7"]
+[sub_resource type="Resource" id="Resource_hpj12"]
 resource_local_to_scene = true
 script = ExtResource("11_jg4ph")
 node_path = "DamageReceiver"
 property = "_amount"
 
 [node name="EntityBase" type="CharacterBody2D" groups=["Damagable", "Targetable"]]
-position = Vector2(-1, 0)
 collision_layer = 3
 motion_mode = 1
 wall_min_slide_angle = 0.0
@@ -260,8 +259,9 @@ texture = SubResource("AtlasTexture_ushcn")
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="."]
 radius = 2.0
 
-[node name="DeloadPersistance" parent="." instance=ExtResource("10_fbg38")]
-deload_persistant_data = Array[ExtResource("11_jg4ph")]([SubResource("Resource_ol3o7")])
+[node name="DeloadPersistance" type="Node" parent="."]
+script = ExtResource("9_anfqf")
+deload_persistant_data = Array[ExtResource("11_jg4ph")]([SubResource("Resource_hpj12")])
 
 [node name="ResourceDropSpawnOnDeath" type="Node" parent="." node_paths=PackedStringArray("health", "resource_drop_spawn")]
 script = ExtResource("11_w3y4c")

@@ -194,7 +194,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_evy1g"]
+[sub_resource type="Resource" id="Resource_xtluq"]
 resource_local_to_scene = true
 script = ExtResource("5_iy7hn")
 node_path = "DamageReceiver"
@@ -877,9 +877,6 @@ _data = {
 [node name="OrcBase" instance=ExtResource("1_e02sq")]
 script = ExtResource("2_usmj7")
 
-[node name="Shadow" parent="." index="0"]
-offset = Vector2(-4, -1.03833)
-
 [node name="DamageReceiver" parent="." index="2"]
 max_amount = 75.0
 _amount = 75.0
@@ -908,7 +905,7 @@ texture = SubResource("AtlasTexture_ushcn")
 hostile_groups = Array[String](["Player", "Animal"])
 
 [node name="DeloadPersistance" parent="." index="17"]
-deload_persistant_data = Array[ExtResource("5_iy7hn")]([SubResource("Resource_evy1g"), SubResource("Resource_uknp2")])
+deload_persistant_data = Array[ExtResource("5_iy7hn")]([SubResource("Resource_xtluq"), SubResource("Resource_uknp2")])
 
 [node name="AnimationPlayerController" type="AnimationPlayer" parent="." index="18"]
 libraries = {

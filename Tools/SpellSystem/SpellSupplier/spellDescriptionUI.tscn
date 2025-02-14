@@ -1,0 +1,134 @@
+[gd_scene load_steps=11 format=3 uid="uid://yokqp6py1s2f"]
+
+[ext_resource type="Script" path="res://Tools/SpellSystem/SpellSupplier/spellDescriptionUI.gd" id="1_uwdnf"]
+[ext_resource type="Texture2D" uid="uid://ccqvdlbcew0jd" path="res://Assets/SpellDescriptionImages/MagicBolt.png" id="2_kr5l5"]
+[ext_resource type="Texture2D" uid="uid://dlwry505rmb3t" path="res://Assets/Minifantasy_Userinterface_Assets/Menus/Panels_And_Slots/Minifantasy_GuiPanelsAndSlotsOriginal.png" id="3_ilrrh"]
+[ext_resource type="FontFile" uid="uid://dn2b8ajx1kyl5" path="res://Assets/Fonts/m5x7.ttf" id="4_jfpcq"]
+[ext_resource type="Texture2D" uid="uid://c2bbk0givp3v7" path="res://Assets/Minifantasy_CraftingAndProfessions2_Assets/Gathering_Professions/Hunting/Minifantasy_CraftingAndProfessions2AnimalIcons.png" id="5_a0l4t"]
+[ext_resource type="Texture2D" uid="uid://digs3674anwcx" path="res://Assets/UI_custom/checkmark.png" id="6_or2wi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sa622"]
+atlas = ExtResource("3_ilrrh")
+region = Rect2(48, 48, 48, 48)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j6rxo"]
+texture = SubResource("AtlasTexture_sa622")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="Theme" id="Theme_0ojav"]
+default_font = ExtResource("4_jfpcq")
+Panel/styles/panel = SubResource("StyleBoxTexture_j6rxo")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eo53y"]
+atlas = ExtResource("5_a0l4t")
+region = Rect2(48, 32, 8, 8)
+
+[node name="SpellDescription" type="Node2D" node_paths=PackedStringArray("spell_image", "description", "cost", "bottom", "checkmark")]
+script = ExtResource("1_uwdnf")
+spell_image = NodePath("Control/PanelContainer/MarginContainer/VBoxContainer/SpellImage")
+description = NodePath("Control/PanelContainer/MarginContainer/VBoxContainer/Description")
+cost = NodePath("Control/PanelContainer/MarginContainer/VBoxContainer/bottom/Cost")
+bottom = NodePath("Control/PanelContainer/MarginContainer/VBoxContainer/bottom")
+checkmark = NodePath("Control/PanelContainer/MarginContainer/VBoxContainer/Checkmark")
+spell_description_image = ExtResource("2_kr5l5")
+spell_description_text = "2034572890"
+
+[node name="Control" type="Control" parent="."]
+z_index = 5
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -43.0
+offset_top = -26.0
+offset_right = 43.0
+offset_bottom = 26.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = SubResource("Theme_0ojav")
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+custom_minimum_size = Vector2(75, 60)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.0
+offset_top = -30.0
+offset_right = 21.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SpellImage" type="TextureRect" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
+modulate = Color(1, 1, 1, 0.764706)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_kr5l5")
+
+[node name="Description" type="Label" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.67451)
+text = "lol"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="bottom" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Bone" type="TextureRect" parent="Control/PanelContainer/MarginContainer/VBoxContainer/bottom"]
+modulate = Color(1, 1, 1, 0.698039)
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.0
+texture = SubResource("AtlasTexture_eo53y")
+
+[node name="x" type="Label" parent="Control/PanelContainer/MarginContainer/VBoxContainer/bottom"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.517647)
+text = "x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Cost" type="Label" parent="Control/PanelContainer/MarginContainer/VBoxContainer/bottom"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.67451)
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Checkmark" type="TextureRect" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+modulate = Color(1, 1, 1, 0.588235)
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("6_or2wi")

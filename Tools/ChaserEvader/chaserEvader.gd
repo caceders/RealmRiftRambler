@@ -68,8 +68,9 @@ func _process(delta):
 					behavior = BehaviorType.EVADE
 					break
 
-	# If still no body of interest return
+	# If still no body of interest then stop and return
 	if react_to_body == null:
+		entity.direction = Vector2i(0,0)
 		return
 
 	# Run away or towards body - ###if no path is found just move as close/far as possible###

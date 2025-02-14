@@ -1,14 +1,15 @@
-[gd_resource type="Resource" script_class="Spell" load_steps=14 format=3 uid="uid://dctmcc743dlf4"]
+[gd_resource type="Resource" script_class="Spell" load_steps=15 format=3 uid="uid://dctmcc743dlf4"]
 
-[ext_resource type="Script" path="res://Tools/SpellSystem/spell.gd" id="1_6q54r"]
-[ext_resource type="Script" path="res://Tools/SpellSystem/spellComponent.gd" id="2_xj04k"]
-[ext_resource type="PackedScene" uid="uid://dswnm4hgmcuum" path="res://Tools/SpellSystem/Projectiles/magicBolt.tscn" id="3_f7tnu"]
-[ext_resource type="PackedScene" uid="uid://b8m2bcmu8i4w6" path="res://Tools/SpellSystem/OverlayAnimations/SpellCastSpellOverlayAnimation.tscn" id="3_s2l13"]
-[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/projectileSpellComponent.gd" id="4_1ta2r"]
-[ext_resource type="PackedScene" uid="uid://mgreyt5ch36q" path="res://Tools/SpellSystem/Projectiles/Particles/magicParticles.tscn" id="5_ocnbb"]
-[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/damageSpellComponent.gd" id="6_aaj11"]
-[ext_resource type="PackedScene" uid="uid://ba03pexhaeoed" path="res://Tools/SpellSystem/OverlayAnimations/DamageSpellOverlayAnimation.tscn" id="7_v5ru3"]
-[ext_resource type="Script" path="res://Tools/SpellSystem/SpellComponents/spellAnimationOverlay.gd" id="8_i55hc"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/spell.gd" id="1_6q54r"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/spellComponent.gd" id="2_xj04k"]
+[ext_resource type="PackedScene" uid="uid://dswnm4hgmcuum" path="res://Tools/SpellSystem/Spells/Projectiles/magicBolt.tscn" id="3_f7tnu"]
+[ext_resource type="PackedScene" uid="uid://b8m2bcmu8i4w6" path="res://Tools/SpellSystem/Spells/OverlayAnimations/SpellCastSpellOverlayAnimation.tscn" id="3_s2l13"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/SpellComponents/projectileSpellComponent.gd" id="4_1ta2r"]
+[ext_resource type="PackedScene" uid="uid://mgreyt5ch36q" path="res://Tools/SpellSystem/Spells/Projectiles/Particles/magicParticles.tscn" id="5_ocnbb"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/SpellComponents/damageSpellComponent.gd" id="6_aaj11"]
+[ext_resource type="PackedScene" uid="uid://ba03pexhaeoed" path="res://Tools/SpellSystem/Spells/OverlayAnimations/DamageSpellOverlayAnimation.tscn" id="7_v5ru3"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/SpellComponents/spellAnimationOverlay.gd" id="8_i55hc"]
+[ext_resource type="Texture2D" uid="uid://ccqvdlbcew0jd" path="res://Assets/SpellDescriptionImages/MagicBolt.png" id="10_hlnko"]
 
 [sub_resource type="Resource" id="Resource_ucxjv"]
 script = ExtResource("8_i55hc")
@@ -40,4 +41,5 @@ target = 1
 
 [resource]
 script = ExtResource("1_6q54r")
+spell_image = ExtResource("10_hlnko")
 spell_components = Array[ExtResource("2_xj04k")]([SubResource("Resource_ucxjv"), SubResource("Resource_d5upk"), SubResource("Resource_gppc1"), SubResource("Resource_n8ji0")])

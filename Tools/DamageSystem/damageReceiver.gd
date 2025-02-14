@@ -2,7 +2,7 @@ class_name DamageReceiver extends ResourcePool
 
 signal damage_received(	)
 
-@onready var ignore_all_damage: bool = false
+@export var ignore_all_damage: bool = false
 
 func damage(p_amount, knockback, damage_dealer: DamageDealer):
 	if not ignore_all_damage:

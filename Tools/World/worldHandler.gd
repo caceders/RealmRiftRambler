@@ -7,16 +7,8 @@ const INCREASE_CHUNK_BATCH_CALCULATION_PER_CHUNK = 300
 
 @export var world_chunk_loader: WorldChunkLoader
 @export var world_chunk_generator: WorldChunkGenerator
-@export var entity_exit_world_handler: EntityExitWorldHandler
 
 const UPDATE_FRAMES = 3
-
-var update_chunk_batch: int:
-	get:
-		var num_chunks_to_treat = _chunks_to_store.size() + _chunks_to_load.size() + _chunks_to_generate.size()
-		var batch_size = 1 + (num_chunks_to_treat * num_chunks_to_treat/INCREASE_CHUNK_BATCH_CALCULATION_PER_CHUNK)
-		return batch_size
-
 var _center_chunk : Vector2i = Vector2i(0,0)
 var _active_chunks : Array[Vector2i] = []
 
@@ -30,43 +22,43 @@ var _chunk_datas: Dictionary = {}
 func _ready():
 	generate_everything_immidiately()
 	
-
 func _process(_delta):
-	update_chunk_arrays()
-	# Prioritize loading chunks over generating and prioritize loading and generating chunks over storing
+	_update_chunk_arrays()
+
+	# Prioritize loading chunks over generating and prioritize loading and generating chunks over storing.
 	if not _chunks_to_load.is_empty() and Engine.get_frames_drawn() % UPDATE_FRAMES == 0:
-		load_chunks()
+		_load_chunks()
 	elif not _chunks_to_generate.is_empty() and (Engine.get_frames_drawn() + UPDATE_FRAMES/3) % UPDATE_FRAMES == 0:
-		generate_chunks()
+		_generate_chunks()
 	elif not _chunks_to_store.is_empty() and (Engine.get_frames_drawn() + (2*UPDATE_FRAMES/3)) % UPDATE_FRAMES == 0:
-		store_chunks()
-	uppdate_terrains()
-	entity_exit_world_handler.handle_entities_outise_world_border()
+		_store_chunks()
+	_uppdate_terrains()
+	_handle_entities_outside_load_distance()
 
 func generate_everything_immidiately():
-	update_chunk_arrays()
+	_update_chunk_arrays()
 	while not _chunks_to_load.is_empty():
-		load_chunks()
+		_load_chunks()
 	while not _chunks_to_generate.is_empty():
-		generate_chunks()
+		_generate_chunks()
 	while not _chunks_to_store.is_empty():
-		store_chunks()
+		_store_chunks()
 	while not _chunks_to_update.is_empty():
-		uppdate_terrains()
-	entity_exit_world_handler.handle_entities_outise_world_border()
+		_uppdate_terrains()
+	_handle_entities_outside_load_distance()
 
-func update_chunk_arrays():
+func _update_chunk_arrays():
 	_center_chunk = world_chunk_loader.position_to_chunk(center_camera.global_position)
 	
 	var chunk_load_x_start = _center_chunk.x - load_distance
 	var chunk_load_y_start = _center_chunk.y - load_distance
-	var chunk_load_x_end = (_center_chunk.x + load_distance + 1)
-	var chunk_load_y_end = (_center_chunk.y + load_distance + 1)
+	var chunk_load_x_end = _center_chunk.x + load_distance
+	var chunk_load_y_end = _center_chunk.y + load_distance
 
-	## add chunks in load distance to load or generate
+	# Add chunks in load distance to load or generate.
 	var chunks_in_load_distance = []
-	for x in range(chunk_load_x_start, chunk_load_x_end):
-		for y in range(chunk_load_y_start, chunk_load_y_end):
+	for x in range(chunk_load_x_start, chunk_load_x_end + 1):
+		for y in range(chunk_load_y_start, chunk_load_y_end + 1):
 			var chunk_coord = Vector2i(x,y)
 			chunks_in_load_distance.append(chunk_coord)
 	
@@ -77,8 +69,8 @@ func update_chunk_arrays():
 			else:
 				_chunks_to_generate.append(chunk_coord)
 
-	## remove chunks outside load distance from load and generate
-	## generate
+	# Remove chunks outside load distance from load and generate arrays.
+	# Remove from generate array.
 	var chunks_remove_from_generate = []
 	for chunk_coord in _chunks_to_generate:
 		if chunk_coord not in chunks_in_load_distance:
@@ -87,7 +79,7 @@ func update_chunk_arrays():
 	for chunk in chunks_remove_from_generate:
 		_chunks_to_generate.erase(chunk)
 
-	## load
+	# Remove from load array.
 	var chunks_remove_from_load = []
 	for chunk_coord in _chunks_to_load:
 		if chunk_coord not in chunks_in_load_distance:
@@ -96,10 +88,8 @@ func update_chunk_arrays():
 	for chunk in chunks_remove_from_load:
 		_chunks_to_load.erase(chunk)
 
-	_chunks_to_generate.sort_custom(sort_smallest_distance_from_camera)
-	_chunks_to_load.sort_custom(sort_smallest_distance_from_camera)
 
-	## add chunks to store
+	# Add chunks to store.
 	for chunk_coord in _active_chunks:
 		if chunk_coord not in chunks_in_load_distance and chunk_coord not in _chunks_to_store:
 				_chunks_to_store.append(chunk_coord)
@@ -112,55 +102,79 @@ func update_chunk_arrays():
 	for chunk in chunks_remove_from_store:
 		_chunks_to_store.erase(chunk)
 
+	# Prioritize chunks close to the camera
+	_chunks_to_generate.sort_custom(sort_smallest_distance_from_camera)
+	_chunks_to_load.sort_custom(sort_smallest_distance_from_camera)
 	_chunks_to_store.sort_custom(sort_greatest_distance_from_camera)
 
-func store_chunks():
-	var chunks_handled = 0
-	while not _chunks_to_store.is_empty() and chunks_handled < update_chunk_batch:
+func _store_chunks():
+	var chunks_handled_this_frame = 0
+	while not _chunks_to_store.is_empty() and chunks_handled_this_frame < _get_dynamic_update_chunk_batch_in_single_frame():
 		var chunk = _chunks_to_store.pop_back()
 		_chunk_datas[chunk] = world_chunk_loader.store_chunk(chunk)
 		_active_chunks.erase(chunk)
 		_chunks_to_update.append(chunk)
-		chunks_handled += 1
+		chunks_handled_this_frame += 1
 
-func load_chunks():
-	var chunks_handled = 0
-	while not _chunks_to_load.is_empty() and chunks_handled < update_chunk_batch:
+func _load_chunks():
+	var chunks_handled_this_frame = 0
+	while not _chunks_to_load.is_empty() and chunks_handled_this_frame < _get_dynamic_update_chunk_batch_in_single_frame():
 		var chunk = _chunks_to_load.pop_back()
 		world_chunk_loader.load_chunk(_chunk_datas[chunk])
 		_active_chunks.append(chunk)
 		_chunks_to_update.append(chunk)
-		chunks_handled += 1
+		chunks_handled_this_frame += 1
 
-
-func generate_chunks():
-	var chunks_handled = 0
-	while not _chunks_to_generate.is_empty() and chunks_handled < update_chunk_batch:
+func _generate_chunks():
+	var chunks_handled_this_frame = 0
+	while not _chunks_to_generate.is_empty() and chunks_handled_this_frame < _get_dynamic_update_chunk_batch_in_single_frame():
 		var chunk = _chunks_to_generate.pop_back()
 		world_chunk_generator.generate_chunk(chunk)
 		_active_chunks.append(chunk)
 		_chunks_to_update.append(chunk)
-		chunks_handled += 1
+		chunks_handled_this_frame += 1
 
-func uppdate_terrains():
+func _uppdate_terrains():
 	var tiles = []
-	var chunks_handled = 0
-	while not _chunks_to_update.is_empty() and chunks_handled < update_chunk_batch:
+	var chunks_handled_this_frame = 0
+	while not _chunks_to_update.is_empty() and chunks_handled_this_frame < _get_dynamic_update_chunk_batch_in_single_frame():
 		var chunk = _chunks_to_update.pop_back()
-		tiles.append_array(get_tiles_in(chunk))
-		chunks_handled += 1
+		tiles.append_array(get_cells_in(chunk))
+		chunks_handled_this_frame += 1
 	BetterTerrain.update_terrain_cells(ground_tile_map_layer, tiles)
 	BetterTerrain.update_terrain_cells(entity_tile_map_layer, tiles)
 
-func re_store_chunk(chunk: Vector2i):
+func _handle_entities_outside_load_distance():
+	# If entity exist outside loaded chunks - load or generate the relevant chunk and store it now with the entity	
+	var all_entities = entity_tile_map_layer.get_children()
+	var deloaded_chunks_to_update = []
+	for entity in all_entities:
+		if entity.is_queued_for_deletion():
+			continue
+		var chunk = position_to_chunk(entity.global_position)
+		if chunk not in _active_chunks:
+			if chunk not in deloaded_chunks_to_update:
+				deloaded_chunks_to_update.append(chunk)
+			
+	for chunk in deloaded_chunks_to_update:
+		generate_or_load_chunk_immidiately(chunk)
+
+func generate_or_load_chunk_immidiately(chunk: Vector2i):
 	if _chunk_datas.has(chunk):
 		world_chunk_loader.load_chunk(_chunk_datas[chunk])
+		if _chunks_to_load.has(chunk):
+			_chunks_to_load.erase(chunk)
 	else:
-		world_chunk_generator.generate_chunk(chunk) 
-	_chunk_datas[chunk] = world_chunk_loader.store_chunk(chunk)
+		world_chunk_generator.generate_chunk(chunk)
+		if _chunks_to_generate.has(chunk):
+			_chunks_to_generate.erase(chunk)
+	_active_chunks.append(chunk)
+	_chunks_to_update.append(chunk)
 
-func get_active_chunks():
-	return _active_chunks.duplicate(true)
+func _get_dynamic_update_chunk_batch_in_single_frame():
+	var num_chunks_to_treat = _chunks_to_store.size() + _chunks_to_load.size() + _chunks_to_generate.size()
+	var batch_size = 1 + (num_chunks_to_treat * num_chunks_to_treat/INCREASE_CHUNK_BATCH_CALCULATION_PER_CHUNK)
+	return batch_size
 
 func sort_smallest_distance_from_camera(chunk1: Vector2i, chunk2: Vector2i):
 	return (chunk1 * CHUNK_SIZE_PIXELS).distance_squared_to(center_camera.global_position) > (chunk2 * CHUNK_SIZE_PIXELS).distance_squared_to(center_camera.global_position)

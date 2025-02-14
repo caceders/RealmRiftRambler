@@ -65,7 +65,6 @@ func _process(_delta):
 
 	match _active_state:
 		StrafeState.IDLE:
-			entity.direction = Vector2(0,0)
 			if _stand_still_timer.time_left == 0:
 				_enter_state(StrafeState.WALKING)
 				return

@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://rin7cput648"]
+
+[ext_resource type="Shader" path="res://Tools/SpellSystem/Spells/ShaderMaterials/frozen.gdshader" id="1_50opm"]
+
+[resource]
+shader = ExtResource("1_50opm")

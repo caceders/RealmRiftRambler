@@ -1,13 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://capgfj8qy5lic"]
 
-[ext_resource type="Texture2D" uid="uid://bm633sh0gi7oi" path="res://Assets/Shadow.png" id="1_uqkun"]
+[ext_resource type="Texture2D" uid="uid://sq88pttiswo6" path="res://Assets/Shadow.png" id="1_uqkun"]
 [ext_resource type="Script" path="res://Tools/Shadow/shadow.gd" id="2_ina12"]
 
-[node name="Shadow" type="Sprite2D" node_paths=PackedStringArray("sprite")]
+[node name="Shadow" type="Sprite2D"]
 modulate = Color(0, 0, 0, 0.0784314)
-scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_uqkun")
-offset = Vector2(-4, -1.03833)
 script = ExtResource("2_ina12")
-sprite = NodePath("")
 shadow_color = Color(0, 0, 0, 0.0784314)

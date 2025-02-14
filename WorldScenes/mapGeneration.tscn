@@ -1,0 +1,388 @@
+[gd_scene load_steps=31 format=3 uid="uid://bll2eifddoyuw"]
+
+[ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_bd7dt"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="2_2wblo"]
+[ext_resource type="Script" path="res://Tools/World/Generation/worldChunkGenerator.gd" id="3_n6n5w"]
+[ext_resource type="Script" path="res://Tools/World/Generation/Generatables/groundGeneratable.gd" id="4_5gnc3"]
+[ext_resource type="Script" path="res://Tools/World/extraTileData.gd" id="5_n505i"]
+[ext_resource type="PackedScene" uid="uid://y1qy7o2676t3" path="res://Tools/World/Generation/Generatables/PremadeGeneratables/spellSupplierPremadeGeneratable.tscn" id="6_pdu00"]
+[ext_resource type="Script" path="res://Tools/World/tileMapLayerWithExtraTileData.gd" id="7_ji00q"]
+[ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="10_5t2od"]
+[ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="11_cpnas"]
+[ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="12_oexo2"]
+[ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="13_mtqif"]
+[ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="15_oannm"]
+[ext_resource type="Texture2D" uid="uid://dlwry505rmb3t" path="res://Assets/Minifantasy_Userinterface_Assets/Menus/Panels_And_Slots/Minifantasy_GuiPanelsAndSlotsOriginal.png" id="16_ilcjh"]
+[ext_resource type="FontFile" uid="uid://dn2b8ajx1kyl5" path="res://Assets/Fonts/m5x7.ttf" id="17_41gb7"]
+[ext_resource type="Texture2D" uid="uid://c2bbk0givp3v7" path="res://Assets/Minifantasy_CraftingAndProfessions2_Assets/Gathering_Professions/Hunting/Minifantasy_CraftingAndProfessions2AnimalIcons.png" id="18_nh5j7"]
+[ext_resource type="Script" path="res://Scenes/displayBones.gd" id="19_dhtjb"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nhugc"]
+
+[sub_resource type="Resource" id="Resource_h6p3k"]
+script = ExtResource("5_n505i")
+biome = 2
+environment = 0
+feature = 0
+object = 0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hlawh"]
+frequency = 0.012
+
+[sub_resource type="Resource" id="Resource_f1dyr"]
+script = ExtResource("5_n505i")
+biome = 0
+environment = 3
+feature = 0
+object = 0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]
+resource_local_to_scene = true
+atlas = ExtResource("12_oexo2")
+region = Rect2(234, 9, 9, 13)
+
+[sub_resource type="Animation" id="Animation_63m85"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_ushcn")]
+}
+
+[sub_resource type="Animation" id="Animation_ct5bu"]
+resource_name = "entityAppear"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_ushcn")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:atlas")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("12_oexo2")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:region")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(234, 9, 9, 13), Rect2(202, 10, 12, 12), Rect2(172, 12, 8, 8)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_af7xm"]
+resource_name = "entityDisappear"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_ushcn")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:atlas")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("12_oexo2")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:region")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Rect2(172, 12, 8, 8), Rect2(202, 10, 12, 12), Rect2(234, 9, 9, 13)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vtcqi"]
+resource_local_to_scene = true
+_data = {
+"RESET": SubResource("Animation_63m85"),
+"entityAppear": SubResource("Animation_ct5bu"),
+"entityDisappear": SubResource("Animation_af7xm")
+}
+
+[sub_resource type="Resource" id="Resource_lvd8n"]
+resource_local_to_scene = true
+script = ExtResource("13_mtqif")
+node_path = "DamageReceiver"
+property = "_amount"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kdaf4"]
+atlas = ExtResource("16_ilcjh")
+region = Rect2(272, 160, 48, 48)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wnhb4"]
+texture = SubResource("AtlasTexture_kdaf4")
+texture_margin_left = 15.0
+texture_margin_top = 21.0
+texture_margin_right = 21.0
+texture_margin_bottom = 7.0
+
+[sub_resource type="Theme" id="Theme_dhpla"]
+default_font = ExtResource("17_41gb7")
+Panel/styles/panel = SubResource("StyleBoxTexture_wnhb4")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0s46o"]
+atlas = ExtResource("18_nh5j7")
+region = Rect2(48, 32, 8, 8)
+
+[node name="Node" type="Node"]
+
+[node name="World" type="Node" parent="." node_paths=PackedStringArray("center_camera", "world_chunk_loader", "world_chunk_generator", "ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("1_bd7dt")
+center_camera = NodePath("../Camera2D")
+world_chunk_loader = NodePath("WorldChunkLoader")
+world_chunk_generator = NodePath("WorldChunkGenerator")
+ground_tile_map_layer = NodePath("Ground")
+entity_tile_map_layer = NodePath("Entities")
+
+[node name="SpellRandomizer" type="Node" parent="World"]
+
+[node name="WorldChunkLoader" type="Node" parent="World" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("2_2wblo")
+ground_tile_map_layer = NodePath("../Ground")
+entity_tile_map_layer = NodePath("../Entities")
+
+[node name="WorldChunkGenerator" type="Node" parent="World" node_paths=PackedStringArray("generatables_node", "ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("3_n6n5w")
+generatables_node = NodePath("Generatables")
+ground_tile_map_layer = NodePath("../Ground")
+entity_tile_map_layer = NodePath("../Entities")
+
+[node name="Generatables" type="Node" parent="World/WorldChunkGenerator"]
+
+[node name="GroundGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("4_5gnc3")
+noise = SubResource("FastNoiseLite_nhugc")
+extra_tile_data = SubResource("Resource_h6p3k")
+generation_noise_floor = -1.0
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="PondsGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("4_5gnc3")
+is_4x4 = true
+terrain_id = 1
+noise = SubResource("FastNoiseLite_hlawh")
+extra_tile_data = SubResource("Resource_f1dyr")
+can_generate_over_all_biomes = true
+generation_noise_floor = 0.3
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="SpellSupplierPremadeGeneratable" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer") instance=ExtResource("6_pdu00")]
+is_forced_placement = true
+forced_placement_top_left_corner = Vector2i(-1, -1)
+is_one_off = true
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="Ground" type="TileMapLayer" parent="World"]
+tile_set = ExtResource("10_5t2od")
+script = ExtResource("7_ji00q")
+
+[node name="Entities" type="TileMapLayer" parent="World"]
+y_sort_enabled = true
+tile_set = ExtResource("10_5t2od")
+script = ExtResource("7_ji00q")
+
+[node name="Player" parent="World/Entities" instance=ExtResource("11_cpnas")]
+collision_layer = 1
+
+[node name="Shadow" parent="World/Entities/Player" index="0"]
+scale = Vector2(0.333036, 0.166667)
+offset = Vector2(-3.65714, 7)
+
+[node name="AppearDisappearAnimationPlayer" parent="World/Entities/Player/AppearDisappear" index="0"]
+libraries = {
+"": SubResource("AnimationLibrary_vtcqi")
+}
+
+[node name="AppearDisappearSprite" parent="World/Entities/Player/AppearDisappear" index="1"]
+texture = SubResource("AtlasTexture_ushcn")
+
+[node name="DeloadPersistance" parent="World/Entities/Player" index="17"]
+deload_persistant_data = Array[ExtResource("13_mtqif")]([SubResource("Resource_lvd8n")])
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("follow")]
+script = ExtResource("15_oannm")
+follow = NodePath("../World/Entities/Player")
+debug = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+scale = Vector2(0.2, 0.2)
+transform = Transform2D(0.2, 0, 0, 0.2, 0, 0)
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource("Theme_dhpla")
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 315.0
+offset_bottom = 125.0
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.5
+offset_top = -21.5
+offset_right = 44.5
+offset_bottom = 21.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/Panel/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/Panel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("AtlasTexture_0s46o")
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/Panel/MarginContainer/HBoxContainer" node_paths=PackedStringArray("resource")]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.811)
+theme_override_font_sizes/font_size = 47
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("19_dhtjb")
+resource = NodePath("../../../../../../World/Entities/Player/ResourceCollector")
+
+[editable path="World/Entities/Player"]
