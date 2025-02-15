@@ -4,10 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="3_uxjxf"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="4_g6g7v"]
 [ext_resource type="Texture2D" uid="uid://b5f8pru1elgqw" path="res://Assets/Minifantasy_Wildlife_Assets/Non-Aggressive/Squirrel/SquirrelDmg.png" id="5_hvhpq"]
-[ext_resource type="PackedScene" uid="uid://couhlepbf8cgj" path="res://Tools/EntityBases/animals/squirrelBase.tscn" id="5_m2ck1"]
+[ext_resource type="PackedScene" uid="uid://couhlepbf8cgj" path="res://Tools/EntityBases/Animals/squirrelBase.tscn" id="5_m2ck1"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="6_codcp"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="7_8ho4l"]
-[ext_resource type="PackedScene" uid="uid://ki2x6efh6e2e" path="res://Tools/EntityBases/enemies/orcBase.tscn" id="8_ekwai"]
+[ext_resource type="PackedScene" uid="uid://ki2x6efh6e2e" path="res://Tools/EntityBases/Enemies/orcBase.tscn" id="8_ekwai"]
 [ext_resource type="PackedScene" uid="uid://dxvft828c2tsd" path="res://Tools/SpellSystem/SpellSupplier/spellSupplier.tscn" id="9_a774v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0ku8l"]

@@ -1,5 +1,6 @@
 @tool
 class_name Shadow extends Sprite2D
+const UPDATE_TIME_MS = 200
 ## Shadow is 32 bit while standard sprites are 8, map the shadow scale to the standard scale
 const SHADOW_PIXEL_SCALE = 4
 
@@ -8,7 +9,13 @@ const INVERSE_SKEW_AMOUNT = 10
 @onready var sprite: Sprite2D = self.get_parent().get_node("Sprite2D")
 @export var shadow_color: Color = Color(0, 0, 0, 0.5) # Dark and semi-transparent
 
+var last_update_time : float = Time.get_ticks_msec()
+
 func _process(delta):
+	if last_update_time > Time.get_ticks_msec() + UPDATE_TIME_MS:
+		return
+		
+	last_update_time = Time.get_ticks_msec() + UPDATE_TIME_MS
 	# Copy texture and properties from the original sprite
 	modulate = shadow_color
 	global_position = sprite.get_parent().global_position

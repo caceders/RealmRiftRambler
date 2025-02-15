@@ -2,7 +2,7 @@ class_name PremadeGeneratable extends Generatable
 
 # Is the world position forced
 @export var is_forced_placement: bool = false
-@export var forced_placement_top_left_corner: Vector2i = Vector2i(0, 0)
+@export var forced_placement_top_left_corner: Array[Vector2i] = [Vector2i(0, 0)]
 # If the premade is placed only once
 @export var is_one_off : bool = false
 # World chunk loader to store the premade world
@@ -25,12 +25,26 @@ func _ready():
 	_store_premade_world_data()
 	premade_ground_tile_map_layer.queue_free()
 	premade_entity_tile_map_layer.queue_free()
+	
+	if is_forced_placement and forced_placement_top_left_corner.is_empty():
+		is_forced_placement = false
 
 func _store_premade_world_data():
 	# Get size of world
 	var ground_used_rect = premade_ground_tile_map_layer.get_used_rect()
-	var start_chunk = cell_to_chunk(ground_used_rect.position)
-	var end_chunk = cell_to_chunk(ground_used_rect.end)
+	var entity_used_rect = premade_entity_tile_map_layer.get_used_rect()
+	
+	var max_x = max(ground_used_rect.position.x, entity_used_rect.position.x)
+	var max_y = max(ground_used_rect.position.y, entity_used_rect.position.y)
+
+	var min_x = min(ground_used_rect.end.x, entity_used_rect.end.x)
+	var min_y = min(ground_used_rect.end.y, entity_used_rect.end.y)
+
+	var start_position = Vector2i(max_x, max_y)
+	var end_position = Vector2i(min_x, min_y)
+
+	var start_chunk = cell_to_chunk(start_position)
+	var end_chunk = cell_to_chunk(end_position)
 	_premade_top_left_corner = ground_used_rect.position
 	_premade_world_size = ground_used_rect.size
 	# Needed to avoid integer division by 0 which causes windows to crash.
@@ -44,31 +58,40 @@ func _store_premade_world_data():
 
 func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerator, only_update_extra_info: bool = false):
 	## TODO: REPAIR HERE
-	var length_of_premades_to_cell_floored: Vector2i = floor(cell/_premade_world_size)
-	var premade_world_tile_offset_in_relation_to_total_size_x = fposmod(cell.x, _premade_world_size.x)
-	var premade_world_tile_offset_in_relation_to_total_size_y = fposmod(cell.y, _premade_world_size.y)
+	# This describes what "square number" of premades length the cell belong to. Needs to be cast to vector2 to ensure flooring works. If held as vector2i it is rounded and negative numbers are f*****
+	var length_of_premades_to_cell_floored: Vector2i = floor((cell as Vector2)/(_premade_world_size as Vector2))
+	var premade_world_tile_offset_in_relation_to_total_size_x = posmod(cell.x, _premade_world_size.x)
+	var premade_world_tile_offset_in_relation_to_total_size_y = posmod(cell.y, _premade_world_size.y)
 	# We map the whole premade world dimension to one cell in the noise map
 	var noise_pos: Vector2i = length_of_premades_to_cell_floored
 	var world_top_left_cell: Vector2i = length_of_premades_to_cell_floored * _premade_world_size
 
-	if noise.get_noise_2d(noise_pos.x, noise_pos.y) < generation_noise_floor and not is_forced_placement:
+	if is_forced_placement:
+		if not _should_forced_placement_be_placed_here(cell):
+			return
+
+	elif is_one_off and _is_placed and not _cells_in_first_placement.has(cell):
 		return
 
-	elif not _can_generate(cell, world_chunk_generator, world_top_left_cell):
-		## Update precalculations
-		if not _unable_to_spawn_on_cells.has(cell):
-			for cell_x in range(world_top_left_cell.x, world_top_left_cell.x + _premade_world_size.x):
-				for cell_y in range(world_top_left_cell.y, world_top_left_cell.y + _premade_world_size.y):
-					var add_cell = Vector2i(cell_x, cell_y)
-					_unable_to_spawn_on_cells[add_cell] = "nah"
+	elif noise.get_noise_2d(noise_pos.x, noise_pos.y) < generation_noise_floor:
 		return
-	
-	else:
+
+	elif _can_generate(cell, world_chunk_generator, world_top_left_cell):
+		## Update precalculations
 		if not _able_to_spawn_on_cells.has(cell):
 			for cell_x in range(world_top_left_cell.x, world_top_left_cell.x + _premade_world_size.x):
 				for cell_y in range(world_top_left_cell.y, world_top_left_cell.y + _premade_world_size.y):
 					var add_cell = Vector2i(cell_x, cell_y)
 					_able_to_spawn_on_cells[add_cell] = "yah"
+
+	else:
+		if not _unable_to_spawn_on_cells.has(cell):
+			for cell_x in range(world_top_left_cell.x, world_top_left_cell.x + _premade_world_size.x):
+				for cell_y in range(world_top_left_cell.y, world_top_left_cell.y + _premade_world_size.y):
+					var add_cell = Vector2i(cell_x, cell_y)
+					_unable_to_spawn_on_cells[add_cell] = "nah"
+					
+		return
 	
 	_is_placed = true
 	var tile_in_premade_x = _premade_top_left_corner.x + premade_world_tile_offset_in_relation_to_total_size_x
@@ -76,8 +99,12 @@ func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerato
 
 	# If generatable is forced placement, place from the given top left corner
 	if is_forced_placement:
-		tile_in_premade_x = _premade_top_left_corner.x + (cell.x - forced_placement_top_left_corner.x)
-		tile_in_premade_y = _premade_top_left_corner.y + (cell.y - forced_placement_top_left_corner.y)
+		for placement_top_left_corner in  forced_placement_top_left_corner:
+			if cell.x in range(placement_top_left_corner.x, placement_top_left_corner.x + _premade_world_size.x):
+				if cell.y in range(placement_top_left_corner.y, placement_top_left_corner.y + _premade_world_size.y):
+					tile_in_premade_x = _premade_top_left_corner.x + (cell.x - placement_top_left_corner.x)
+					tile_in_premade_y = _premade_top_left_corner.y + (cell.y - placement_top_left_corner.y)
+					break
 
 
 	var tile_in_premade: Vector2i = Vector2i(tile_in_premade_x, tile_in_premade_y)
@@ -86,17 +113,17 @@ func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerato
 
 	# Load ground tiles	
 	for tile_data in premade_chunk_data["ground_tiles"]:
-		if tile_data["coordinate"] == tile_in_premade and not only_update_extra_info:
+		if tile_data["coordinate"] == tile_in_premade and not (only_update_extra_info or only_extra_info):
 			BetterTerrain.set_cell(ground_tile_map_layer, cell, tile_data["terrain_id"])
 	
 	# Load entity tiles
 	for tile_data in premade_chunk_data["entity_tiles"]:
-		if tile_data["coordinate"] == tile_in_premade and not only_update_extra_info:
+		if tile_data["coordinate"] == tile_in_premade and not not (only_update_extra_info or only_extra_info):
 			BetterTerrain.set_cell(entity_tile_map_layer, cell, tile_data["terrain_id"])
 	
 	# Load entities
 	for entity_data in premade_chunk_data["entities"]:
-		if position_to_cell(entity_data["position"]) == tile_in_premade and not only_update_extra_info:
+		if position_to_cell(entity_data["position"]) == tile_in_premade and not (only_update_extra_info or only_extra_info):
 			var entity_packed_scene = load(entity_data["packed_scene"]) as PackedScene
 			if entity_packed_scene == null:
 				continue
@@ -119,18 +146,15 @@ func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerato
 	
 	apply_new_extra_tile_data(cell)
 
-		
-func _can_generate(cell, world_chunk_generator, world_top_left_cell):
-	if is_one_off and _is_placed and not _cells_in_first_placement.has(cell):
-		return false
-	
-	if is_forced_placement:
-		if cell.x < _premade_top_left_corner.x or cell.x > _premade_top_left_corner.x + _premade_world_size.x:
-			return false
-		elif cell.y < _premade_top_left_corner.y or cell.y > _premade_top_left_corner.y + _premade_world_size.y:
-			return false
-		return true
 
+func _should_forced_placement_be_placed_here(cell):
+	for placement_top_left_corner in  forced_placement_top_left_corner:
+		if cell.x in range(placement_top_left_corner.x, placement_top_left_corner.x + _premade_world_size.x):
+			if cell.y in range(placement_top_left_corner.y, placement_top_left_corner.y + _premade_world_size.y):
+				return true
+	return false
+
+func _can_generate(cell, world_chunk_generator, world_top_left_cell):
 	if _able_to_spawn_on_cells.has(cell): ## We've made the calculations for this tile before. We can conclude early that we CAN spawn
 		return true
 

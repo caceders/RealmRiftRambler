@@ -16,7 +16,7 @@ func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerato
 	## Skip if tile that is already spawned hinders the creation of this tile
 	if not _can_generate_on_cell(cell, world_chunk_generator):
 		return
-	if not only_update_extra_info:
+	if not (only_update_extra_info or only_extra_info):
 		BetterTerrain.set_cell(ground_tile_map_layer, cell, terrain_id)
 
 	apply_new_extra_tile_data(cell)

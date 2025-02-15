@@ -1,6 +1,7 @@
 @tool
 class_name Targeter extends Area2D
 
+const UPDATE_TIME_MS = 2000
 
 const LINE_LERP_WEIGHT = .1
 
@@ -56,7 +57,7 @@ var target: Node2D:
 				if sprite != null:
 					sprite.modulate = Color(sprite.modulate.r + highlighter.r, sprite.modulate.g + highlighter.g, sprite.modulate.b + highlighter.b)
 					
-
+var last_update_time : float = Time.get_ticks_msec()
 
 func _ready():
 	body_exited.connect(on_body_exited)
@@ -64,8 +65,9 @@ func _ready():
 func _process(_delta):
 	_line = _line.lerp(target_line, LINE_LERP_WEIGHT)
 	if not _lock_on:
-		select_target_on_line()
-		#select_closest_target()
+		if last_update_time < Time.get_ticks_msec()	 + UPDATE_TIME_MS:
+			last_update_time = Time.get_ticks_msec()
+			select_target_on_line()
 	return 
 
 func start_lock_on():

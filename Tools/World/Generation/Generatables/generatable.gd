@@ -2,6 +2,8 @@ class_name Generatable extends WorldChunkManipulator
 
 @export var noise: FastNoiseLite = FastNoiseLite.new()
 @export var extra_tile_data: ExtraTileData = ExtraTileData.new()
+## Wether or not the generatable should place a tile or an entity, or just place info about the tile. Like updating a tile to belong to the forest environment
+@export var only_extra_info: bool = false
 
 @export var can_generate_over_all_biomes: bool = false
 @export var can_generate_over_biome: Array[ExtraTileData.BIOME]
@@ -20,7 +22,7 @@ class_name Generatable extends WorldChunkManipulator
 	get:
 		return noise.seed
 	set(value):
-		noise.seed = noise_seed
+		noise.seed = value
 		
 @export var generation_noise_floor: float = .5
 

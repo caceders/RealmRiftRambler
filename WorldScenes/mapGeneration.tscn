@@ -1,12 +1,15 @@
-[gd_scene load_steps=31 format=3 uid="uid://bll2eifddoyuw"]
+[gd_scene load_steps=49 format=3 uid="uid://bll2eifddoyuw"]
 
 [ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_bd7dt"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="2_2wblo"]
 [ext_resource type="Script" path="res://Tools/World/Generation/worldChunkGenerator.gd" id="3_n6n5w"]
 [ext_resource type="Script" path="res://Tools/World/Generation/Generatables/groundGeneratable.gd" id="4_5gnc3"]
 [ext_resource type="Script" path="res://Tools/World/extraTileData.gd" id="5_n505i"]
-[ext_resource type="PackedScene" uid="uid://y1qy7o2676t3" path="res://Tools/World/Generation/Generatables/PremadeGeneratables/spellSupplierPremadeGeneratable.tscn" id="6_pdu00"]
+[ext_resource type="Script" path="res://Tools/World/Generation/Generatables/entityGeneratable.gd" id="6_vlrg0"]
 [ext_resource type="Script" path="res://Tools/World/tileMapLayerWithExtraTileData.gd" id="7_ji00q"]
+[ext_resource type="Script" path="res://Tools/World/Generation/Generatables/sceneProbabilityPair.gd" id="7_q6emo"]
+[ext_resource type="PackedScene" uid="uid://cfbfuftomdxnb" path="res://Tools/EntityBases/Environment/Trees/tree.tscn" id="8_6m6vs"]
+[ext_resource type="PackedScene" uid="uid://bydi3gon2vqcr" path="res://Tools/EntityBases/Environment/Trees/appleTree.tscn" id="9_5bbab"]
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="10_5t2od"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="11_cpnas"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="12_oexo2"]
@@ -22,19 +25,101 @@
 [sub_resource type="Resource" id="Resource_h6p3k"]
 script = ExtResource("5_n505i")
 biome = 2
-environment = 0
+environment = 2
 feature = 0
 object = 0
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_hlawh"]
+seed = 280
 frequency = 0.012
 
 [sub_resource type="Resource" id="Resource_f1dyr"]
 script = ExtResource("5_n505i")
 biome = 0
+environment = 4
+feature = 0
+object = 0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_42h3o"]
+frequency = 0.0554
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_av0s5"]
+noise_type = 3
+frequency = 0.0096
+fractal_type = 3
+fractal_octaves = 1
+fractal_gain = 0.655
+fractal_ping_pong_strength = 1.07
+
+[sub_resource type="Resource" id="Resource_4mdnk"]
+script = ExtResource("5_n505i")
+biome = 0
+environment = 0
+feature = 1
+object = 0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0vknq"]
+frequency = 0.0056
+fractal_type = 0
+fractal_octaves = 1
+
+[sub_resource type="Resource" id="Resource_u88gy"]
+script = ExtResource("5_n505i")
+biome = 0
 environment = 3
 feature = 0
 object = 0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nvqjq"]
+frequency = 1.0
+
+[sub_resource type="Resource" id="Resource_dh46a"]
+script = ExtResource("5_n505i")
+biome = 0
+environment = 0
+feature = 0
+object = 3
+
+[sub_resource type="Resource" id="Resource_hmm7a"]
+script = ExtResource("7_q6emo")
+scene = ExtResource("8_6m6vs")
+weight = 6.0
+
+[sub_resource type="Resource" id="Resource_vxt7c"]
+script = ExtResource("7_q6emo")
+scene = ExtResource("9_5bbab")
+weight = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3gcqn"]
+frequency = 1.0
+offset = Vector3(1, 0, 0)
+
+[sub_resource type="Resource" id="Resource_n87a8"]
+script = ExtResource("5_n505i")
+biome = 0
+environment = 0
+feature = 0
+object = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8kpee"]
+frequency = 1.0
+
+[sub_resource type="Resource" id="Resource_4eugb"]
+script = ExtResource("5_n505i")
+biome = 0
+environment = 0
+feature = 0
+object = 2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_08kup"]
+frequency = 1.0
+
+[sub_resource type="Resource" id="Resource_n0rgn"]
+script = ExtResource("5_n505i")
+biome = 0
+environment = 0
+feature = 0
+object = 2
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]
 resource_local_to_scene = true
@@ -261,12 +346,13 @@ entity_tile_map_layer = NodePath("../Entities")
 [node name="WorldChunkGenerator" type="Node" parent="World" node_paths=PackedStringArray("generatables_node", "ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("3_n6n5w")
 generatables_node = NodePath("Generatables")
+world_seed = 21790
 ground_tile_map_layer = NodePath("../Ground")
 entity_tile_map_layer = NodePath("../Entities")
 
 [node name="Generatables" type="Node" parent="World/WorldChunkGenerator"]
 
-[node name="GroundGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+[node name="PlainsGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("4_5gnc3")
 noise = SubResource("FastNoiseLite_nhugc")
 extra_tile_data = SubResource("Resource_h6p3k")
@@ -281,14 +367,92 @@ terrain_id = 1
 noise = SubResource("FastNoiseLite_hlawh")
 extra_tile_data = SubResource("Resource_f1dyr")
 can_generate_over_all_biomes = true
+can_generate_over_all_environments = true
+can_generate_over_environment = Array[int]([3])
+can_generate_over_all_features = true
+can_generate_over_all_objects = true
 generation_noise_floor = 0.3
 ground_tile_map_layer = NodePath("../../../Ground")
 entity_tile_map_layer = NodePath("../../../Entities")
 
-[node name="SpellSupplierPremadeGeneratable" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer") instance=ExtResource("6_pdu00")]
-is_forced_placement = true
-forced_placement_top_left_corner = Vector2i(-1, -1)
-is_one_off = true
+[node name="GrassGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("4_5gnc3")
+is_4x4 = true
+terrain_id = 2
+noise = SubResource("FastNoiseLite_42h3o")
+can_generate_over_biome = Array[int]([2])
+can_generate_over_environment = Array[int]([2])
+generation_noise_floor = 0.0
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="RoadsGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("4_5gnc3")
+is_4x4 = true
+terrain_id = 3
+noise = SubResource("FastNoiseLite_av0s5")
+extra_tile_data = SubResource("Resource_4mdnk")
+can_generate_over_biome = Array[int]([2])
+can_generate_over_environment = Array[int]([2, 3])
+generation_noise_floor = 0.95
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="ForestGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("4_5gnc3")
+terrain_id = 2
+noise = SubResource("FastNoiseLite_0vknq")
+extra_tile_data = SubResource("Resource_u88gy")
+can_generate_over_biome = Array[int]([2])
+can_generate_over_environment = Array[int]([2])
+generation_noise_floor = 0.0
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="RocksGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("6_vlrg0")
+is_entity_tile = true
+terrain_id = 7
+noise = SubResource("FastNoiseLite_nvqjq")
+extra_tile_data = SubResource("Resource_dh46a")
+can_generate_over_all_biomes = true
+can_generate_over_environment = Array[int]([3, 2])
+generation_noise_floor = 0.6
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="TreeGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("6_vlrg0")
+scenes = Array[ExtResource("7_q6emo")]([SubResource("Resource_hmm7a"), SubResource("Resource_vxt7c")])
+noise = SubResource("FastNoiseLite_3gcqn")
+extra_tile_data = SubResource("Resource_n87a8")
+can_generate_over_all_biomes = true
+can_generate_over_environment = Array[int]([3])
+generation_noise_floor = 0.27
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="ForestGrowthGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("6_vlrg0")
+is_entity_tile = true
+terrain_id = 6
+noise = SubResource("FastNoiseLite_8kpee")
+extra_tile_data = SubResource("Resource_4eugb")
+can_generate_over_all_biomes = true
+can_generate_over_environment = Array[int]([3])
+generation_noise_floor = 0.0
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="PlainsGrowthGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("6_vlrg0")
+is_entity_tile = true
+terrain_id = 6
+noise = SubResource("FastNoiseLite_08kup")
+extra_tile_data = SubResource("Resource_n0rgn")
+can_generate_over_all_biomes = true
+can_generate_over_environment = Array[int]([2])
+can_generate_over_all_objects = true
 ground_tile_map_layer = NodePath("../../../Ground")
 entity_tile_map_layer = NodePath("../../../Entities")
 

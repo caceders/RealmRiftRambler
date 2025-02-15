@@ -1,7 +1,7 @@
 [gd_scene load_steps=23 format=3 uid="uid://couhlepbf8cgj"]
 
 [ext_resource type="PackedScene" uid="uid://77648svjoync" path="res://Tools/EntityBases/creatureBase.tscn" id="1_2yo06"]
-[ext_resource type="Script" path="res://Tools/EntityBases/animals/basicAnimal.gd" id="2_vh30w"]
+[ext_resource type="Script" path="res://Tools/EntityBases/Animals/basicAnimal.gd" id="2_vh30w"]
 [ext_resource type="Texture2D" uid="uid://b5f8pru1elgqw" path="res://Assets/Minifantasy_Wildlife_Assets/Non-Aggressive/Squirrel/SquirrelDmg.png" id="3_08h7e"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="4_kayob"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="5_5srcw"]

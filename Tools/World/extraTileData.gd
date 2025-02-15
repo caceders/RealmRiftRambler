@@ -9,18 +9,22 @@ enum BIOME {
 enum ENVIRONMENT {
 	NONE,
 	SPECIAL,
+	PLAINS,
 	FOREST,
 	POND,
 }
 
 enum FEATURE {
 	NONE,
+	ROAD,
 	SPECIAL,
 }
 
 enum OBJECT {
 	NONE,
 	SPECIAL,
+	PLANT,
+	ROCK,
 }
 
 @export var biome: BIOME

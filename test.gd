@@ -1,4 +1,4 @@
 extends Node
 
 func _ready():
-	print(fposmod(-6, 5))
+	print(-11 % 5)
