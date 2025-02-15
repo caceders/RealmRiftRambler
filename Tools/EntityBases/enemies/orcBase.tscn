@@ -12,8 +12,8 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gxiat"]
 resource_local_to_scene = true
-atlas = ExtResource("3_rjdf3")
-region = Rect2(12, 43, 8, 8)
+atlas = ExtResource("4_2cx1i")
+region = Rect2(13, 44, 7, 7)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]
 atlas = ExtResource("18_nxxwc")
@@ -194,7 +194,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_xtluq"]
+[sub_resource type="Resource" id="Resource_apfvw"]
 resource_local_to_scene = true
 script = ExtResource("5_iy7hn")
 node_path = "DamageReceiver"
@@ -877,12 +877,20 @@ _data = {
 [node name="OrcBase" instance=ExtResource("1_e02sq")]
 script = ExtResource("2_usmj7")
 
+[node name="Shadow" parent="." index="0"]
+scale = Vector2(0.31875, 0.145833)
+offset = Vector2(-3.2, 4.47)
+
 [node name="DamageReceiver" parent="." index="2"]
 max_amount = 75.0
 _amount = 75.0
 
 [node name="Sprite2D" parent="." index="4"]
 texture = SubResource("AtlasTexture_gxiat")
+offset = Vector2(0, -3.53)
+
+[node name="HitBox" parent="." index="5"]
+visible = false
 
 [node name="Strafer" parent="." index="6"]
 enabled = true
@@ -892,6 +900,12 @@ set_strafe_centrum_position = Vector2(0, 0)
 
 [node name="ChaserEvader" parent="." index="7"]
 chase = Array[String](["Player", "Animal"])
+
+[node name="Vision" parent="." index="8"]
+visible = false
+
+[node name="AttackArea" parent="." index="11"]
+visible = false
 
 [node name="AppearDisappearAnimationPlayer" parent="AppearDisappear" index="0"]
 libraries = {
@@ -904,8 +918,11 @@ texture = SubResource("AtlasTexture_ushcn")
 [node name="Hostility" parent="." index="15"]
 hostile_groups = Array[String](["Player", "Animal"])
 
+[node name="NavigationObstacle2D" parent="." index="16"]
+visible = false
+
 [node name="DeloadPersistance" parent="." index="17"]
-deload_persistant_data = Array[ExtResource("5_iy7hn")]([SubResource("Resource_xtluq"), SubResource("Resource_uknp2")])
+deload_persistant_data = Array[ExtResource("5_iy7hn")]([SubResource("Resource_apfvw"), SubResource("Resource_uknp2")])
 
 [node name="AnimationPlayerController" type="AnimationPlayer" parent="." index="18"]
 libraries = {

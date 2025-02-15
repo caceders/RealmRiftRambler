@@ -1,3 +1,3 @@
 - Clean up everything
-	-	Clean up world generation
-	-	Clean up loading and deload system
+	V	Clean up world generation
+	V	Clean up loading and deload system

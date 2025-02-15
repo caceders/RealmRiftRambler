@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://bll2eifddoyuw"]
+[gd_scene load_steps=52 format=3 uid="uid://bll2eifddoyuw"]
 
 [ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_bd7dt"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="2_2wblo"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cfbfuftomdxnb" path="res://Tools/EntityBases/Environment/Trees/tree.tscn" id="8_6m6vs"]
 [ext_resource type="PackedScene" uid="uid://bydi3gon2vqcr" path="res://Tools/EntityBases/Environment/Trees/appleTree.tscn" id="9_5bbab"]
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="10_5t2od"]
+[ext_resource type="PackedScene" uid="uid://couhlepbf8cgj" path="res://Tools/EntityBases/Animals/squirrelBase.tscn" id="10_y7y28"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="11_cpnas"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="12_oexo2"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="13_mtqif"]
@@ -100,6 +101,14 @@ biome = 0
 environment = 0
 feature = 0
 object = 2
+
+[sub_resource type="Resource" id="Resource_5abdy"]
+script = ExtResource("7_q6emo")
+scene = ExtResource("10_y7y28")
+weight = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kru0i"]
+frequency = 1.0
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_8kpee"]
 frequency = 1.0
@@ -330,6 +339,7 @@ region = Rect2(48, 32, 8, 8)
 
 [node name="World" type="Node" parent="." node_paths=PackedStringArray("center_camera", "world_chunk_loader", "world_chunk_generator", "ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("1_bd7dt")
+load_distance = 4
 center_camera = NodePath("../Camera2D")
 world_chunk_loader = NodePath("WorldChunkLoader")
 world_chunk_generator = NodePath("WorldChunkGenerator")
@@ -432,6 +442,16 @@ generation_noise_floor = 0.27
 ground_tile_map_layer = NodePath("../../../Ground")
 entity_tile_map_layer = NodePath("../../../Entities")
 
+[node name="ForestAnimalsGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("6_vlrg0")
+scenes = Array[ExtResource("7_q6emo")]([SubResource("Resource_5abdy")])
+noise = SubResource("FastNoiseLite_kru0i")
+can_generate_over_all_biomes = true
+can_generate_over_environment = Array[int]([3])
+generation_noise_floor = 0.56
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
 [node name="ForestGrowthGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("6_vlrg0")
 is_entity_tile = true
@@ -467,10 +487,6 @@ script = ExtResource("7_ji00q")
 
 [node name="Player" parent="World/Entities" instance=ExtResource("11_cpnas")]
 collision_layer = 1
-
-[node name="Shadow" parent="World/Entities/Player" index="0"]
-scale = Vector2(0.333036, 0.166667)
-offset = Vector2(-3.65714, 7)
 
 [node name="AppearDisappearAnimationPlayer" parent="World/Entities/Player/AppearDisappear" index="0"]
 libraries = {
@@ -548,5 +564,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("19_dhtjb")
 resource = NodePath("../../../../../../World/Entities/Player/ResourceCollector")
+
+[connection signal="damage_received" from="World/Entities/Player/DamageReceiver" to="World/Entities/Player/Knockback" method="on_damage_taken"]
 
 [editable path="World/Entities/Player"]

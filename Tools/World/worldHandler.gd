@@ -136,11 +136,17 @@ func _generate_chunks():
 
 func _uppdate_terrains():
 	var tiles = []
-	var chunks_handled_this_frame = 0
-	while not _chunks_to_update.is_empty() and chunks_handled_this_frame < _get_dynamic_update_chunk_batch_in_single_frame():
+
+	# Force update terrain to spread out over multiple frames. This is the most costly function call. This is why block underneath is commented out
+	#var chunks_handled_this_frame = 0
+	#while not _chunks_to_update.is_empty() and chunks_handled_this_frame < _get_dynamic_update_chunk_batch_in_single_frame():
+	#	var chunk = _chunks_to_update.pop_back()
+	#	tiles.append_array(get_cells_in(chunk))
+	#	chunks_handled_this_frame += 1
+	
+	if not _chunks_to_update.is_empty():
 		var chunk = _chunks_to_update.pop_back()
 		tiles.append_array(get_cells_in(chunk))
-		chunks_handled_this_frame += 1
 	BetterTerrain.update_terrain_cells(ground_tile_map_layer, tiles)
 	BetterTerrain.update_terrain_cells(entity_tile_map_layer, tiles)
 

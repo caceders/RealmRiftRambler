@@ -1,7 +1,7 @@
 @tool
 class_name Targeter extends Area2D
 
-const UPDATE_TIME_MS = 2000
+const UPDATE_TIME_MS = 200
 
 const LINE_LERP_WEIGHT = .1
 
@@ -84,11 +84,23 @@ func end_lock_on():
 func select_target_on_line():
 	var all_bodies = get_overlapping_bodies()
 	_targetable = []
-	# Remove non-targetable
-	var non_targets = []
+
 	for entity in all_bodies:
 		if "Targetable" in entity.get_groups():
 			_targetable.append(entity)
+
+	# Remove targets outside "Cone" of line "o<"
+	var target_outside_cone = []
+	for target in _targetable:
+		var distance_from_center_squared = global_position.distance_squared_to(target.global_position)
+		var distance_from_line_squared = distance_from_center_squared * sin(global_position.angle_to(target.global_position))
+		var distance_to_point_on_line = distance_from_center_squared * cos(global_position.angle_to(target.global_position))
+		if abs((distance_from_line_squared/2)) > distance_to_point_on_line:
+			target_outside_cone.append(target)
+
+	if not target_outside_cone.is_empty():
+		for entity in target_outside_cone:
+			_targetable.erase(entity)
 	
 	# Remove owner
 	if get_parent() in _targetable:
@@ -96,8 +108,9 @@ func select_target_on_line():
 
 	
 	if not _targetable.is_empty():
-		for entity in non_targets:
+		for entity in target_outside_cone:
 			_targetable.erase(entity)
+
 		_targetable.sort_custom(sortline)
 		if (_nearest != _targetable[0]) or target == null:
 			_nearest = _targetable[0]
@@ -147,6 +160,7 @@ func sort_distance(a, b):
 	return (global_position.distance_to(a.global_position) < global_position.distance_to(b.global_position))
 
 func sortline(a, b):
+	# Find the target closest to the line with respect to the distance to the target
 	var dir_to_a = global_position.direction_to(a.global_position)
 	var dir_to_b = global_position.direction_to(b.global_position)
 
