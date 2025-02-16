@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://cfbfuftomdxnb"]
+[gd_scene load_steps=11 format=3 uid="uid://cfbfuftomdxnb"]
 
 [ext_resource type="PackedScene" uid="uid://3e0cvi4n2eeo" path="res://Tools/EntityBases/entityBase.tscn" id="1_h2scj"]
 [ext_resource type="Texture2D" uid="uid://w5mbknj65jft" path="res://Assets/Minifantasy_ForgottenPlains_Assets/props/Minifantasy_ForgottenPlainsProps.png" id="2_j1sis"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="3_rqprm"]
-[ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="4_ypitu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tiwg8"]
 atlas = ExtResource("2_j1sis")
@@ -192,13 +191,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_x5ggi"]
-resource_local_to_scene = true
-script = ExtResource("4_ypitu")
-node_path = "DamageReceiver"
-property = "_amount"
-
-[node name="EntityBase" instance=ExtResource("1_h2scj")]
+[node name="Tree" instance=ExtResource("1_h2scj")]
 
 [node name="Shadow" parent="." index="0"]
 scale = Vector2(0.86525, 0.4375)
@@ -227,6 +220,3 @@ libraries = {
 
 [node name="AppearDisappearSprite" parent="AppearDisappear" index="1"]
 texture = SubResource("AtlasTexture_ushcn")
-
-[node name="DeloadPersistance" parent="." index="8"]
-deload_persistant_data = Array[ExtResource("4_ypitu")]([SubResource("Resource_x5ggi")])

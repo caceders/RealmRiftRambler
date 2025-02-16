@@ -35,7 +35,8 @@ func activate(spell_caster: SpellCaster):
 	_projectile.speed_change = speed_change
 	_projectile.min_speed = min_speed
 	_projectile.max_speed = max_speed
-	_projectile.target = _target
+	if _target != null:
+		_projectile.target = _target
 	_projectile.homing_strength = homing_strength
 
 	spell_caster.parent.get_parent().add_child(_projectile)

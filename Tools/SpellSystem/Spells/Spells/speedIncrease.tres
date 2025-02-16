@@ -12,4 +12,5 @@ speed_increase = 100.0
 
 [resource]
 script = ExtResource("1_ryilu")
+forced_keycode_length = 0
 spell_components = Array[ExtResource("2_hll45")]([SubResource("Resource_fjv3w")])

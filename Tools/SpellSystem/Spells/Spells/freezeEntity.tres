@@ -34,4 +34,5 @@ spell_components = Array[ExtResource("2_ft2fn")]([SubResource("Resource_lx873"),
 
 [resource]
 script = ExtResource("1_movqi")
+forced_keycode_length = 0
 spell_components = Array[ExtResource("2_ft2fn")]([SubResource("Resource_a2guy"), SubResource("Resource_3h67j")])

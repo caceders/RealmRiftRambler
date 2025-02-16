@@ -1,6 +1,7 @@
 class_name Spell extends Resource
 
 @export var spell_image: Texture
+@export var forced_keycode_length: int = 0
 
 @export var spell_components: Array[SpellComponent] = [null]
 var _active_component_index = 0

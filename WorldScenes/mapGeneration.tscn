@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://bll2eifddoyuw"]
+[gd_scene load_steps=55 format=3 uid="uid://bll2eifddoyuw"]
 
 [ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_bd7dt"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="2_2wblo"]
@@ -14,13 +14,14 @@
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/UniversalTileset.tres" id="10_5t2od"]
 [ext_resource type="PackedScene" uid="uid://couhlepbf8cgj" path="res://Tools/EntityBases/Animals/squirrelBase.tscn" id="10_y7y28"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="11_cpnas"]
+[ext_resource type="PackedScene" uid="uid://b83un0c0v5hf2" path="res://Tools/World/Generation/Generatables/PremadeGeneratables/SpawnArea/spawnArea.tscn" id="12_38nmx"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="12_oexo2"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="13_mtqif"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="15_oannm"]
 [ext_resource type="Texture2D" uid="uid://dlwry505rmb3t" path="res://Assets/Minifantasy_Userinterface_Assets/Menus/Panels_And_Slots/Minifantasy_GuiPanelsAndSlotsOriginal.png" id="16_ilcjh"]
 [ext_resource type="FontFile" uid="uid://dn2b8ajx1kyl5" path="res://Assets/Fonts/m5x7.ttf" id="17_41gb7"]
 [ext_resource type="Texture2D" uid="uid://c2bbk0givp3v7" path="res://Assets/Minifantasy_CraftingAndProfessions2_Assets/Gathering_Professions/Hunting/Minifantasy_CraftingAndProfessions2AnimalIcons.png" id="18_nh5j7"]
-[ext_resource type="Script" path="res://Scenes/displayBones.gd" id="19_dhtjb"]
+[ext_resource type="Script" path="res://Scripts/displayBones.gd" id="19_dhtjb"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_nhugc"]
 
@@ -41,6 +42,13 @@ biome = 0
 environment = 4
 feature = 0
 object = 0
+
+[sub_resource type="Resource" id="Resource_l8oca"]
+script = ExtResource("5_n505i")
+biome = 1
+environment = 1
+feature = 1
+object = 1
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_av0s5"]
 noise_type = 3
@@ -342,8 +350,6 @@ world_chunk_generator = NodePath("WorldChunkGenerator")
 ground_tile_map_layer = NodePath("Ground")
 entity_tile_map_layer = NodePath("Entities")
 
-[node name="SpellRandomizer" type="Node" parent="World"]
-
 [node name="WorldChunkLoader" type="Node" parent="World" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("2_2wblo")
 ground_tile_map_layer = NodePath("../Ground")
@@ -362,6 +368,7 @@ entity_tile_map_layer = NodePath("../Entities")
 script = ExtResource("4_5gnc3")
 noise = SubResource("FastNoiseLite_nhugc")
 extra_tile_data = SubResource("Resource_h6p3k")
+can_generate_over_all_biomes = true
 generation_noise_floor = -1.0
 ground_tile_map_layer = NodePath("../../../Ground")
 entity_tile_map_layer = NodePath("../../../Entities")
@@ -378,6 +385,16 @@ can_generate_over_environment = Array[int]([3])
 can_generate_over_all_features = true
 can_generate_over_all_objects = true
 generation_noise_floor = 0.3
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="SpawnAreaPremadeGeneratable" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer") instance=ExtResource("12_38nmx")]
+is_forced_placement = true
+extra_tile_data = SubResource("Resource_l8oca")
+can_generate_over_all_biomes = true
+can_generate_over_all_environments = true
+can_generate_over_all_features = true
+can_generate_over_all_objects = true
 ground_tile_map_layer = NodePath("../../../Ground")
 entity_tile_map_layer = NodePath("../../../Entities")
 
@@ -488,9 +505,6 @@ script = ExtResource("7_ji00q")
 [node name="Player" parent="World/Entities" instance=ExtResource("11_cpnas")]
 collision_layer = 1
 
-[node name="Shadow" parent="World/Entities/Player" index="0"]
-scale = Vector2(0.31875, 0.145833)
-
 [node name="AppearDisappearAnimationPlayer" parent="World/Entities/Player/AppearDisappear" index="0"]
 libraries = {
 "": SubResource("AnimationLibrary_vtcqi")
@@ -509,7 +523,6 @@ persistant_data = Array[ExtResource("13_mtqif")]([])
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("follow")]
 script = ExtResource("15_oannm")
 follow = NodePath("../World/Entities/Player")
-debug = true
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 scale = Vector2(0.2, 0.2)

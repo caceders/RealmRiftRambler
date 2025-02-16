@@ -20,4 +20,5 @@ target = 0
 [resource]
 script = ExtResource("1_w7320")
 spell_image = ExtResource("6_xckql")
+forced_keycode_length = 0
 spell_components = Array[ExtResource("2_hf57s")]([SubResource("Resource_8twwm"), SubResource("Resource_wek6a")])

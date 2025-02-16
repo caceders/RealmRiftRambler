@@ -65,6 +65,9 @@ func _ready():
 	spell_description_ui.is_activated = _activated
 	spell_description_ui.spell_description_image = spell.spell_image
 
+func _process(delta):
+	spell_description_ui.spell_cost = cost
+
 func interact(interactor: Interactor):
 	if activated:
 		return

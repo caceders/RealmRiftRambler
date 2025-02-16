@@ -2,7 +2,7 @@ extends Camera2D
 
 const ZOOM_STEP = Vector2(0.1, 0.1)
 const ZOOM_SPEED = 0.5  # Adjust for smoother zoom
-const ZOOM_MIN = 0.5
+const ZOOM_MIN = 1
 const ZOOM_MAX = 1.5
 
 const CAMERA_LEAD_LERP_WEIGHT = 0.015

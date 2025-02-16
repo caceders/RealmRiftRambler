@@ -2,7 +2,8 @@ class_name PremadeGeneratable extends Generatable
 
 # Is the world position forced
 @export var is_forced_placement: bool = false
-@export var forced_placement_top_left_corner: Array[Vector2i] = [Vector2i(0, 0)]
+@export var forced_placement_center: Array[Vector2i] = [Vector2i(0, 0)]
+var forced_placement_top_left_corner: Array[Vector2i]
 # If the premade is placed only once
 @export var is_one_off : bool = false
 # World chunk loader to store the premade world
@@ -25,8 +26,10 @@ func _ready():
 	_store_premade_world_data()
 	premade_ground_tile_map_layer.queue_free()
 	premade_entity_tile_map_layer.queue_free()
-	
-	if is_forced_placement and forced_placement_top_left_corner.is_empty():
+	forced_placement_top_left_corner = forced_placement_center.duplicate(true)
+	for corner_index in range(len(forced_placement_top_left_corner)):
+		forced_placement_top_left_corner[corner_index] = _premade_top_left_corner + forced_placement_center[corner_index]
+	if is_forced_placement and forced_placement_center.is_empty():
 		is_forced_placement = false
 
 func _store_premade_world_data():
@@ -117,7 +120,7 @@ func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerato
 
 	# If generatable is forced placement, place from the given top left corner
 	if is_forced_placement:
-		for placement_top_left_corner in  forced_placement_top_left_corner:
+		for placement_top_left_corner in forced_placement_top_left_corner:
 			if cell.x in range(placement_top_left_corner.x, placement_top_left_corner.x + _premade_world_size.x):
 				if cell.y in range(placement_top_left_corner.y, placement_top_left_corner.y + _premade_world_size.y):
 					tile_in_premade_x = _premade_top_left_corner.x + (cell.x - placement_top_left_corner.x)

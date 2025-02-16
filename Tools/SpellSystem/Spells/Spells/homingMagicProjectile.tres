@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="Spell" load_steps=15 format=3 uid="uid://dctmcc743dlf4"]
+
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/spell.gd" id="1_ma2lk"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/spellComponent.gd" id="2_4tyx6"]
+[ext_resource type="PackedScene" uid="uid://b8m2bcmu8i4w6" path="res://Tools/SpellSystem/Spells/OverlayAnimations/SpellCastSpellOverlayAnimation.tscn" id="3_f2e3c"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/SpellComponents/spellAnimationOverlay.gd" id="4_styh7"]
+[ext_resource type="PackedScene" uid="uid://dswnm4hgmcuum" path="res://Tools/SpellSystem/Spells/Projectiles/magicBolt.tscn" id="5_c2380"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/SpellComponents/projectileSpellComponent.gd" id="6_oot2i"]
+[ext_resource type="PackedScene" uid="uid://mgreyt5ch36q" path="res://Tools/SpellSystem/Spells/Projectiles/Particles/magicParticles.tscn" id="7_hwdjg"]
+[ext_resource type="Script" path="res://Tools/SpellSystem/Spells/SpellComponents/damageSpellComponent.gd" id="8_8e1fj"]
+[ext_resource type="PackedScene" uid="uid://ba03pexhaeoed" path="res://Tools/SpellSystem/Spells/OverlayAnimations/DamageSpellOverlayAnimation.tscn" id="9_qrucr"]
+[ext_resource type="Texture2D" uid="uid://ccqvdlbcew0jd" path="res://Assets/SpellDescriptionImages/MagicBolt.png" id="10_rpt4e"]
+
+[sub_resource type="Resource" id="Resource_ucxjv"]
+script = ExtResource("4_styh7")
+animation_packed_scene = ExtResource("3_f2e3c")
+target = 0
+
+[sub_resource type="Resource" id="Resource_d5upk"]
+script = ExtResource("6_oot2i")
+base_speed = 0.0
+speed_change = 200.0
+min_speed = 50.0
+max_speed = 500.0
+react_to_non_target_collisions = false
+timeout = 2.0
+homing_strength = 1.0
+projectile_packed_scene = ExtResource("5_c2380")
+tail_packed_scene = ExtResource("7_hwdjg")
+
+[sub_resource type="Resource" id="Resource_gppc1"]
+script = ExtResource("8_8e1fj")
+damage_amount = 25.0
+knockback = true
+target = 1
+
+[sub_resource type="Resource" id="Resource_n8ji0"]
+script = ExtResource("4_styh7")
+animation_packed_scene = ExtResource("9_qrucr")
+target = 1
+
+[resource]
+script = ExtResource("1_ma2lk")
+spell_image = ExtResource("10_rpt4e")
+forced_keycode_length = 2
+spell_components = Array[ExtResource("2_4tyx6")]([SubResource("Resource_ucxjv"), SubResource("Resource_d5upk"), SubResource("Resource_gppc1"), SubResource("Resource_n8ji0")])

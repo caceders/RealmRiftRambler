@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Tools/SpellSystem/SpellSupplier/spellSupplier.gd" id="2_0hxqa"]
 [ext_resource type="Texture2D" uid="uid://bue62aa45gnmt" path="res://Assets/Minifantasy_Wizards_Academy_Assets/Props/Props.png" id="2_u8tgc"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="3_2cejo"]
-[ext_resource type="Resource" uid="uid://dctmcc743dlf4" path="res://Tools/SpellSystem/Spells/homingMagicProjectile.tres" id="3_ewetx"]
+[ext_resource type="Resource" uid="uid://dctmcc743dlf4" path="res://Tools/SpellSystem/Spells/Spells/homingMagicProjectile.tres" id="3_ewetx"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="4_6efly"]
 [ext_resource type="PackedScene" uid="uid://yokqp6py1s2f" path="res://Tools/SpellSystem/SpellSupplier/spellDescriptionUI.tscn" id="6_5xao8"]
 
@@ -204,17 +204,15 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_227xk"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_ol8ac"]
 script = ExtResource("4_6efly")
 node_path = "DamageReceiver"
-property = "_amount"
+property = "amount"
 
-[sub_resource type="Resource" id="Resource_j71wp"]
-resource_local_to_scene = true
+[sub_resource type="Resource" id="Resource_t2te8"]
 script = ExtResource("4_6efly")
 node_path = "SpellSupplier"
-property = "activated"
+property = "cost"
 
 [sub_resource type="Animation" id="Animation_6r4sy"]
 resource_name = "Appear"
@@ -317,9 +315,9 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gphqt"]
-radius = 87.9659
+radius = 31.0161
 
-[node name="SpellSupplier" instance=ExtResource("1_5lsk3")]
+[node name="SpellSupplier" groups=["SpellSupplier"] instance=ExtResource("1_5lsk3")]
 
 [node name="SpellSupplier" type="Node2D" parent="." index="0" node_paths=PackedStringArray("interaction_animation_player", "spell_description_ui", "popup_animation_player", "sprite", "popup_area")]
 script = ExtResource("2_0hxqa")
@@ -331,6 +329,7 @@ pre_activation_sprite = SubResource("AtlasTexture_24nae")
 post_activation_sprite = SubResource("AtlasTexture_euyfw")
 popup_area = NodePath("../PopupArea")
 spell = ExtResource("3_ewetx")
+cost = 0
 
 [node name="Shadow" parent="." index="1"]
 scale = Vector2(0.84525, 0.333333)
@@ -338,6 +337,9 @@ offset = Vector2(-2.048, -0.0950003)
 
 [node name="TopDownEntity2D" parent="." index="2"]
 is_static = true
+
+[node name="DamageReceiver" parent="." index="3"]
+ignore_all_damage = true
 
 [node name="HealthBar" parent="." index="4"]
 offset_top = -30.095
@@ -361,10 +363,10 @@ libraries = {
 texture = SubResource("AtlasTexture_ushcn")
 
 [node name="DeloadPersistance" parent="." index="9"]
-deload_persistant_data = Array[ExtResource("4_6efly")]([SubResource("Resource_227xk"), SubResource("Resource_j71wp")])
+persistant_data = Array[ExtResource("4_6efly")]([SubResource("Resource_ol8ac"), SubResource("Resource_t2te8")])
 
 [node name="SpellDescription" parent="." index="12" instance=ExtResource("6_5xao8")]
-position = Vector2(0, -60)
+position = Vector2(1, -21)
 spell_description_text = ""
 
 [node name="SpellDescriptionAnimator" type="AnimationPlayer" parent="SpellDescription" index="1"]
