@@ -202,8 +202,8 @@ property = "_amount"
 [node name="OminousPost" instance=ExtResource("1_oe6lo")]
 
 [node name="Shadow" parent="." index="0"]
-scale = Vector2(0.75, 0.75)
-offset = Vector2(-15.565, -8.655)
+scale = Vector2(1.07476, 0.5)
+offset = Vector2(-1.39227, -5.655)
 
 [node name="TopDownEntity2D" parent="." index="1"]
 is_static = true

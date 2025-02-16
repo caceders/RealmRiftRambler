@@ -190,7 +190,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_e4ete"]
+[sub_resource type="Resource" id="Resource_l8x8n"]
 resource_local_to_scene = true
 script = ExtResource("5_d1w45")
 node_path = "DamageReceiver"
@@ -241,6 +241,6 @@ hostile_groups = Array[String](["Player"])
 radius = 4.6
 
 [node name="DeloadPersistance" parent="." index="17"]
-deload_persistant_data = Array[ExtResource("5_d1w45")]([SubResource("Resource_e4ete")])
+deload_persistant_data = Array[ExtResource("5_d1w45")]([SubResource("Resource_l8x8n")])
 
 [connection signal="damage_received" from="DamageReceiver" to="Hostility" method="_on_damage_taken" unbinds=3]

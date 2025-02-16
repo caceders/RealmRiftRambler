@@ -194,7 +194,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_wub1s"]
+[sub_resource type="Resource" id="Resource_q1p1l"]
 resource_local_to_scene = true
 script = ExtResource("5_iy7hn")
 node_path = "DamageReceiver"
@@ -922,7 +922,7 @@ hostile_groups = Array[String](["Player", "Animal"])
 visible = false
 
 [node name="DeloadPersistance" parent="." index="17"]
-deload_persistant_data = Array[ExtResource("5_iy7hn")]([SubResource("Resource_wub1s"), SubResource("Resource_uknp2")])
+deload_persistant_data = Array[ExtResource("5_iy7hn")]([SubResource("Resource_q1p1l"), SubResource("Resource_uknp2")])
 
 [node name="AnimationPlayerController" type="AnimationPlayer" parent="." index="18"]
 libraries = {
@@ -932,3 +932,5 @@ script = ExtResource("22_m08n7")
 
 [node name="ResourceDropSpawn" parent="." index="20"]
 amount = 10
+
+[connection signal="damage_received" from="DamageReceiver" to="." method="on_damage_taken"]

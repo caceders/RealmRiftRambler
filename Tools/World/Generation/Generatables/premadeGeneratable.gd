@@ -64,13 +64,6 @@ func _store_premade_world_data():
 	# Pluss one to include start and end. I think?
 	_premade_world_size = (end_cell - start_cell) + Vector2i.ONE
 
-	if name == "OrcPostGeneratable":
-		print(start_cell)
-		print(end_cell)
-		print(_premade_world_size)
-		print("--------")
-		print(start_chunk)
-		print(end_chunk)
 
 	# Needed to avoid integer division by 0 which causes windows to crash.
 	if _premade_world_size == Vector2i.ZERO:

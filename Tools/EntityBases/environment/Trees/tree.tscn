@@ -201,8 +201,8 @@ property = "_amount"
 [node name="EntityBase" instance=ExtResource("1_h2scj")]
 
 [node name="Shadow" parent="." index="0"]
-scale = Vector2(0.65625, 0.65625)
-offset = Vector2(-12.5, -3)
+scale = Vector2(0.86525, 0.4375)
+offset = Vector2(-2.688, -0.47619)
 
 [node name="TopDownEntity2D" parent="." index="1"]
 is_static = true

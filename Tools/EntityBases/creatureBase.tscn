@@ -200,7 +200,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_ii6nr"]
+[sub_resource type="Resource" id="Resource_5q1an"]
 resource_local_to_scene = true
 script = ExtResource("12_xew88")
 node_path = "DamageReceiver"
@@ -274,6 +274,6 @@ texture = SubResource("AtlasTexture_ushcn")
 avoidance_enabled = false
 
 [node name="DeloadPersistance" parent="." index="16"]
-deload_persistant_data = Array[ExtResource("12_xew88")]([SubResource("Resource_ii6nr")])
+deload_persistant_data = Array[ExtResource("12_xew88")]([SubResource("Resource_5q1an")])
 
 [connection signal="damage_received" from="DamageReceiver" to="Knockback" method="on_damage_taken"]

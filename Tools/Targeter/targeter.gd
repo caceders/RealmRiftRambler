@@ -71,10 +71,11 @@ func _process(_delta):
 	return 
 
 func start_lock_on():
-	lock_on = true
-	_lock_on_display_sprite = lock_on_display_sprite_packed_scene.instantiate()
-	target.add_child(_lock_on_display_sprite)
-	_lock_on_display_sprite.position = Vector2.ZERO
+	if target != null:
+		lock_on = true
+		_lock_on_display_sprite = lock_on_display_sprite_packed_scene.instantiate()
+		target.add_child(_lock_on_display_sprite)
+		_lock_on_display_sprite.position = Vector2.ZERO
 
 func end_lock_on():
 	lock_on = false

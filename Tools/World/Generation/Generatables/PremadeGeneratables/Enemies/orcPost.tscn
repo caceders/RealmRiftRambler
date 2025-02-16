@@ -199,7 +199,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_8qglg"]
+[sub_resource type="Resource" id="Resource_xsw06"]
 resource_local_to_scene = true
 script = ExtResource("7_yemjs")
 node_path = "DamageReceiver"
@@ -254,10 +254,6 @@ position = Vector2(-1, -1)
 [node name="OrcBase" parent="PremadeEntityTilemap" index="1" instance=ExtResource("4_a4dti")]
 position = Vector2(-27, -28)
 
-[node name="Shadow" parent="PremadeEntityTilemap/OrcBase" index="0"]
-scale = Vector2(0.31875, 0.145833)
-offset = Vector2(-3.2, 4.47)
-
 [node name="Sprite2D" parent="PremadeEntityTilemap/OrcBase" index="4"]
 texture = SubResource("AtlasTexture_7cfn3")
 
@@ -269,15 +265,14 @@ libraries = {
 "": SubResource("AnimationLibrary_a2k33")
 }
 
+[node name="AppearDisappearSprite" parent="PremadeEntityTilemap/OrcBase/AppearDisappear" index="1"]
+texture = SubResource("AtlasTexture_ushcn")
+
 [node name="DeloadPersistance" parent="PremadeEntityTilemap/OrcBase" index="17"]
-deload_persistant_data = Array[ExtResource("7_yemjs")]([SubResource("Resource_8qglg"), SubResource("Resource_uknp2")])
+deload_persistant_data = Array[ExtResource("7_yemjs")]([SubResource("Resource_xsw06"), SubResource("Resource_uknp2")])
 
 [node name="OrcBase2" parent="PremadeEntityTilemap" index="2" instance=ExtResource("4_a4dti")]
 position = Vector2(-23, 15)
-
-[node name="Shadow" parent="PremadeEntityTilemap/OrcBase2" index="0"]
-scale = Vector2(0.31875, 0.145833)
-offset = Vector2(-3.2, 4.47)
 
 [node name="Sprite2D" parent="PremadeEntityTilemap/OrcBase2" index="4"]
 texture = SubResource("AtlasTexture_jbonb")
@@ -290,15 +285,14 @@ libraries = {
 "": SubResource("AnimationLibrary_pydwf")
 }
 
+[node name="AppearDisappearSprite" parent="PremadeEntityTilemap/OrcBase2/AppearDisappear" index="1"]
+texture = SubResource("AtlasTexture_ushcn")
+
 [node name="DeloadPersistance" parent="PremadeEntityTilemap/OrcBase2" index="17"]
-deload_persistant_data = Array[ExtResource("7_yemjs")]([SubResource("Resource_8qglg"), SubResource("Resource_uknp2")])
+deload_persistant_data = Array[ExtResource("7_yemjs")]([SubResource("Resource_xsw06"), SubResource("Resource_uknp2")])
 
 [node name="OrcBase3" parent="PremadeEntityTilemap" index="3" instance=ExtResource("4_a4dti")]
 position = Vector2(32, 0)
-
-[node name="Shadow" parent="PremadeEntityTilemap/OrcBase3" index="0"]
-scale = Vector2(0.31875, 0.145833)
-offset = Vector2(-3.2, 4.47)
 
 [node name="Sprite2D" parent="PremadeEntityTilemap/OrcBase3" index="4"]
 texture = SubResource("AtlasTexture_6n7hh")
@@ -308,8 +302,11 @@ libraries = {
 "": SubResource("AnimationLibrary_o0sid")
 }
 
+[node name="AppearDisappearSprite" parent="PremadeEntityTilemap/OrcBase3/AppearDisappear" index="1"]
+texture = SubResource("AtlasTexture_ushcn")
+
 [node name="DeloadPersistance" parent="PremadeEntityTilemap/OrcBase3" index="17"]
-deload_persistant_data = Array[ExtResource("7_yemjs")]([SubResource("Resource_8qglg"), SubResource("Resource_uknp2")])
+deload_persistant_data = Array[ExtResource("7_yemjs")]([SubResource("Resource_xsw06"), SubResource("Resource_uknp2")])
 
 [editable path="PremadeEntityTilemap/OrcBase"]
 [editable path="PremadeEntityTilemap/OrcBase2"]

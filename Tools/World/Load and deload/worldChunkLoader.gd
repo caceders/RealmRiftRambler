@@ -34,12 +34,12 @@ func load_chunk(chunk_data: Dictionary):
 			continue
 		var entity = entity_packed_scene.instantiate()
 		entity.global_position = entity_data["position"]
-		var persistant_data = entity_data["persistant_data"] as Array[PersistantData]
-		if not persistant_data.is_empty():
-			for data in persistant_data:
-				var subnode = entity.get_node(data.node_path)
-				subnode.set(data.property, data.value)
+
+		# Reapply the persistant node
+		for persistant_data in entity_data["persistant_data"]:
+			entity.get_node(persistant_data["node_path"]).set(persistant_data["property"], persistant_data["value"])
 		entity_tile_map_layer.add_child(entity)
+
 
 func _transform_all_ground_tiles_to_datas_in_chunk(chunk_coordinate: Vector2i) -> Array[Dictionary]:
 	var cells = get_cells_in(chunk_coordinate)
@@ -100,15 +100,20 @@ func _transform_all_entities_to_datas_in_chunk(chunk_coordinate: Vector2i) -> Ar
 			var packed_scene = entity.scene_file_path
 			var node_position = entity.global_position
 
-			var deload_persistant_data = []
+			var persistant_datas = []
 			if entity.has_node("DeloadPersistance"):
+				var persistant_data_dictionary = {}
 				var deload_persistance = entity.get_node("DeloadPersistance") as DeloadPersistance
-				deload_persistant_data = deload_persistance.deload_persistant_data.duplicate(true)
-			
+				for persistant_data in deload_persistance.persistant_data:
+					persistant_data_dictionary["node_path"] = persistant_data.node_path
+					persistant_data_dictionary["property"] = persistant_data.property
+					persistant_data_dictionary["value"] = entity.get_node(persistant_data.node_path).get(persistant_data.property)
+					persistant_datas.append(persistant_data_dictionary)
+				
 			var entity_data = {}
 			entity_data["packed_scene"] = packed_scene
 			entity_data["position"] = node_position
-			entity_data["persistant_data"] = deload_persistant_data
+			entity_data["persistant_data"] = persistant_datas
 			entity_datas.append(entity_data)
 			entity.queue_free()
 	return entity_datas

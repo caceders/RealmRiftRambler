@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://bll2eifddoyuw"]
+[gd_scene load_steps=52 format=3 uid="uid://bll2eifddoyuw"]
 
 [ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_bd7dt"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="2_2wblo"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" path="res://Tools/World/extraTileData.gd" id="5_n505i"]
 [ext_resource type="Script" path="res://Tools/World/Generation/Generatables/entityGeneratable.gd" id="6_vlrg0"]
 [ext_resource type="Script" path="res://Tools/World/tileMapLayerWithExtraTileData.gd" id="7_ji00q"]
-[ext_resource type="PackedScene" uid="uid://c6c4bxbukvf5w" path="res://Tools/World/Generation/Generatables/PremadeGeneratables/Enemies/orcPost.tscn" id="7_mvcvf"]
 [ext_resource type="Script" path="res://Tools/World/Generation/Generatables/sceneProbabilityPair.gd" id="7_q6emo"]
 [ext_resource type="PackedScene" uid="uid://cfbfuftomdxnb" path="res://Tools/EntityBases/Environment/Trees/tree.tscn" id="8_6m6vs"]
 [ext_resource type="PackedScene" uid="uid://bydi3gon2vqcr" path="res://Tools/EntityBases/Environment/Trees/appleTree.tscn" id="9_5bbab"]
@@ -311,12 +310,6 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_lvd8n"]
-resource_local_to_scene = true
-script = ExtResource("13_mtqif")
-node_path = "DamageReceiver"
-property = "_amount"
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_kdaf4"]
 atlas = ExtResource("16_ilcjh")
 region = Rect2(272, 160, 48, 48)
@@ -342,7 +335,6 @@ region = Rect2(48, 32, 8, 8)
 
 [node name="World" type="Node" parent="." node_paths=PackedStringArray("center_camera", "world_chunk_loader", "world_chunk_generator", "ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("1_bd7dt")
-load_distance = 4
 center_camera = NodePath("../Camera2D")
 world_chunk_loader = NodePath("WorldChunkLoader")
 world_chunk_generator = NodePath("WorldChunkGenerator")
@@ -434,12 +426,6 @@ generation_noise_floor = 0.6
 ground_tile_map_layer = NodePath("../../../Ground")
 entity_tile_map_layer = NodePath("../../../Entities")
 
-[node name="OrcPostGeneratable" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer") instance=ExtResource("7_mvcvf")]
-can_generate_over_all_objects = true
-generation_noise_floor = 0.55
-ground_tile_map_layer = NodePath("../../../Ground")
-entity_tile_map_layer = NodePath("../../../Entities")
-
 [node name="TreeGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("6_vlrg0")
 scenes = Array[ExtResource("7_q6emo")]([SubResource("Resource_hmm7a"), SubResource("Resource_vxt7c")])
@@ -508,8 +494,11 @@ libraries = {
 [node name="AppearDisappearSprite" parent="World/Entities/Player/AppearDisappear" index="1"]
 texture = SubResource("AtlasTexture_ushcn")
 
+[node name="Targeter" parent="World/Entities/Player" index="14"]
+position = Vector2(2, 0)
+
 [node name="DeloadPersistance" parent="World/Entities/Player" index="17"]
-deload_persistant_data = Array[ExtResource("13_mtqif")]([SubResource("Resource_lvd8n")])
+persistant_data = Array[ExtResource("13_mtqif")]([])
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("follow")]
 script = ExtResource("15_oannm")
