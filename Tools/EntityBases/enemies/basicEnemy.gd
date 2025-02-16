@@ -19,7 +19,6 @@ func _ready():
 	attack_controller.charge_end.connect(_on_charge_attack_end)
 	attack_controller.attack_started.connect(_on_attack_started)
 	animation_player_controller.play_base_animation("enemyIdleLeft")
-	health.damage_received.connect(on_damage_taken)
 
 func on_damage_taken(p_amount, knockback, damage_dealer):
 	health.pause_growth_for(health_regen_pause_time)

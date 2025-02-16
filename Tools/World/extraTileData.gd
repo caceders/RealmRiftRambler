@@ -16,8 +16,8 @@ enum ENVIRONMENT {
 
 enum FEATURE {
 	NONE,
-	ROAD,
 	SPECIAL,
+	ROAD,
 }
 
 enum OBJECT {

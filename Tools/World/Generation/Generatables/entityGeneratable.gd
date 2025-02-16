@@ -22,7 +22,7 @@ func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerato
 			var packed_scene = pick_random_scene_weighted()
 			var scene = packed_scene.instantiate() as Node2D
 			entity_tile_map_layer.add_child(scene)
-			var position_offset = Vector2.ONE * randf_range(-CELL_SIZE_PIXELS/2, CELL_SIZE_PIXELS/2) # Add slight offset in case there are other entities here. Make them not stuck on eachother.
+			var position_offset = Vector2.ONE * randf_range(-CELL_SIZE_PIXELS/3, CELL_SIZE_PIXELS/3) # Add slight offset in case there are other entities here. Make them not stuck on eachother.
 			scene.position = entity_tile_map_layer.map_to_local(cell) + position_offset
 			
 	apply_new_extra_tile_data(cell)

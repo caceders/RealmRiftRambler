@@ -190,7 +190,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_kjh1s"]
+[sub_resource type="Resource" id="Resource_e4ete"]
 resource_local_to_scene = true
 script = ExtResource("5_d1w45")
 node_path = "DamageReceiver"
@@ -201,8 +201,8 @@ position = Vector2(0, 0)
 wall_min_slide_angle = 0.261799
 
 [node name="Shadow" parent="." index="0"]
-scale = Vector2(0.25, 0.25)
-offset = Vector2(-4, -1.03833)
+scale = Vector2(0.35, 0.166667)
+offset = Vector2(-3.2, 4.295)
 
 [node name="DamageReceiver" parent="." index="2"]
 position = Vector2(-1, 0)
@@ -241,7 +241,6 @@ hostile_groups = Array[String](["Player"])
 radius = 4.6
 
 [node name="DeloadPersistance" parent="." index="17"]
-deload_persistant_data = Array[ExtResource("5_d1w45")]([SubResource("Resource_kjh1s")])
+deload_persistant_data = Array[ExtResource("5_d1w45")]([SubResource("Resource_e4ete")])
 
-[connection signal="damage_received" from="DamageReceiver" to="DamageReceiver" method="_on_damage_received" unbinds=3]
 [connection signal="damage_received" from="DamageReceiver" to="Hostility" method="_on_damage_taken" unbinds=3]

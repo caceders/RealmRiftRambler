@@ -33,20 +33,45 @@ func _store_premade_world_data():
 	# Get size of world
 	var ground_used_rect = premade_ground_tile_map_layer.get_used_rect()
 	var entity_used_rect = premade_entity_tile_map_layer.get_used_rect()
-	
-	var max_x = max(ground_used_rect.position.x, entity_used_rect.position.x)
-	var max_y = max(ground_used_rect.position.y, entity_used_rect.position.y)
 
-	var min_x = min(ground_used_rect.end.x, entity_used_rect.end.x)
-	var min_y = min(ground_used_rect.end.y, entity_used_rect.end.y)
+	var entity_pos = Vector2i.ZERO
+	var entity_end = Vector2i.ZERO
 
-	var start_position = Vector2i(max_x, max_y)
-	var end_position = Vector2i(min_x, min_y)
+	var all_entities = premade_entity_tile_map_layer.get_children()
+	if not all_entities.is_empty():
+		var furthest_up_entity = all_entities.reduce(func(accum: Node2D, check: Node2D): return accum if (accum.global_position.y < check.global_position.y) else check)
+		var furthest_down_entity = all_entities.reduce(func(accum: Node2D, check: Node2D): return accum if (accum.global_position.y > check.global_position.y) else check)
+		var furthest_left_entity = all_entities.reduce(func(accum: Node2D, check: Node2D): return accum if (accum.global_position.x < check.global_position.x) else check)
+		var furthest_right_entity = all_entities.reduce(func(accum: Node2D, check: Node2D): return accum if (accum.global_position.x > check.global_position.x) else check)
 
-	var start_chunk = cell_to_chunk(start_position)
-	var end_chunk = cell_to_chunk(end_position)
-	_premade_top_left_corner = ground_used_rect.position
-	_premade_world_size = ground_used_rect.size
+		entity_pos = Vector2i(position_to_cell(furthest_left_entity.global_position).x, position_to_cell(furthest_up_entity.global_position).y)
+		entity_end = Vector2i(position_to_cell(furthest_right_entity.global_position).x, position_to_cell(furthest_down_entity.global_position).y)
+
+	var min_x = min(ground_used_rect.position.x, entity_used_rect.position.x, entity_pos.x)
+	var min_y = min(ground_used_rect.position.y, entity_used_rect.position.y, entity_pos.y)
+
+	var max_x = max(ground_used_rect.end.x, entity_used_rect.end.x, entity_end.x)
+	var max_y = max(ground_used_rect.end.y, entity_used_rect.end.y, entity_end.y)
+
+
+	var start_cell = Vector2i(min_x, min_y)
+	var end_cell = Vector2i(max_x, max_y)
+
+	var start_chunk = cell_to_chunk(start_cell)
+	var end_chunk = cell_to_chunk(end_cell)
+
+	_premade_top_left_corner = start_cell
+	# Pluss one to include start and end. I think?
+	_premade_world_size = (end_cell - start_cell) + Vector2i.ONE
+
+	if name == "OrcPostGeneratable":
+		print(start_cell)
+		print(end_cell)
+		print(_premade_world_size)
+		print("--------")
+		print(start_chunk)
+		print(end_chunk)
+
 	# Needed to avoid integer division by 0 which causes windows to crash.
 	if _premade_world_size == Vector2i.ZERO:
 		_premade_world_size = Vector2i.ONE
@@ -118,7 +143,7 @@ func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerato
 	
 	# Load entity tiles
 	for tile_data in premade_chunk_data["entity_tiles"]:
-		if tile_data["coordinate"] == tile_in_premade and not not (only_update_extra_info or only_extra_info):
+		if tile_data["coordinate"] == tile_in_premade and not (only_update_extra_info or only_extra_info):
 			BetterTerrain.set_cell(entity_tile_map_layer, cell, tile_data["terrain_id"])
 	
 	# Load entities

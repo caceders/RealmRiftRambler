@@ -201,7 +201,7 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_8y5uw"]
+[sub_resource type="Resource" id="Resource_fqmvi"]
 resource_local_to_scene = true
 script = ExtResource("11_jg4ph")
 node_path = "DamageReceiver"
@@ -261,7 +261,7 @@ radius = 2.0
 
 [node name="DeloadPersistance" type="Node" parent="."]
 script = ExtResource("9_anfqf")
-deload_persistant_data = Array[ExtResource("11_jg4ph")]([SubResource("Resource_8y5uw")])
+deload_persistant_data = Array[ExtResource("11_jg4ph")]([SubResource("Resource_fqmvi")])
 
 [node name="ResourceDropSpawnOnDeath" type="Node" parent="." node_paths=PackedStringArray("health", "resource_drop_spawn")]
 script = ExtResource("11_w3y4c")

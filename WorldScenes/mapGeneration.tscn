@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://bll2eifddoyuw"]
+[gd_scene load_steps=54 format=3 uid="uid://bll2eifddoyuw"]
 
 [ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_bd7dt"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="2_2wblo"]
@@ -7,10 +7,11 @@
 [ext_resource type="Script" path="res://Tools/World/extraTileData.gd" id="5_n505i"]
 [ext_resource type="Script" path="res://Tools/World/Generation/Generatables/entityGeneratable.gd" id="6_vlrg0"]
 [ext_resource type="Script" path="res://Tools/World/tileMapLayerWithExtraTileData.gd" id="7_ji00q"]
+[ext_resource type="PackedScene" uid="uid://c6c4bxbukvf5w" path="res://Tools/World/Generation/Generatables/PremadeGeneratables/Enemies/orcPost.tscn" id="7_mvcvf"]
 [ext_resource type="Script" path="res://Tools/World/Generation/Generatables/sceneProbabilityPair.gd" id="7_q6emo"]
 [ext_resource type="PackedScene" uid="uid://cfbfuftomdxnb" path="res://Tools/EntityBases/Environment/Trees/tree.tscn" id="8_6m6vs"]
 [ext_resource type="PackedScene" uid="uid://bydi3gon2vqcr" path="res://Tools/EntityBases/Environment/Trees/appleTree.tscn" id="9_5bbab"]
-[ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="10_5t2od"]
+[ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/UniversalTileset.tres" id="10_5t2od"]
 [ext_resource type="PackedScene" uid="uid://couhlepbf8cgj" path="res://Tools/EntityBases/Animals/squirrelBase.tscn" id="10_y7y28"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="11_cpnas"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="12_oexo2"]
@@ -41,9 +42,6 @@ environment = 4
 feature = 0
 object = 0
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_42h3o"]
-frequency = 0.0554
-
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_av0s5"]
 noise_type = 3
 frequency = 0.0096
@@ -58,6 +56,9 @@ biome = 0
 environment = 0
 feature = 1
 object = 0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_42h3o"]
+frequency = 0.0554
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_0vknq"]
 frequency = 0.0056
@@ -331,6 +332,8 @@ texture_margin_bottom = 7.0
 default_font = ExtResource("17_41gb7")
 Panel/styles/panel = SubResource("StyleBoxTexture_wnhb4")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4b263"]
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_0s46o"]
 atlas = ExtResource("18_nh5j7")
 region = Rect2(48, 32, 8, 8)
@@ -356,7 +359,7 @@ entity_tile_map_layer = NodePath("../Entities")
 [node name="WorldChunkGenerator" type="Node" parent="World" node_paths=PackedStringArray("generatables_node", "ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("3_n6n5w")
 generatables_node = NodePath("Generatables")
-world_seed = 21790
+world_seed = 2179023415
 ground_tile_map_layer = NodePath("../Ground")
 entity_tile_map_layer = NodePath("../Entities")
 
@@ -385,17 +388,6 @@ generation_noise_floor = 0.3
 ground_tile_map_layer = NodePath("../../../Ground")
 entity_tile_map_layer = NodePath("../../../Entities")
 
-[node name="GrassGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
-script = ExtResource("4_5gnc3")
-is_4x4 = true
-terrain_id = 2
-noise = SubResource("FastNoiseLite_42h3o")
-can_generate_over_biome = Array[int]([2])
-can_generate_over_environment = Array[int]([2])
-generation_noise_floor = 0.0
-ground_tile_map_layer = NodePath("../../../Ground")
-entity_tile_map_layer = NodePath("../../../Entities")
-
 [node name="RoadsGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("4_5gnc3")
 is_4x4 = true
@@ -405,6 +397,17 @@ extra_tile_data = SubResource("Resource_4mdnk")
 can_generate_over_biome = Array[int]([2])
 can_generate_over_environment = Array[int]([2, 3])
 generation_noise_floor = 0.95
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="GrassGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
+script = ExtResource("4_5gnc3")
+is_4x4 = true
+terrain_id = 2
+noise = SubResource("FastNoiseLite_42h3o")
+can_generate_over_biome = Array[int]([2])
+can_generate_over_environment = Array[int]([2])
+generation_noise_floor = 0.0
 ground_tile_map_layer = NodePath("../../../Ground")
 entity_tile_map_layer = NodePath("../../../Entities")
 
@@ -431,6 +434,12 @@ generation_noise_floor = 0.6
 ground_tile_map_layer = NodePath("../../../Ground")
 entity_tile_map_layer = NodePath("../../../Entities")
 
+[node name="OrcPostGeneratable" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer") instance=ExtResource("7_mvcvf")]
+can_generate_over_all_objects = true
+generation_noise_floor = 0.55
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
 [node name="TreeGeneratable" type="Node" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("6_vlrg0")
 scenes = Array[ExtResource("7_q6emo")]([SubResource("Resource_hmm7a"), SubResource("Resource_vxt7c")])
@@ -438,7 +447,7 @@ noise = SubResource("FastNoiseLite_3gcqn")
 extra_tile_data = SubResource("Resource_n87a8")
 can_generate_over_all_biomes = true
 can_generate_over_environment = Array[int]([3])
-generation_noise_floor = 0.27
+generation_noise_floor = 0.3
 ground_tile_map_layer = NodePath("../../../Ground")
 entity_tile_map_layer = NodePath("../../../Entities")
 
@@ -488,6 +497,9 @@ script = ExtResource("7_ji00q")
 [node name="Player" parent="World/Entities" instance=ExtResource("11_cpnas")]
 collision_layer = 1
 
+[node name="Shadow" parent="World/Entities/Player" index="0"]
+scale = Vector2(0.31875, 0.145833)
+
 [node name="AppearDisappearAnimationPlayer" parent="World/Entities/Player/AppearDisappear" index="0"]
 libraries = {
 "": SubResource("AnimationLibrary_vtcqi")
@@ -520,13 +532,9 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="CanvasLayer/Control"]
 layout_mode = 0
-offset_right = 315.0
-offset_bottom = 125.0
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/Panel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 170.0
+offset_bottom = 95.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_4b263")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/Panel"]
 layout_mode = 1
@@ -558,13 +566,11 @@ texture = SubResource("AtlasTexture_0s46o")
 
 [node name="Label" type="Label" parent="CanvasLayer/Control/Panel/MarginContainer/HBoxContainer" node_paths=PackedStringArray("resource")]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 0.811)
-theme_override_font_sizes/font_size = 47
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("19_dhtjb")
 resource = NodePath("../../../../../../World/Entities/Player/ResourceCollector")
-
-[connection signal="damage_received" from="World/Entities/Player/DamageReceiver" to="World/Entities/Player/Knockback" method="on_damage_taken"]
 
 [editable path="World/Entities/Player"]

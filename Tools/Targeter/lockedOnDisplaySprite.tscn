@@ -26,6 +26,7 @@ animations = [{
 }]
 
 [node name="LockedOnDisplaySprite" type="AnimatedSprite2D"]
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_fl4il")
 frame_progress = 0.710942
 script = ExtResource("2_gx1o6")

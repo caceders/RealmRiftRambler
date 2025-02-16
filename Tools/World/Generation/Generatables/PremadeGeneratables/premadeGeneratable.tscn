@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bbm5p2cd0r48e"]
+[gd_scene load_steps=6 format=3 uid="uid://bbm5p2cd0r48e"]
 
 [ext_resource type="Script" path="res://Tools/World/Generation/Generatables/premadeGeneratable.gd" id="1_f0k5m"]
+[ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/UniversalTileset.tres" id="2_p2438"]
 [ext_resource type="Script" path="res://Tools/World/tileMapLayerWithExtraTileData.gd" id="3_7cnyv"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="4_ch0pk"]
 
@@ -16,10 +17,12 @@ noise = SubResource("FastNoiseLite_4oxqj")
 
 [node name="PremadeGroundTilemap" type="TileMapLayer" parent="."]
 y_sort_enabled = true
+tile_set = ExtResource("2_p2438")
 script = ExtResource("3_7cnyv")
 
 [node name="PremadeEntityTilemap" type="TileMapLayer" parent="."]
 y_sort_enabled = true
+tile_set = ExtResource("2_p2438")
 script = ExtResource("3_7cnyv")
 
 [node name="WorldChunkLoader" type="Node" parent="." node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]

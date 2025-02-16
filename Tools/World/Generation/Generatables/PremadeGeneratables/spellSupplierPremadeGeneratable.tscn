@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=4 uid="uid://y1qy7o2676t3"]
 
 [ext_resource type="PackedScene" uid="uid://bbm5p2cd0r48e" path="res://Tools/World/Generation/Generatables/PremadeGeneratables/premadeGeneratable.tscn" id="1_grg8v"]
-[ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="2_igxrq"]
+[ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/UniversalTileset.tres" id="2_igxrq"]
 [ext_resource type="PackedScene" uid="uid://dxvft828c2tsd" path="res://Tools/SpellSystem/SpellSupplier/spellSupplier.tscn" id="3_dbyav"]
 
 [node name="SpellSupplierPremadeGeneratable" instance=ExtResource("1_grg8v")]

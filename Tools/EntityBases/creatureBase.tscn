@@ -210,8 +210,8 @@ property = "_amount"
 position = Vector2(-1, 1)
 
 [node name="Shadow" parent="." index="0"]
-scale = Vector2(0.21875, 0.21875)
-offset = Vector2(-3.5, -1.17667)
+scale = Vector2(0.31875, 0.145833)
+offset = Vector2(-3.2, 4.49)
 
 [node name="DamageReceiver" parent="." index="2"]
 enable_growth = true

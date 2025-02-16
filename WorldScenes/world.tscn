@@ -1,6 +1,6 @@
 [gd_scene load_steps=17 format=4 uid="uid://dml54no3evuav"]
 
-[ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/ForgottenPlains.tres" id="1_8m1l6"]
+[ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/UniversalTileset.tres" id="1_8m1l6"]
 [ext_resource type="PackedScene" uid="uid://d28n6ebqyns3n" path="res://Tools/Player/player.tscn" id="3_uxjxf"]
 [ext_resource type="Script" path="res://Scripts/camera_2d.gd" id="4_g6g7v"]
 [ext_resource type="Texture2D" uid="uid://b5f8pru1elgqw" path="res://Assets/Minifantasy_Wildlife_Assets/Non-Aggressive/Squirrel/SquirrelDmg.png" id="5_hvhpq"]
