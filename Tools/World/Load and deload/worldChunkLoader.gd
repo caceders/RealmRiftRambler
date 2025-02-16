@@ -2,6 +2,9 @@ class_name WorldChunkLoader extends WorldChunkManipulator
 
 const CONSTANT_LOADED_GROUPS = ["Player"]
 
+var better_terrain_changeset_paint_entity: Dictionary
+var better_terrain_changeset_paint_ground: Dictionary
+
 func store_chunk(chunk_coordinate: Vector2i):
 		
 	var ground_tile_datas = _transform_all_ground_tiles_to_datas_in_chunk(chunk_coordinate)
@@ -18,12 +21,18 @@ func load_chunk(chunk_data: Dictionary):
 
 	# Load ground tiles.
 	for tile_data in chunk_data["ground_tiles"]:
-		BetterTerrain.set_cell(ground_tile_map_layer, tile_data["coordinate"], tile_data["terrain_id"])
+		if better_terrain_changeset_paint_ground != null:
+			better_terrain_changeset_paint_ground[tile_data["coordinate"]] = tile_data["terrain_id"]
+		else:
+			BetterTerrain.set_cell(ground_tile_map_layer, tile_data["coordinate"], tile_data["terrain_id"])
 		ground_tile_map_layer.set_extra_data(tile_data["coordinate"], tile_data["extra_data"])
 	
 	# Load entity tiles.
 	for tile_data in chunk_data["entity_tiles"]:
-		BetterTerrain.set_cell(entity_tile_map_layer, tile_data["coordinate"], tile_data["terrain_id"])
+		if better_terrain_changeset_paint_entity != null:
+			better_terrain_changeset_paint_entity[tile_data["coordinate"]] = tile_data["terrain_id"]
+		else:
+			BetterTerrain.set_cell(entity_tile_map_layer, tile_data["coordinate"], tile_data["terrain_id"])
 	
 	# Load entities.
 	for entity_data in chunk_data["entities"]:
@@ -57,7 +66,10 @@ func _transform_all_ground_tiles_to_datas_in_chunk(chunk_coordinate: Vector2i) -
 		tile_data["extra_data"] = extra_data
 		tile_datas.append(tile_data)
 		# Remove tile.
-		BetterTerrain.set_cell(ground_tile_map_layer, cell, -1)
+		if better_terrain_changeset_paint_ground != null:
+			better_terrain_changeset_paint_ground[cell] = -1
+		else:
+			BetterTerrain.set_cell(ground_tile_map_layer, cell, -1)
 	return tile_datas
 
 func _transform_all_entity_tiles_to_datas_in_chunk(chunk_coordinate: Vector2i) -> Array[Dictionary]:
@@ -73,7 +85,10 @@ func _transform_all_entity_tiles_to_datas_in_chunk(chunk_coordinate: Vector2i) -
 		tile_data["terrain_id"] = tile_id
 		tile_datas.append(tile_data)
 		# Remove tile.
-		BetterTerrain.set_cell(entity_tile_map_layer, cell, -1)
+		if better_terrain_changeset_paint_entity != null:
+			better_terrain_changeset_paint_entity[cell] = -1
+		else:
+			BetterTerrain.set_cell(entity_tile_map_layer, cell, -1)
 	return tile_datas
 
 func _transform_all_entities_to_datas_in_chunk(chunk_coordinate: Vector2i) -> Array[Dictionary]:

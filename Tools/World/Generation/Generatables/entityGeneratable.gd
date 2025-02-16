@@ -4,7 +4,7 @@ class_name EntityGeneratable extends Generatable
 @export var is_entity_tile = false
 @export var terrain_id: int
 
-func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerator, only_update_extra_info: bool = false):
+func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerator, only_update_extra_info: bool, better_terrain_changeset_paint_entity: Dictionary, better_terrain_changeset_paint_ground: Dictionary):
 	var noise_pos: Vector2i = cell
 	# Skip cell if noise not over generation floor
 	if noise.get_noise_2d(noise_pos.x, noise_pos.y) < generation_noise_floor:
@@ -17,7 +17,10 @@ func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerato
 	# Place the entities
 	if not (only_update_extra_info or only_extra_info):
 		if is_entity_tile:
-			BetterTerrain.set_cell(entity_tile_map_layer, cell, terrain_id)
+			if better_terrain_changeset_paint_entity != null:
+				better_terrain_changeset_paint_entity[cell] = terrain_id
+			else:
+				BetterTerrain.set_cell(entity_tile_map_layer, cell, terrain_id)
 		else:
 			var packed_scene = pick_random_scene_weighted()
 			var scene = packed_scene.instantiate() as Node2D

@@ -8,18 +8,24 @@ const INCREASE_CHUNK_BATCH_CALCULATION_PER_CHUNK = 300
 @export var world_chunk_loader: WorldChunkLoader
 @export var world_chunk_generator: WorldChunkGenerator
 
-const UPDATE_FRAMES = 3
+const UPDATE_FRAMES = 12
 var _center_chunk : Vector2i = Vector2i(0,0)
 var _active_chunks : Array[Vector2i] = []
 
 var _chunks_to_store : Array[Vector2i] = []
 var _chunks_to_load : Array[Vector2i] = []
 var _chunks_to_generate : Array[Vector2i] = []
-var _chunks_to_update: Array[Vector2i] = []
 var _chunk_datas: Dictionary = {}
 
+var better_terrain_changeset_paint_ground: Dictionary = {}
+var better_terrain_changeset_paint_entity: Dictionary = {}
+
+var better_terrain_changeset_ground
+var better_terrain_changeset_entity
 
 func _ready():
+	create_new_terrain_changeset_paint_ground()
+	create_new_terrain_changeset_paint_entity()
 	generate_everything_immidiately()
 	
 func _process(_delta):
@@ -43,9 +49,18 @@ func generate_everything_immidiately():
 		_generate_chunks()
 	while not _chunks_to_store.is_empty():
 		_store_chunks()
-	while not _chunks_to_update.is_empty():
-		_uppdate_terrains()
+	_uppdate_terrains()
 	_handle_entities_outside_load_distance()
+
+func create_new_terrain_changeset_paint_ground():
+	better_terrain_changeset_paint_ground = {}
+	world_chunk_loader.better_terrain_changeset_paint_ground = better_terrain_changeset_paint_ground
+	world_chunk_generator.better_terrain_changeset_paint_ground = better_terrain_changeset_paint_ground
+
+func create_new_terrain_changeset_paint_entity():
+	better_terrain_changeset_paint_entity = {}
+	world_chunk_loader.better_terrain_changeset_paint_entity = better_terrain_changeset_paint_entity
+	world_chunk_generator.better_terrain_changeset_paint_entity = better_terrain_changeset_paint_entity
 
 func _update_chunk_arrays():
 	_center_chunk = world_chunk_loader.position_to_chunk(center_camera.global_position)
@@ -113,7 +128,6 @@ func _store_chunks():
 		var chunk = _chunks_to_store.pop_back()
 		_chunk_datas[chunk] = world_chunk_loader.store_chunk(chunk)
 		_active_chunks.erase(chunk)
-		_chunks_to_update.append(chunk)
 		chunks_handled_this_frame += 1
 
 func _load_chunks():
@@ -122,7 +136,6 @@ func _load_chunks():
 		var chunk = _chunks_to_load.pop_back()
 		world_chunk_loader.load_chunk(_chunk_datas[chunk])
 		_active_chunks.append(chunk)
-		_chunks_to_update.append(chunk)
 		chunks_handled_this_frame += 1
 
 func _generate_chunks():
@@ -131,24 +144,25 @@ func _generate_chunks():
 		var chunk = _chunks_to_generate.pop_back()
 		world_chunk_generator.generate_chunk(chunk)
 		_active_chunks.append(chunk)
-		_chunks_to_update.append(chunk)
 		chunks_handled_this_frame += 1
 
 func _uppdate_terrains():
-	var tiles = []
 
-	# Force update terrain to spread out over multiple frames. This is the most costly function call. This is why block underneath is commented out
-	#var chunks_handled_this_frame = 0
-	#while not _chunks_to_update.is_empty() and chunks_handled_this_frame < _get_dynamic_update_chunk_batch_in_single_frame():
-	#	var chunk = _chunks_to_update.pop_back()
-	#	tiles.append_array(get_cells_in(chunk))
-	#	chunks_handled_this_frame += 1
-	
-	if not _chunks_to_update.is_empty():
-		var chunk = _chunks_to_update.pop_back()
-		tiles.append_array(get_cells_in(chunk))
-	BetterTerrain.update_terrain_cells(ground_tile_map_layer, tiles)
-	BetterTerrain.update_terrain_cells(entity_tile_map_layer, tiles)
+	if better_terrain_changeset_ground == null:
+		better_terrain_changeset_ground = BetterTerrain.create_terrain_changeset(ground_tile_map_layer, better_terrain_changeset_paint_ground)
+	if better_terrain_changeset_entity == null:
+		better_terrain_changeset_entity = BetterTerrain.create_terrain_changeset(entity_tile_map_layer, better_terrain_changeset_paint_entity)
+
+	if BetterTerrain.is_terrain_changeset_ready(better_terrain_changeset_ground):
+		BetterTerrain.apply_terrain_changeset(better_terrain_changeset_ground)
+		better_terrain_changeset_ground = BetterTerrain.create_terrain_changeset(ground_tile_map_layer, better_terrain_changeset_paint_ground)
+		create_new_terrain_changeset_paint_ground()
+		
+	if BetterTerrain.is_terrain_changeset_ready(better_terrain_changeset_entity):
+		BetterTerrain.apply_terrain_changeset(better_terrain_changeset_entity)
+		better_terrain_changeset_entity = BetterTerrain.create_terrain_changeset(entity_tile_map_layer, better_terrain_changeset_paint_entity)
+		create_new_terrain_changeset_paint_entity()
+		
 
 func _handle_entities_outside_load_distance():
 	# If entity exist outside loaded chunks - load or generate the relevant chunk and store it now with the entity	
@@ -175,7 +189,6 @@ func generate_or_load_chunk_immidiately(chunk: Vector2i):
 		if _chunks_to_generate.has(chunk):
 			_chunks_to_generate.erase(chunk)
 	_active_chunks.append(chunk)
-	_chunks_to_update.append(chunk)
 
 func _get_dynamic_update_chunk_batch_in_single_frame():
 	var num_chunks_to_treat = _chunks_to_store.size() + _chunks_to_load.size() + _chunks_to_generate.size()

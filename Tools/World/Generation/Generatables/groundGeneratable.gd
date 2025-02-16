@@ -4,7 +4,7 @@ class_name GroundGeneratable extends Generatable
 @export var is_4x4: bool = false
 @export var terrain_id: int
 
-func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerator, only_update_extra_info: bool = false):
+func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerator, only_update_extra_info: bool, better_terrain_changeset_paint_entity: Dictionary, better_terrain_changeset_paint_ground: Dictionary):
 	var noise_pos: Vector2i = cell
 	
 	if is_4x4:
@@ -17,6 +17,9 @@ func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerato
 	if not _can_generate_on_cell(cell, world_chunk_generator):
 		return
 	if not (only_update_extra_info or only_extra_info):
-		BetterTerrain.set_cell(ground_tile_map_layer, cell, terrain_id)
+		if better_terrain_changeset_paint_ground != null:
+			better_terrain_changeset_paint_ground[cell] = terrain_id
+		else:
+			BetterTerrain.set_cell(ground_tile_map_layer, cell, terrain_id)
 
 	apply_new_extra_tile_data(cell)

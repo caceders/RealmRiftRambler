@@ -496,6 +496,7 @@ texture = SubResource("AtlasTexture_ushcn")
 
 [node name="Targeter" parent="World/Entities/Player" index="14"]
 position = Vector2(2, 0)
+distance_penalty_line_sort = 0.0001
 
 [node name="DeloadPersistance" parent="World/Entities/Player" index="17"]
 persistant_data = Array[ExtResource("13_mtqif")]([])

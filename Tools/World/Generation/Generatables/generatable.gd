@@ -26,9 +26,9 @@ class_name Generatable extends WorldChunkManipulator
 		
 @export var generation_noise_floor: float = .5
 
-func apply_generatable(_cell: Vector2i, _world_chunk_generator: WorldChunkGenerator, _only_update_extra_info: bool = false):
+func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerator, only_update_extra_info: bool, better_terrain_changeset_paint_entity: Dictionary, better_terrain_changeset_paint_ground: Dictionary):
 	pass
-
+ 
 func apply_new_extra_tile_data(cell):
 	var placed_tile_extra_tile_data = ground_tile_map_layer.get_extra_data(cell)
 	

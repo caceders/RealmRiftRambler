@@ -74,7 +74,7 @@ func _store_premade_world_data():
 			var chunk = Vector2i(chunk_x, chunk_y)
 			_premade_world_chunk_datas[chunk] = world_chunk_loader.store_chunk(chunk)
 
-func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerator, only_update_extra_info: bool = false):
+func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerator, only_update_extra_info: bool, better_terrain_changeset_paint_entity: Dictionary, better_terrain_changeset_paint_ground: Dictionary):
 	## TODO: REPAIR HERE
 	# This describes what "square number" of premades length the cell belong to. Needs to be cast to vector2 to ensure flooring works. If held as vector2i it is rounded and negative numbers are f*****
 	var length_of_premades_to_cell_floored: Vector2i = floor((cell as Vector2)/(_premade_world_size as Vector2))
@@ -132,12 +132,18 @@ func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerato
 	# Load ground tiles	
 	for tile_data in premade_chunk_data["ground_tiles"]:
 		if tile_data["coordinate"] == tile_in_premade and not (only_update_extra_info or only_extra_info):
-			BetterTerrain.set_cell(ground_tile_map_layer, cell, tile_data["terrain_id"])
+			if better_terrain_changeset_paint_ground != null:
+				better_terrain_changeset_paint_ground[cell] = tile_data["terrain_id"]
+			else:
+				BetterTerrain.set_cell(ground_tile_map_layer, cell, tile_data["terrain_id"])
 	
 	# Load entity tiles
 	for tile_data in premade_chunk_data["entity_tiles"]:
 		if tile_data["coordinate"] == tile_in_premade and not (only_update_extra_info or only_extra_info):
-			BetterTerrain.set_cell(entity_tile_map_layer, cell, tile_data["terrain_id"])
+			if better_terrain_changeset_paint_entity != null:
+				better_terrain_changeset_paint_entity[cell] = tile_data["terrain_id"]
+			else:
+				BetterTerrain.set_cell(entity_tile_map_layer, cell, tile_data["terrain_id"])
 	
 	# Load entities
 	for entity_data in premade_chunk_data["entities"]:

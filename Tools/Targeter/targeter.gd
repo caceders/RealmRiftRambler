@@ -12,7 +12,7 @@ const LINE_LERP_WEIGHT = .1
 
 @export var highlighter: Color
 
-@export var distance_penalty_line_sort: float = 0.0001
+@export var distance_penalty_line_sort: float = 0.00005
 
 @export var lock_on_display_sprite_packed_scene: PackedScene
 
@@ -22,7 +22,7 @@ var _line: Vector2 = Vector2.UP
 
 var _lock_on_display_sprite: AnimatedSprite2D = null
 
-var _targetable: Array[Node2D] = []
+var _targetables: Array[Node2D] = []
 
 var _target: Node2D
 
@@ -84,38 +84,38 @@ func end_lock_on():
 
 func select_target_on_line():
 	var all_bodies = get_overlapping_bodies()
-	_targetable = []
+	_targetables = []
 
 	for entity in all_bodies:
 		if "Targetable" in entity.get_groups():
-			_targetable.append(entity)
+			_targetables.append(entity)
 
 	# Remove targets outside "Cone" of line "o<"
 	var target_outside_cone = []
-	for target in _targetable:
-		var distance_from_center_squared = global_position.distance_squared_to(target.global_position)
-		var distance_from_line_squared = distance_from_center_squared * sin(global_position.angle_to(target.global_position))
-		var distance_to_point_on_line = distance_from_center_squared * cos(global_position.angle_to(target.global_position))
-		if abs((distance_from_line_squared/2)) > distance_to_point_on_line:
-			target_outside_cone.append(target)
+	for targetable in _targetables:
+		var distance_from_center_squared = global_position.distance_squared_to(targetable.global_position)
+		var distance_from_line_squared = distance_from_center_squared * sin(global_position.angle_to(targetable.global_position))
+		var distance_to_point_on_line_squared = distance_from_center_squared * cos(global_position.angle_to(targetable.global_position))
+		if abs(distance_from_line_squared/2) > abs(distance_to_point_on_line_squared):
+			target_outside_cone.append(targetable)
 
 	if not target_outside_cone.is_empty():
 		for entity in target_outside_cone:
-			_targetable.erase(entity)
+			_targetables.erase(entity)
 	
 	# Remove owner
-	if get_parent() in _targetable:
-		_targetable.erase(get_parent())
+	if get_parent() in _targetables:
+		_targetables.erase(get_parent())
 
 	
-	if not _targetable.is_empty():
+	if not _targetables.is_empty():
 		for entity in target_outside_cone:
-			_targetable.erase(entity)
+			_targetables.erase(entity)
 
-		_targetable.sort_custom(sortline)
-		if (_nearest != _targetable[0]) or target == null:
-			_nearest = _targetable[0]
-			target = _targetable[0]
+		_targetables.sort_custom(sortline)
+		if (_nearest != _targetables[0]) or target == null:
+			_nearest = _targetables[0]
+			target = _targetables[0]
 	if $CollisionShape2D.shape.radius != distance:
 		var shape = CircleShape2D.new()
 		shape.radius = distance
@@ -124,25 +124,25 @@ func select_target_on_line():
 
 func select_closest_target():
 	var all_bodies = get_overlapping_bodies()
-	_targetable = []
+	_targetables = []
 	# Remove non-targetable
 	var non_targets = []
 	for entity in all_bodies:
 		if "Targetable" in entity.get_groups():
-			_targetable.append(entity)
+			_targetables.append(entity)
 	
 	# Remove owner
-	if get_parent() in _targetable:
-		_targetable.erase(get_parent())
+	if get_parent() in _targetables:
+		_targetables.erase(get_parent())
 
 	
-	if not _targetable.is_empty():
+	if not _targetables.is_empty():
 		for entity in non_targets:
-			_targetable.erase(entity)
-		_targetable.sort_custom(sort_distance)
-		if (_nearest != _targetable[0]) or target == null:
-			_nearest = _targetable[0]
-			target = _targetable[0]
+			_targetables.erase(entity)
+		_targetables.sort_custom(sort_distance)
+		if (_nearest != _targetables[0]) or target == null:
+			_nearest = _targetables[0]
+			target = _targetables[0]
 	if $CollisionShape2D.shape.radius != distance:
 		var shape = CircleShape2D.new()
 		shape.radius = distance
@@ -150,12 +150,12 @@ func select_closest_target():
 	return
 
 func select_next_target():
-	if not _targetable.is_empty():
-		var current_target_index = _targetable.find(target)
+	if not _targetables.is_empty():
+		var current_target_index = _targetables.find(target)
 		current_target_index = current_target_index + 1
-		if current_target_index == _targetable.size():
+		if current_target_index == _targetables.size():
 			current_target_index = 0
-		target = _targetable[current_target_index]
+		target = _targetables[current_target_index]
 
 func sort_distance(a, b):
 	return (global_position.distance_to(a.global_position) < global_position.distance_to(b.global_position))

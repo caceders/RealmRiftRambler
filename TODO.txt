@@ -1,2 +1,1 @@
 - Fix targeter problem when player is in a quadrant of the gloal positino coordinate system
-- Fix health regained on deload
