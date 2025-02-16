@@ -25,4 +25,4 @@ func generate_extra_tile_data_on_cell_until_generatable_is_found(cell, p_generat
 		if generatable == p_generatable:
 			return
 		generatable = generatable as Generatable
-		generatable.apply_generatable(cell, self, true)
+		generatable.apply_generatable(cell, self, true, better_terrain_changeset_paint_entity, better_terrain_changeset_paint_ground)

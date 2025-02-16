@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c6c4bxbukvf5w"]
+[gd_scene load_steps=18 format=3 uid="uid://c6c4bxbukvf5w"]
 
 [ext_resource type="PackedScene" uid="uid://bbm5p2cd0r48e" path="res://Tools/World/Generation/Generatables/PremadeGeneratables/premadeGeneratable.tscn" id="1_5yei2"]
 [ext_resource type="Script" path="res://Tools/World/extraTileData.gd" id="2_jlxq2"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://ki2x6efh6e2e" path="res://Tools/EntityBases/Enemies/orcBase.tscn" id="4_a4dti"]
 [ext_resource type="Texture2D" uid="uid://fgnfqglvb0ua" path="res://Assets/Minifantasy_Dungeon_Assets/Characters/Orc/Idle.png" id="5_ctr0o"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="6_e8u5k"]
-[ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="7_yemjs"]
 
 [sub_resource type="Resource" id="Resource_0jgm6"]
 script = ExtResource("2_jlxq2")
@@ -199,17 +198,6 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_xsw06"]
-resource_local_to_scene = true
-script = ExtResource("7_yemjs")
-node_path = "DamageReceiver"
-property = "_amount"
-
-[sub_resource type="Resource" id="Resource_uknp2"]
-script = ExtResource("7_yemjs")
-node_path = "Strafer"
-property = "other_node"
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_jbonb"]
 resource_local_to_scene = true
 atlas = ExtResource("5_ctr0o")
@@ -254,6 +242,10 @@ position = Vector2(-1, -1)
 [node name="OrcBase" parent="PremadeEntityTilemap" index="1" instance=ExtResource("4_a4dti")]
 position = Vector2(-27, -28)
 
+[node name="Shadow" parent="PremadeEntityTilemap/OrcBase" index="0"]
+scale = Vector2(0.31875, 0.145833)
+offset = Vector2(-3.2, 4.47)
+
 [node name="Sprite2D" parent="PremadeEntityTilemap/OrcBase" index="4"]
 texture = SubResource("AtlasTexture_7cfn3")
 
@@ -268,11 +260,12 @@ libraries = {
 [node name="AppearDisappearSprite" parent="PremadeEntityTilemap/OrcBase/AppearDisappear" index="1"]
 texture = SubResource("AtlasTexture_ushcn")
 
-[node name="DeloadPersistance" parent="PremadeEntityTilemap/OrcBase" index="17"]
-deload_persistant_data = Array[ExtResource("7_yemjs")]([SubResource("Resource_xsw06"), SubResource("Resource_uknp2")])
-
 [node name="OrcBase2" parent="PremadeEntityTilemap" index="2" instance=ExtResource("4_a4dti")]
 position = Vector2(-23, 15)
+
+[node name="Shadow" parent="PremadeEntityTilemap/OrcBase2" index="0"]
+scale = Vector2(0.31875, 0.145833)
+offset = Vector2(-3.2, 4.47)
 
 [node name="Sprite2D" parent="PremadeEntityTilemap/OrcBase2" index="4"]
 texture = SubResource("AtlasTexture_jbonb")
@@ -288,11 +281,12 @@ libraries = {
 [node name="AppearDisappearSprite" parent="PremadeEntityTilemap/OrcBase2/AppearDisappear" index="1"]
 texture = SubResource("AtlasTexture_ushcn")
 
-[node name="DeloadPersistance" parent="PremadeEntityTilemap/OrcBase2" index="17"]
-deload_persistant_data = Array[ExtResource("7_yemjs")]([SubResource("Resource_xsw06"), SubResource("Resource_uknp2")])
-
 [node name="OrcBase3" parent="PremadeEntityTilemap" index="3" instance=ExtResource("4_a4dti")]
 position = Vector2(32, 0)
+
+[node name="Shadow" parent="PremadeEntityTilemap/OrcBase3" index="0"]
+scale = Vector2(0.31875, 0.145833)
+offset = Vector2(-3.2, 4.47)
 
 [node name="Sprite2D" parent="PremadeEntityTilemap/OrcBase3" index="4"]
 texture = SubResource("AtlasTexture_6n7hh")
@@ -304,9 +298,6 @@ libraries = {
 
 [node name="AppearDisappearSprite" parent="PremadeEntityTilemap/OrcBase3/AppearDisappear" index="1"]
 texture = SubResource("AtlasTexture_ushcn")
-
-[node name="DeloadPersistance" parent="PremadeEntityTilemap/OrcBase3" index="17"]
-deload_persistant_data = Array[ExtResource("7_yemjs")]([SubResource("Resource_xsw06"), SubResource("Resource_uknp2")])
 
 [editable path="PremadeEntityTilemap/OrcBase"]
 [editable path="PremadeEntityTilemap/OrcBase2"]

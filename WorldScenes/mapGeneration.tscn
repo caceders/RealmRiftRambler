@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://bll2eifddoyuw"]
+[gd_scene load_steps=53 format=3 uid="uid://bll2eifddoyuw"]
 
 [ext_resource type="Script" path="res://Tools/World/worldHandler.gd" id="1_bd7dt"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="2_2wblo"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Tools/World/Generation/Generatables/groundGeneratable.gd" id="4_5gnc3"]
 [ext_resource type="Script" path="res://Tools/World/extraTileData.gd" id="5_n505i"]
 [ext_resource type="Script" path="res://Tools/World/Generation/Generatables/entityGeneratable.gd" id="6_vlrg0"]
+[ext_resource type="PackedScene" uid="uid://c6c4bxbukvf5w" path="res://Tools/World/Generation/Generatables/PremadeGeneratables/Enemies/orcPost.tscn" id="7_eakd8"]
 [ext_resource type="Script" path="res://Tools/World/tileMapLayerWithExtraTileData.gd" id="7_ji00q"]
 [ext_resource type="Script" path="res://Tools/World/Generation/Generatables/sceneProbabilityPair.gd" id="7_q6emo"]
 [ext_resource type="PackedScene" uid="uid://cfbfuftomdxnb" path="res://Tools/EntityBases/Environment/Trees/tree.tscn" id="8_6m6vs"]
@@ -423,6 +424,10 @@ extra_tile_data = SubResource("Resource_dh46a")
 can_generate_over_all_biomes = true
 can_generate_over_environment = Array[int]([3, 2])
 generation_noise_floor = 0.6
+ground_tile_map_layer = NodePath("../../../Ground")
+entity_tile_map_layer = NodePath("../../../Entities")
+
+[node name="OrcPostGeneratable" parent="World/WorldChunkGenerator/Generatables" node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer") instance=ExtResource("7_eakd8")]
 ground_tile_map_layer = NodePath("../../../Ground")
 entity_tile_map_layer = NodePath("../../../Entities")
 
