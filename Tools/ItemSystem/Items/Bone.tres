@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Item" load_steps=5 format=3 uid="uid://2v808ib4miak"]
+
+[ext_resource type="Script" path="res://Tools/ItemSystem/Items/item.gd" id="1_d8hfs"]
+[ext_resource type="Texture2D" uid="uid://c2bbk0givp3v7" path="res://Assets/Minifantasy_CraftingAndProfessions2_Assets/Gathering_Professions/Hunting/Minifantasy_CraftingAndProfessions2AnimalIcons.png" id="1_xehiy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4d5ip"]
+atlas = ExtResource("1_xehiy")
+region = Rect2(48, 32, 8, 8)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7c8pu"]
+atlas = ExtResource("1_xehiy")
+region = Rect2(48, 32, 8, 8)
+
+[resource]
+script = ExtResource("1_d8hfs")
+icon_texture = SubResource("AtlasTexture_4d5ip")
+sprite_texture = SubResource("AtlasTexture_7c8pu")
+name = "Bone"
+use_function = Callable()
+consume_on_use = true

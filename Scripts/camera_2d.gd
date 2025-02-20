@@ -1,9 +1,9 @@
 extends Camera2D
 
-const ZOOM_STEP = Vector2(0.1, 0.1)
+const ZOOM_STEP = Vector2(1, 1)
 const ZOOM_SPEED = 0.5  # Adjust for smoother zoom
-const ZOOM_MIN = 1
-const ZOOM_MAX = 1.5
+const ZOOM_MIN = 4
+const ZOOM_MAX = 12
 
 const CAMERA_LEAD_LERP_WEIGHT = 0.015
 
@@ -14,6 +14,9 @@ const CAMERA_LEAD_MAX = Vector2(25, 25)
 
 var _previous_position: Vector2 = Vector2.ZERO
 var _camera_lead: Vector2 = Vector2(0, 0)
+
+func _ready():
+	zoom = ZOOM_MIN * Vector2.ONE
 
 func _process(delta):
 

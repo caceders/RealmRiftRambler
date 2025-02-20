@@ -1,9 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://bydi3gon2vqcr"]
+[gd_scene load_steps=15 format=3 uid="uid://bydi3gon2vqcr"]
 
 [ext_resource type="PackedScene" uid="uid://3e0cvi4n2eeo" path="res://Tools/EntityBases/entityBase.tscn" id="1_kv8iq"]
 [ext_resource type="Texture2D" uid="uid://w5mbknj65jft" path="res://Assets/Minifantasy_ForgottenPlains_Assets/props/Minifantasy_ForgottenPlainsProps.png" id="2_576tv"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="3_n07fp"]
-[ext_resource type="Script" path="res://Tools/World/Load and deload/persistantData.gd" id="4_tx8ng"]
+[ext_resource type="Script" path="res://Tools/ItemSystem/itemDropper.gd" id="4_tuvtv"]
+[ext_resource type="Script" path="res://Tools/resourceWeightPair.gd" id="5_g5a1j"]
+[ext_resource type="Resource" uid="uid://cjj6n0o7rspd8" path="res://Tools/ItemSystem/Items/Apple.tres" id="6_2e1kw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tiwg8"]
 atlas = ExtResource("2_576tv")
@@ -192,11 +194,10 @@ _data = {
 "entityDisappear": SubResource("Animation_af7xm")
 }
 
-[sub_resource type="Resource" id="Resource_buvi4"]
-resource_local_to_scene = true
-script = ExtResource("4_tx8ng")
-node_path = "DamageReceiver"
-property = "_amount"
+[sub_resource type="Resource" id="Resource_7hujr"]
+script = ExtResource("5_g5a1j")
+resource = ExtResource("6_2e1kw")
+weight = 1.0
 
 [node name="EntityBase" instance=ExtResource("1_kv8iq")]
 
@@ -228,5 +229,6 @@ libraries = {
 [node name="AppearDisappearSprite" parent="AppearDisappear" index="1"]
 texture = SubResource("AtlasTexture_ushcn")
 
-[node name="DeloadPersistance" parent="." index="8"]
-deload_persistant_data = Array[ExtResource("4_tx8ng")]([SubResource("Resource_buvi4")])
+[node name="ItemDropper" type="Node" parent="." index="10"]
+script = ExtResource("4_tuvtv")
+item_pool = Array[ExtResource("5_g5a1j")]([SubResource("Resource_7hujr")])

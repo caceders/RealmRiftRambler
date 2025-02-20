@@ -1,27 +1,23 @@
-[gd_scene load_steps=7 format=3 uid="uid://bwo2jvjefsg1u"]
+[gd_scene load_steps=6 format=3 uid="uid://bwo2jvjefsg1u"]
 
 [ext_resource type="Script" path="res://Tools/ResourcePool/ResourceCollector/resourceDrop.gd" id="1_3snsi"]
-[ext_resource type="Texture2D" uid="uid://c2bbk0givp3v7" path="res://Assets/Minifantasy_CraftingAndProfessions2_Assets/Gathering_Professions/Hunting/Minifantasy_CraftingAndProfessions2AnimalIcons.png" id="2_tamu3"]
+[ext_resource type="Texture2D" uid="uid://bi03w1t277jm" path="res://Assets/Minifantasy_Userinterface_Assets/Icons/Minifantasy_GuiIcons.png" id="2_1q6ht"]
 [ext_resource type="Script" path="res://Tools/HitBox/hitBox.gd" id="3_0hfkn"]
-[ext_resource type="PackedScene" uid="uid://capgfj8qy5lic" path="res://Tools/Shadow/shadow.tscn" id="4_s6ub5"]
-[ext_resource type="PackedScene" uid="uid://b8rgk0f2f4vd8" path="res://Tools/AppearDisappear/appearDisappear.tscn" id="5_ttpec"]
+[ext_resource type="Script" path="res://Tools/MiniMovementScripts/bobber.gd" id="6_s405e"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u6s3b"]
-atlas = ExtResource("2_tamu3")
-region = Rect2(48, 32, 8, 8)
+atlas = ExtResource("2_1q6ht")
+region = Rect2(41, 57, 7, 7)
 
 [node name="ResourceDrop" type="Area2D"]
 script = ExtResource("1_3snsi")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
 texture = SubResource("AtlasTexture_u6s3b")
-offset = Vector2(0, -3.96)
 
 [node name="HitBox" type="CollisionShape2D" parent="."]
 script = ExtResource("3_0hfkn")
 
-[node name="Shadow" parent="." instance=ExtResource("4_s6ub5")]
-scale = Vector2(0.35, 0.166667)
-offset = Vector2(-3.2, 4.04)
-
-[node name="AppearDisappear" parent="." instance=ExtResource("5_ttpec")]
+[node name="Bobber" type="Node" parent="."]
+script = ExtResource("6_s405e")

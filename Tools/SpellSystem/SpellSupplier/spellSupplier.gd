@@ -71,16 +71,16 @@ func _process(delta):
 func interact(interactor: Interactor):
 	if activated:
 		return
-	if not interactor.get_parent().has_node("ResourceCollector"):
+	if not interactor.get_parent().has_node("Inventory"):
 		return
 	
-	var resource_collector = interactor.get_parent().get_node("ResourceCollector")
-	if resource_collector.amount < cost:
+	var inventory = interactor.get_parent().get_node("Inventory") as Inventory
+	if inventory.get_number_of_item[] < cost:
 		interaction_animation_player.play("tooExpensive")
 	else:
 		interaction_animation_player.play("activate")
 		activated = true
-		resource_collector.amount -= cost
+		inventory.amount -= cost
 		
 func show_popup():
 	popup_animation_player.play("Appear")

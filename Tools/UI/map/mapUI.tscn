@@ -1,0 +1,168 @@
+[gd_scene load_steps=7 format=3 uid="uid://daoxqr6y72q7b"]
+
+[ext_resource type="Script" path="res://Tools/UI/map/mapUI.gd" id="1_v5pjq"]
+[ext_resource type="Texture2D" uid="uid://k12ratud6fmc" path="res://Assets/MinimapTileSet.png" id="2_jph2v"]
+[ext_resource type="Texture2D" uid="uid://o2fu407r7skw" path="res://Assets/Minifantasy_Dungeon_Assets/Characters/Human/Walk.png" id="3_hpoh3"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jih5t"]
+texture = ExtResource("2_jph2v")
+texture_region_size = Vector2i(4, 4)
+0:0/0 = 0
+0:0/0/metadata/_better_terrain = {
+"type": 0
+}
+2:0/0 = 0
+2:0/0/metadata/_better_terrain = {
+"type": 1
+}
+4:0/0 = 0
+4:0/0/metadata/_better_terrain = {
+"type": 2
+}
+6:0/0 = 0
+6:0/0/metadata/_better_terrain = {
+"type": 3
+}
+8:0/0 = 0
+8:0/0/metadata/_better_terrain = {
+"type": 4
+}
+10:0/0 = 0
+12:0/0 = 0
+14:0/0 = 0
+0:2/0 = 0
+2:2/0 = 0
+4:2/0 = 0
+6:2/0 = 0
+8:2/0 = 0
+10:2/0 = 0
+12:2/0 = 0
+14:2/0 = 0
+0:4/0 = 0
+2:4/0 = 0
+4:4/0 = 0
+6:4/0 = 0
+8:4/0 = 0
+10:4/0 = 0
+12:4/0 = 0
+14:4/0 = 0
+0:6/0 = 0
+2:6/0 = 0
+4:6/0 = 0
+6:6/0 = 0
+8:6/0 = 0
+10:6/0 = 0
+12:6/0 = 0
+14:6/0 = 0
+0:8/0 = 0
+2:8/0 = 0
+4:8/0 = 0
+6:8/0 = 0
+8:8/0 = 0
+10:8/0 = 0
+12:8/0 = 0
+14:8/0 = 0
+0:10/0 = 0
+2:10/0 = 0
+4:10/0 = 0
+6:10/0 = 0
+8:10/0 = 0
+10:10/0 = 0
+12:10/0 = 0
+14:10/0 = 0
+0:12/0 = 0
+2:12/0 = 0
+4:12/0 = 0
+6:12/0 = 0
+8:12/0 = 0
+10:12/0 = 0
+12:12/0 = 0
+14:12/0 = 0
+0:14/0 = 0
+2:14/0 = 0
+4:14/0 = 0
+6:14/0 = 0
+8:14/0 = 0
+10:14/0 = 0
+12:14/0 = 0
+14:14/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_uclu0"]
+tile_size = Vector2i(4, 4)
+sources/1 = SubResource("TileSetAtlasSource_jih5t")
+metadata/_better_terrain = {
+"decoration": ["Decoration", Color(0.411765, 0.411765, 0.411765, 1), 3, [], {
+"path": "res://addons/better-terrain/icons/Decoration.svg"
+}],
+"terrains": [["Waters", Color(0.779555, 0.230356, 0.823949, 1), 0, [], {
+"path": ""
+}], ["Plain", Color(0.529418, 0.567229, 0.771408, 1), 0, [], {
+"path": ""
+}], ["Forest", Color(0.476482, 0.0579677, 0.898302, 1), 0, [], {
+"path": ""
+}], ["Special", Color(0.804179, 0.100367, 0.792414, 1), 0, [], {
+"path": ""
+}], ["Road", Color(0.660362, 0.208186, 0.316681, 1), 0, [], {
+"path": ""
+}]],
+"version": "0.2"
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_skpyk"]
+atlas = ExtResource("3_hpoh3")
+region = Rect2(13, 12, 6, 5)
+
+[node name="Map" type="MarginContainer" node_paths=PackedStringArray("sub_viewport", "_map_tile_map_layer")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -130.0
+offset_bottom = 130.0
+grow_horizontal = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_v5pjq")
+sub_viewport = NodePath("PanelContainer/MarginContainer/SubViewportContainer/SubViewport")
+_map_tile_map_layer = NodePath("PanelContainer/MarginContainer/SubViewportContainer/SubViewport/MapTileMapLayer")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="SubViewport" type="SubViewport" parent="PanelContainer/MarginContainer/SubViewportContainer"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(104, 104)
+render_target_update_mode = 4
+
+[node name="MapTileMapLayer" type="TileMapLayer" parent="PanelContainer/MarginContainer/SubViewportContainer/SubViewport"]
+position = Vector2(60, 60)
+tile_map_data = PackedByteArray(0, 0, 233, 254, 255, 255, 1, 0, 0, 0, 0, 0, 0, 0, 233, 254, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 234, 254, 255, 255, 1, 0, 0, 0, 0, 0, 0, 0, 234, 254, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0)
+tile_set = SubResource("TileSet_uclu0")
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/CenterContainer"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+texture = SubResource("AtlasTexture_skpyk")
+expand_mode = 1

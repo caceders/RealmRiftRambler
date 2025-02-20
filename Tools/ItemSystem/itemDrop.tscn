@@ -1,0 +1,86 @@
+[gd_scene load_steps=11 format=3 uid="uid://b1bqnqpufy8v8"]
+
+[ext_resource type="Script" path="res://Tools/ItemSystem/itemDrop.gd" id="1_p84di"]
+[ext_resource type="Script" path="res://Tools/HitBox/hitBox.gd" id="2_n1ide"]
+[ext_resource type="Texture2D" uid="uid://c2bbk0givp3v7" path="res://Assets/Minifantasy_CraftingAndProfessions2_Assets/Gathering_Professions/Hunting/Minifantasy_CraftingAndProfessions2AnimalIcons.png" id="3_divld"]
+[ext_resource type="Script" path="res://Tools/MiniMovementScripts/bobber.gd" id="3_w4hka"]
+[ext_resource type="PackedScene" uid="uid://capgfj8qy5lic" path="res://Tools/Shadow/shadow.tscn" id="4_kqyo6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7c8pu"]
+atlas = ExtResource("3_divld")
+region = Rect2(48, 32, 8, 8)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_p4w2r"]
+radius = 26.0
+
+[sub_resource type="Animation" id="Animation_uvg68"]
+resource_name = "RESET"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Area2D/Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_oj3na"]
+resource_name = "pickup"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Area2D/Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1e-05, 1e-05)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2632e"]
+_data = {
+"RESET": SubResource("Animation_uvg68"),
+"pickup": SubResource("Animation_oj3na")
+}
+
+[node name="ItemDrop" type="Node2D" node_paths=PackedStringArray("sprite", "pickup_animation_player")]
+script = ExtResource("1_p84di")
+sprite = NodePath("Area2D/Sprite2D")
+pickup_animation_player = NodePath("AnimationPlayer")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="HitBox" type="CollisionShape2D" parent="Area2D"]
+script = ExtResource("2_n1ide")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+texture = SubResource("AtlasTexture_7c8pu")
+offset = Vector2(0, -4)
+
+[node name="Bobber" type="Node" parent="Area2D"]
+script = ExtResource("3_w4hka")
+
+[node name="Shadow" parent="Area2D" instance=ExtResource("4_kqyo6")]
+scale = Vector2(0.35, 0.166667)
+offset = Vector2(-3.2, 4)
+
+[node name="MagnetArea" type="Area2D" parent="."]
+
+[node name="MagnetShape" type="CollisionShape2D" parent="MagnetArea"]
+shape = SubResource("CircleShape2D_p4w2r")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2632e")
+}
+
+[connection signal="body_entered" from="Area2D" to="." method="on_body_entered"]
+[connection signal="body_entered" from="MagnetArea" to="." method="on_body_entered_magnet_area"]
+[connection signal="body_exited" from="MagnetArea" to="." method="on_body_exited_magnet_area"]

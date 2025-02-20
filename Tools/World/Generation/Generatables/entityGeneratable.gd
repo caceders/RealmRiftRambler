@@ -1,6 +1,6 @@
 class_name EntityGeneratable extends Generatable
 
-@export var scenes: Array[SceneProbabilityPair] = []
+@export var scenes: Array[ResourceWeightPair] = []
 @export var is_entity_tile = false
 @export var terrain_id: int
 
@@ -22,22 +22,10 @@ func apply_generatable(cell: Vector2i, world_chunk_generator: WorldChunkGenerato
 			else:
 				BetterTerrain.set_cell(entity_tile_map_layer, cell, terrain_id)
 		else:
-			var packed_scene = pick_random_scene_weighted()
+			var packed_scene = ResourceWeightPair.pick_random_weighted(scenes)
 			var scene = packed_scene.instantiate() as Node2D
 			entity_tile_map_layer.add_child(scene)
 			var position_offset = Vector2.ONE * randf_range(-CELL_SIZE_PIXELS/3, CELL_SIZE_PIXELS/3) # Add slight offset in case there are other entities here. Make them not stuck on eachother.
 			scene.position = entity_tile_map_layer.map_to_local(cell) + position_offset
 			
 	apply_new_extra_tile_data(cell)
-
-func pick_random_scene_weighted() -> PackedScene:
-	var total_weights = 0
-	for scene_probability_pair in scenes:
-		total_weights += scene_probability_pair.weight
-	var random_point_in_total_weights = randf_range(0, total_weights)
-	var current_weight_top = 0
-	for scene_probability_pair in scenes:
-		current_weight_top += scene_probability_pair.weight
-		if random_point_in_total_weights < current_weight_top:
-			return scene_probability_pair.scene
-	return null

@@ -1,6 +1,6 @@
 class_name SequenceDecoder extends Node2D
 
-const RANDOMIZE: bool = true
+const RANDOMIZE = false
 const SPELL_SEQUENCE_LENGTH_MIN = 2
 const SPELL_SEQUENCE_LENGTH_MAX = 5
 const SEQUENCE_INPUTS = ["left", "right", "up", "down"]

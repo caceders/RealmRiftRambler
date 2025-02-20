@@ -7,17 +7,17 @@ const CHUNK_SIZE_PIXELS = CELL_SIZE_PIXELS * CHUNK_SIZE_CELLS
 @export var ground_tile_map_layer: TileMapLayerWithTileData
 @export var entity_tile_map_layer: TileMapLayerWithTileData
 
-func position_to_cell(p_position: Vector2) -> Vector2i:
-	var cell = ground_tile_map_layer.local_to_map(p_position)
+static func position_to_cell(p_position: Vector2) -> Vector2i:
+	var cell = (p_position/CELL_SIZE_PIXELS).floor()
 	return cell
 
-func position_to_chunk(p_position: Vector2) -> Vector2i:
+static func position_to_chunk(p_position: Vector2) -> Vector2i:
 	var chunk: Vector2i = cell_to_chunk(position_to_cell(p_position))
 	return chunk
 
-func cell_to_chunk(p_position: Vector2) -> Vector2i:
-	var ccell: Vector2i = floor(p_position / CHUNK_SIZE_CELLS)
-	return ccell
+static func cell_to_chunk(p_position: Vector2) -> Vector2i:
+	var cell: Vector2i = floor(p_position / CHUNK_SIZE_CELLS)
+	return cell
 
 func get_chunks_in(cell_start: Vector2i, cell_end: Vector2i):
 	var chunks = []

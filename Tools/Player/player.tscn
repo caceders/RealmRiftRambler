@@ -15,20 +15,17 @@
 [ext_resource type="PackedScene" uid="uid://c4lgb1id0r36q" path="res://Tools/Targeter/lockedOnDisplaySprite.tscn" id="16_85ul6"]
 [ext_resource type="Resource" uid="uid://jtrbqs3x4y4m" path="res://Tools/SpellSystem/Spells/Spells/heal10.tres" id="17_f3oq8"]
 [ext_resource type="PackedScene" uid="uid://cgvjmvcru4dfr" path="res://Tools/Targeter/targeter.tscn" id="17_ys7bc"]
-[ext_resource type="Script" path="res://Tools/ResourcePool/ResourceCollector/resourceCollector.gd" id="18_ckd2h"]
 [ext_resource type="Resource" uid="uid://dctmcc743dlf4" path="res://Tools/SpellSystem/Spells/Spells/homingMagicProjectile.tres" id="18_le634"]
 [ext_resource type="PackedScene" uid="uid://bjioxiljujgja" path="res://Tools/SpellSystem/spellSequenceVisualizer.tscn" id="18_vkslu"]
 [ext_resource type="Resource" uid="uid://b4xaycf5c2r1n" path="res://Tools/SpellSystem/Spells/Spells/freezeEntity.tres" id="19_0xjny"]
+[ext_resource type="Script" path="res://Tools/ItemSystem/inventory.gd" id="20_tbiqq"]
 [ext_resource type="Script" path="res://Tools/Interactable/interactor.gd" id="21_myq3i"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_quexu"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1iedg"]
-load_path = "res://.godot/imported/Idle.png-f8d6c43e1c3b4bbc8c4cc995b4b0f829.ctex"
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_cg8jx"]
-atlas = SubResource("CompressedTexture2D_1iedg")
-region = Rect2(13, 44, 7, 7)
+atlas = ExtResource("7_wsqyt")
+region = Rect2(12, 44, 8, 7)
 
 [sub_resource type="Animation" id="Animation_h3nx4"]
 resource_name = "playerAttackLeft"
@@ -355,6 +352,9 @@ tracks/4/keys = {
 "update": 0,
 "values": [Vector2(0, -4.04), Vector2(0, -4.54), Vector2(0, -3.54)]
 }
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1iedg"]
+load_path = "res://.godot/imported/Idle.png-f8d6c43e1c3b4bbc8c4cc995b4b0f829.ctex"
 
 [sub_resource type="Animation" id="Animation_tv8bf"]
 resource_name = "playerIdleLeft"
@@ -951,8 +951,8 @@ _data = {
 script = ExtResource("5_v07jb")
 
 [node name="Shadow" parent="." index="0"]
-scale = Vector2(0.31875, 0.145833)
-offset = Vector2(-3.2, 4.46)
+scale = Vector2(0.333036, 0.166667)
+offset = Vector2(-3.65714, 3.47)
 
 [node name="TopDownEntity2D" parent="." index="1"]
 speed = 50.0
@@ -969,7 +969,7 @@ offset_bottom = -3.5
 self_modulate = Color(1, 1, 1, 0.996078)
 material = SubResource("CanvasItemMaterial_quexu")
 texture = SubResource("AtlasTexture_cg8jx")
-offset = Vector2(0, -3.54)
+offset = Vector2(0, -3.53)
 
 [node name="HitBox" parent="." index="5"]
 position = Vector2(0, -3.5)
@@ -1017,21 +1017,20 @@ keycodes = {
 }
 
 [node name="Targeter" parent="." index="14" instance=ExtResource("17_ys7bc")]
-distance = 120
 highlighter = Color(0.388235, 0.396078, 0.396078, 1)
 lock_on_display_sprite_packed_scene = ExtResource("16_85ul6")
 
 [node name="SpellSequenceVisualizer" parent="." index="16" node_paths=PackedStringArray("key_sequence_recoder") instance=ExtResource("18_vkslu")]
 key_sequence_recoder = NodePath("../KeySequenceRecoder")
 
-[node name="ResourceCollector" type="Node2D" parent="." index="18"]
-script = ExtResource("18_ckd2h")
-has_max_amount = false
-enable_growth = false
-_amount = 0.0
+[node name="DisappearOnHealthDepletion" parent="." index="18"]
+disappear_on_depleted_health = false
 
-[node name="Interactor" type="Node" parent="." index="21"]
+[node name="Interactor" type="Node" parent="." index="19"]
 script = ExtResource("21_myq3i")
+
+[node name="Inventory" type="Node" parent="." index="20"]
+script = ExtResource("20_tbiqq")
 
 [connection signal="damage_received" from="DamageReceiver" to="." method="_on_damage_received"]
 [connection signal="damage_received" from="DamageReceiver" to="Knockback" method="on_damage_taken"]

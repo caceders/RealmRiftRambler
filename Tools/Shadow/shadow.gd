@@ -12,6 +12,10 @@ const INVERSE_SKEW_AMOUNT = 10
 @onready var generation_frame : int = Engine.get_frames_drawn()
 
 func _process(delta):
+	if sprite == null:
+		return
+	if sprite.texture == null:
+		return
 	if (generation_frame + Engine.get_frames_drawn()) % UPDATE_EACH_FRAME_COUNT == 0:
 
 		# Copy texture and properties from the original sprite

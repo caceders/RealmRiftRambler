@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpgqc6hdcpkpb"]
+
+[ext_resource type="Script" path="res://Tools/UI/mainUI.gd" id="1_c7rig"]
+[ext_resource type="PackedScene" uid="uid://daoxqr6y72q7b" path="res://Tools/UI/map/mapUI.tscn" id="1_lovl6"]
+
+[node name="MainUI" type="Control" node_paths=PackedStringArray("map_ui")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_c7rig")
+map_ui = NodePath("HUD/Map")
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Map" parent="HUD" instance=ExtResource("1_lovl6")]
+layout_mode = 1
+
+[node name="PauseMenu" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="BackgroundOverlay" type="ColorRect" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.319)
+
+[node name="InGameMenu" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true

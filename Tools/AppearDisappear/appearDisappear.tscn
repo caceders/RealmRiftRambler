@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://b8rgk0f2f4vd8"]
 
-[ext_resource type="Script" path="res://Scripts/appearDisappear.gd" id="1_fvaae"]
+[ext_resource type="Script" path="res://Tools/AppearDisappear/appearDisappear.gd" id="1_fvaae"]
 [ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="2_5jabd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]

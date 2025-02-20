@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dxvft828c2tsd"]
+[gd_scene load_steps=27 format=3 uid="uid://dxvft828c2tsd"]
 
 [ext_resource type="PackedScene" uid="uid://3e0cvi4n2eeo" path="res://Tools/EntityBases/entityBase.tscn" id="1_5lsk3"]
 [ext_resource type="Script" path="res://Tools/SpellSystem/SpellSupplier/spellSupplier.gd" id="2_0hxqa"]
@@ -220,14 +220,14 @@ length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SpellDescription:modulate")
+tracks/0/path = NodePath("SpellDescription:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_jnvt5"]
@@ -236,20 +236,36 @@ length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SpellDescription:modulate")
+tracks/0/path = NodePath("SpellDescription:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_xmqjj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpellDescription:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_balit"]
 _data = {
 "Appear": SubResource("Animation_6r4sy"),
-"Disappear": SubResource("Animation_jnvt5")
+"Disappear": SubResource("Animation_jnvt5"),
+"RESET": SubResource("Animation_xmqjj")
 }
 
 [sub_resource type="Animation" id="Animation_x0jyk"]
@@ -315,21 +331,21 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gphqt"]
-radius = 31.0161
+radius = 38.0
 
 [node name="SpellSupplier" groups=["SpellSupplier"] instance=ExtResource("1_5lsk3")]
 
 [node name="SpellSupplier" type="Node2D" parent="." index="0" node_paths=PackedStringArray("interaction_animation_player", "spell_description_ui", "popup_animation_player", "sprite", "popup_area")]
 script = ExtResource("2_0hxqa")
+pre_activation_sprite = SubResource("AtlasTexture_24nae")
+post_activation_sprite = SubResource("AtlasTexture_euyfw")
+spell = ExtResource("3_ewetx")
+cost = 0
 interaction_animation_player = NodePath("../InterractionAnimation")
 spell_description_ui = NodePath("../SpellDescription")
 popup_animation_player = NodePath("../SpellDescription/SpellDescriptionAnimator")
 sprite = NodePath("../Sprite2D")
-pre_activation_sprite = SubResource("AtlasTexture_24nae")
-post_activation_sprite = SubResource("AtlasTexture_euyfw")
 popup_area = NodePath("../PopupArea")
-spell = ExtResource("3_ewetx")
-cost = 0
 
 [node name="Shadow" parent="." index="1"]
 scale = Vector2(0.84525, 0.333333)
@@ -365,7 +381,7 @@ texture = SubResource("AtlasTexture_ushcn")
 [node name="DeloadPersistance" parent="." index="9"]
 persistant_data = Array[ExtResource("4_6efly")]([SubResource("Resource_ol8ac"), SubResource("Resource_t2te8")])
 
-[node name="SpellDescription" parent="." index="12" instance=ExtResource("6_5xao8")]
+[node name="SpellDescription" parent="." index="11" instance=ExtResource("6_5xao8")]
 position = Vector2(1, -21)
 spell_description_text = ""
 
@@ -375,12 +391,12 @@ libraries = {
 "": SubResource("AnimationLibrary_balit")
 }
 
-[node name="InterractionAnimation" type="AnimationPlayer" parent="." index="13"]
+[node name="InterractionAnimation" type="AnimationPlayer" parent="." index="12"]
 libraries = {
 "": SubResource("AnimationLibrary_6a03b")
 }
 
-[node name="PopupArea" type="Area2D" parent="." index="14"]
+[node name="PopupArea" type="Area2D" parent="." index="13"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PopupArea" index="0"]
 shape = SubResource("CircleShape2D_gphqt")

@@ -241,6 +241,10 @@ position = Vector2(-1, -1)
 [node name="OrcBase" parent="PremadeEntityTilemap" index="1" instance=ExtResource("4_a4dti")]
 position = Vector2(-27, -28)
 
+[node name="Shadow" parent="PremadeEntityTilemap/OrcBase" index="0"]
+scale = Vector2(0.31875, 0.145833)
+offset = Vector2(-3.2, 4.47)
+
 [node name="Sprite2D" parent="PremadeEntityTilemap/OrcBase" index="4"]
 texture = SubResource("AtlasTexture_7cfn3")
 
@@ -258,6 +262,10 @@ texture = SubResource("AtlasTexture_ushcn")
 [node name="OrcBase2" parent="PremadeEntityTilemap" index="2" instance=ExtResource("4_a4dti")]
 position = Vector2(-23, 15)
 
+[node name="Shadow" parent="PremadeEntityTilemap/OrcBase2" index="0"]
+scale = Vector2(0.31875, 0.145833)
+offset = Vector2(-3.2, 4.47)
+
 [node name="Sprite2D" parent="PremadeEntityTilemap/OrcBase2" index="4"]
 texture = SubResource("AtlasTexture_jbonb")
 
@@ -274,6 +282,10 @@ texture = SubResource("AtlasTexture_ushcn")
 
 [node name="OrcBase3" parent="PremadeEntityTilemap" index="3" instance=ExtResource("4_a4dti")]
 position = Vector2(32, 0)
+
+[node name="Shadow" parent="PremadeEntityTilemap/OrcBase3" index="0"]
+scale = Vector2(0.31875, 0.145833)
+offset = Vector2(-3.2, 4.47)
 
 [node name="Sprite2D" parent="PremadeEntityTilemap/OrcBase3" index="4"]
 texture = SubResource("AtlasTexture_6n7hh")

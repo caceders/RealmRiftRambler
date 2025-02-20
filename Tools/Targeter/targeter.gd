@@ -1,4 +1,3 @@
-@tool
 class_name Targeter extends Area2D
 
 const UPDATE_TIME_MS = 200
@@ -12,9 +11,13 @@ const LINE_LERP_WEIGHT = .1
 
 @export var highlighter: Color
 
-@export var distance_penalty_line_sort: float = 0.00005
+@export var distance_penalty_line_sort: float = 0.005
+
+## To what degree are the prioritized groups selected over non prioritized
 
 @export var lock_on_display_sprite_packed_scene: PackedScene
+
+@export var priority_group_reards: Dictionary = {"Hostile" : 10, "Creature" : 5}
 
 var target_line: Vector2 = Vector2.UP
 
@@ -41,21 +44,24 @@ var target: Node2D:
 	get:
 		return _target
 	set(value):
+		# Remve highlight
 		if _target != null:
 			if _target.has_node("Sprite2D"):
 				var sprite = _target.get_node("Sprite2D") as Sprite2D
 				if sprite != null:
 					sprite.modulate = Color(sprite.modulate.r - highlighter.r, sprite.modulate.g - highlighter.g, sprite.modulate.b - highlighter.b)
-					
 		_target = value
 		if _lock_on_display_sprite != null:
 			_lock_on_display_sprite.queue_free()
 		_lock_on = false
+
+		# Add highlight
 		if _target != null:
 			if _target.has_node("Sprite2D"):
 				var sprite = _target.get_node("Sprite2D") as Sprite2D
 				if sprite != null:
 					sprite.modulate = Color(sprite.modulate.r + highlighter.r, sprite.modulate.g + highlighter.g, sprite.modulate.b + highlighter.b)
+
 					
 var last_update_time : float = Time.get_ticks_msec()
 
@@ -63,12 +69,17 @@ func _ready():
 	body_exited.connect(on_body_exited)
 
 func _process(_delta):
-	_line = _line.lerp(target_line, LINE_LERP_WEIGHT)
-	if not _lock_on:
-		if last_update_time < Time.get_ticks_msec()	 + UPDATE_TIME_MS:
-			last_update_time = Time.get_ticks_msec()
-			select_target_on_line()
-	return 
+	# Update shaepe
+	if $CollisionShape2D.shape.radius != distance:
+		var shape = CircleShape2D.new()
+		shape.radius = distance
+		$CollisionShape2D.shape = shape
+	if not Engine.is_editor_hint():
+		_line = _line.lerp(target_line, LINE_LERP_WEIGHT)
+		if not _lock_on:
+			if last_update_time < Time.get_ticks_msec()	 + UPDATE_TIME_MS:
+				last_update_time = Time.get_ticks_msec()
+				select_target_on_line_with_regards_to_priority()
 
 func start_lock_on():
 	if target != null:
@@ -82,99 +93,39 @@ func end_lock_on():
 	if _lock_on_display_sprite != null:
 		_lock_on_display_sprite.queue_free()
 
-func select_target_on_line():
+func select_target_on_line_with_regards_to_priority():
 	var all_bodies = get_overlapping_bodies()
-	_targetables = []
 
-	for entity in all_bodies:
-		if "Targetable" in entity.get_groups():
-			_targetables.append(entity)
-
-	# Remove targets outside "Cone" of line "o<"
-	var target_outside_cone = []
-	for targetable in _targetables:
-		var distance_from_center_squared = global_position.distance_squared_to(targetable.global_position)
-		var distance_from_line_squared = distance_from_center_squared * sin(global_position.angle_to(targetable.global_position))
-		var distance_to_point_on_line_squared = distance_from_center_squared * cos(global_position.angle_to(targetable.global_position))
-		if abs(distance_from_line_squared/2) > abs(distance_to_point_on_line_squared):
-			target_outside_cone.append(targetable)
-
-	if not target_outside_cone.is_empty():
-		for entity in target_outside_cone:
-			_targetables.erase(entity)
+	var best_target = null
+	var best_score = -999999999
 	
-	# Remove owner
-	if get_parent() in _targetables:
-		_targetables.erase(get_parent())
+	for targetable in all_bodies:
 
+		if targetable == get_parent():
+			continue
+		if not targetable.is_in_group("Targetable"):
+			continue
+		
+		# Find target close to line, not too far away and with regards to priority
+		var dir_to_targetable = global_position.direction_to(targetable.global_position)
+		var dist_to_targetable = global_position.distance_squared_to(targetable.global_position)
+		var dir_difference_targtable = abs(_line - dir_to_targetable)
+		var distance_penalty = abs(distance_penalty_line_sort * dist_to_targetable)
+
+		var priority_reward = 0
+		for priority_group in priority_group_reards.keys():
+			if targetable.is_in_group(priority_group) and priority_reward < priority_group_reards[priority_group]:
+				priority_reward = priority_group_reards[priority_group]
+
+		var score =  priority_reward - dir_difference_targtable.length() - distance_penalty
+
+		if best_score < score:
+			best_target = targetable
+			best_score = score
+
+	if target != best_target:
+		target = best_target
 	
-	if not _targetables.is_empty():
-		for entity in target_outside_cone:
-			_targetables.erase(entity)
-
-		_targetables.sort_custom(sortline)
-		if (_nearest != _targetables[0]) or target == null:
-			_nearest = _targetables[0]
-			target = _targetables[0]
-	if $CollisionShape2D.shape.radius != distance:
-		var shape = CircleShape2D.new()
-		shape.radius = distance
-		$CollisionShape2D.shape = shape
-	return
-
-func select_closest_target():
-	var all_bodies = get_overlapping_bodies()
-	_targetables = []
-	# Remove non-targetable
-	var non_targets = []
-	for entity in all_bodies:
-		if "Targetable" in entity.get_groups():
-			_targetables.append(entity)
-	
-	# Remove owner
-	if get_parent() in _targetables:
-		_targetables.erase(get_parent())
-
-	
-	if not _targetables.is_empty():
-		for entity in non_targets:
-			_targetables.erase(entity)
-		_targetables.sort_custom(sort_distance)
-		if (_nearest != _targetables[0]) or target == null:
-			_nearest = _targetables[0]
-			target = _targetables[0]
-	if $CollisionShape2D.shape.radius != distance:
-		var shape = CircleShape2D.new()
-		shape.radius = distance
-		$CollisionShape2D.shape = shape
-	return
-
-func select_next_target():
-	if not _targetables.is_empty():
-		var current_target_index = _targetables.find(target)
-		current_target_index = current_target_index + 1
-		if current_target_index == _targetables.size():
-			current_target_index = 0
-		target = _targetables[current_target_index]
-
-func sort_distance(a, b):
-	return (global_position.distance_to(a.global_position) < global_position.distance_to(b.global_position))
-
-func sortline(a, b):
-	# Find the target closest to the line with respect to the distance to the target
-	var dir_to_a = global_position.direction_to(a.global_position)
-	var dir_to_b = global_position.direction_to(b.global_position)
-
-	var dist_to_a = global_position.distance_squared_to(a.global_position)
-	var dist_to_b = global_position.distance_squared_to(b.global_position)
-
-	var dir_difference_a = abs(_line - dir_to_a)
-	var dir_difference_b = abs(_line - dir_to_b)
-
-	var score_a = dir_difference_a.length() + distance_penalty_line_sort * dist_to_a
-	var score_b = dir_difference_b.length() + distance_penalty_line_sort * dist_to_b
-
-	return (score_a < score_b)
 
 func on_body_exited(body):
 	if body == _target:

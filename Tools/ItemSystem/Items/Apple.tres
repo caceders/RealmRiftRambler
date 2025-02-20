@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="Item" load_steps=6 format=3 uid="uid://cjj6n0o7rspd8"]
+
+[ext_resource type="Script" path="res://Tools/ItemSystem/Items/item.gd" id="1_2fdyp"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fflvk"]
+load_path = "res://.godot/imported/Minifantasy_CraftingAndProfessionsPotionHerbs.png-b29e27825637d360a39734aa5e4728ac.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j512y"]
+atlas = SubResource("CompressedTexture2D_fflvk")
+region = Rect2(74, 50, 5, 5)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_whnlm"]
+load_path = "res://.godot/imported/Minifantasy_CraftingAndProfessionsPotionHerbs.png-b29e27825637d360a39734aa5e4728ac.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_31vst"]
+atlas = SubResource("CompressedTexture2D_whnlm")
+region = Rect2(74, 50, 5, 5)
+
+[resource]
+script = ExtResource("1_2fdyp")
+icon_texture = SubResource("AtlasTexture_j512y")
+sprite_texture = SubResource("AtlasTexture_31vst")
+name = "Apple"
+use_function = Callable()
+consume_on_use = true

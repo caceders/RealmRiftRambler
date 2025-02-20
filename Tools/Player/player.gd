@@ -30,6 +30,8 @@ enum Direction {
 @onready var targeter: Targeter = $Targeter
 @onready var interactor: Interactor = $Interactor
 
+static var player_position: Vector2
+
 var _active_state = State.PASSIVE
 var _last_movement_direction = Direction.LEFT
 var _damaged_flag = false
@@ -40,6 +42,7 @@ func _ready():
 
 
 func _process(_delta):
+	player_position = global_position
 	_state_process()
 	
 
@@ -130,7 +133,7 @@ func _enter_state(state: State):
 		State.DYING:
 			return
 		State.DEAD:
-			sprite.visible = false
+			visible = false
 			return
 
 

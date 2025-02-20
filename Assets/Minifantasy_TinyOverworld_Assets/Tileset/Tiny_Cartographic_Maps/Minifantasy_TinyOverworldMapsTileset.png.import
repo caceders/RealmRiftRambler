@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2beojee73nhn"
-path="res://.godot/imported/Mockup.png-412d1733d054d7b43050d4f89f49c9ec.ctex"
+uid="uid://bva1mbfdqgtdy"
+path="res://.godot/imported/Minifantasy_TinyOverworldMapsTileset.png-c01e2c6295c46f773f9e70a4cbb65ece.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Mockup.png"
-dest_files=["res://.godot/imported/Mockup.png-412d1733d054d7b43050d4f89f49c9ec.ctex"]
+source_file="res://Assets/Minifantasy_TinyOverworld_Assets/Tileset/Tiny_Cartographic_Maps/Minifantasy_TinyOverworldMapsTileset.png"
+dest_files=["res://.godot/imported/Minifantasy_TinyOverworldMapsTileset.png-c01e2c6295c46f773f9e70a4cbb65ece.ctex"]
 
 [params]
 

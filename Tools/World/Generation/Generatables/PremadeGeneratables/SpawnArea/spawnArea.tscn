@@ -1,203 +1,15 @@
-[gd_scene load_steps=18 format=4 uid="uid://b83un0c0v5hf2"]
+[gd_scene load_steps=9 format=4 uid="uid://b83un0c0v5hf2"]
 
 [ext_resource type="Script" path="res://Tools/World/Generation/Generatables/premadeGeneratable.gd" id="1_f7638"]
 [ext_resource type="TileSet" uid="uid://dlyimdyaxm8tl" path="res://Resources/UniversalTileset.tres" id="2_r8qwt"]
 [ext_resource type="Script" path="res://Tools/World/tileMapLayerWithExtraTileData.gd" id="3_qdyik"]
 [ext_resource type="Script" path="res://Tools/World/Load and deload/worldChunkLoader.gd" id="4_jhibb"]
-[ext_resource type="PackedScene" uid="uid://bwo2jvjefsg1u" path="res://Tools/ResourcePool/ResourceCollector/resourceDropBase.tscn" id="4_r61fu"]
+[ext_resource type="PackedScene" uid="uid://b1bqnqpufy8v8" path="res://Tools/ItemSystem/itemDrop.tscn" id="5_mudrc"]
 [ext_resource type="PackedScene" uid="uid://cfbfuftomdxnb" path="res://Tools/EntityBases/Environment/Trees/tree.tscn" id="5_squqo"]
-[ext_resource type="PackedScene" uid="uid://dxvft828c2tsd" path="res://Tools/SpellSystem/SpellSupplier/spellSupplier.tscn" id="6_jjwl0"]
-[ext_resource type="Texture2D" uid="uid://bue62aa45gnmt" path="res://Assets/Minifantasy_Wizards_Academy_Assets/Props/Props.png" id="7_itsug"]
-[ext_resource type="Texture2D" uid="uid://bdtg0os0u7u2g" path="res://Assets/Minifantasy_Magic_Weapons_And_Effects_Assets/Standalone Effects/Status Effects/Status_petrification.png" id="8_d73ed"]
-[ext_resource type="PackedScene" uid="uid://2kx72qxcck1k" path="res://Scenes/pressKey.tscn" id="9_v477e"]
+[ext_resource type="Resource" uid="uid://2v808ib4miak" path="res://Tools/ItemSystem/Items/Bone.tres" id="6_w4ebe"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4oxqj"]
 frequency = 1.0
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mh5w7"]
-resource_local_to_scene = true
-atlas = ExtResource("7_itsug")
-region = Rect2(536, 485, 16, 25)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ushcn"]
-resource_local_to_scene = true
-atlas = ExtResource("8_d73ed")
-region = Rect2(234, 9, 9, 13)
-
-[sub_resource type="Animation" id="Animation_63m85"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [SubResource("AtlasTexture_ushcn")]
-}
-
-[sub_resource type="Animation" id="Animation_ct5bu"]
-resource_name = "entityAppear"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [SubResource("AtlasTexture_ushcn")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:atlas")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.3),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("8_d73ed")]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:region")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [Rect2(234, 9, 9, 13), Rect2(202, 10, 12, 12), Rect2(172, 12, 8, 8)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
-}
-
-[sub_resource type="Animation" id="Animation_af7xm"]
-resource_name = "entityDisappear"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AppearDisappear/AppearDisappearSprite:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [SubResource("AtlasTexture_ushcn")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:atlas")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("8_d73ed")]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AppearDisappear/AppearDisappearSprite:texture:region")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [Rect2(172, 12, 8, 8), Rect2(202, 10, 12, 12), Rect2(234, 9, 9, 13)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("AppearDisappear/AppearDisappearSprite:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_3o0os"]
-resource_local_to_scene = true
-_data = {
-"RESET": SubResource("Animation_63m85"),
-"entityAppear": SubResource("Animation_ct5bu"),
-"entityDisappear": SubResource("Animation_af7xm")
-}
 
 [node name="SpawnAreaPremadeGeneratable" type="Node" node_paths=PackedStringArray("world_chunk_loader", "premade_ground_tile_map_layer", "premade_entity_tile_map_layer")]
 script = ExtResource("1_f7638")
@@ -218,38 +30,17 @@ tile_map_data = PackedByteArray("AAD+/wEAAgAJAAkAAAABAP//AgAJAAkAAAACAAEAAgAJAAk
 tile_set = ExtResource("2_r8qwt")
 script = ExtResource("3_qdyik")
 
-[node name="Area2D" parent="PremadeEntityTilemap" instance=ExtResource("4_r61fu")]
-position = Vector2(1, -44)
-
-[node name="SpellSupplier" parent="PremadeEntityTilemap" instance=ExtResource("6_jjwl0")]
-position = Vector2(1, -107)
-
-[node name="SpellSupplier" parent="PremadeEntityTilemap/SpellSupplier" index="0"]
-cost = 1
-
-[node name="Sprite2D" parent="PremadeEntityTilemap/SpellSupplier" index="5"]
-texture = SubResource("AtlasTexture_mh5w7")
-
-[node name="AppearDisappearAnimationPlayer" parent="PremadeEntityTilemap/SpellSupplier/AppearDisappear" index="0"]
-libraries = {
-"": SubResource("AnimationLibrary_3o0os")
-}
-
-[node name="AppearDisappearSprite" parent="PremadeEntityTilemap/SpellSupplier/AppearDisappear" index="1"]
-texture = SubResource("AtlasTexture_ushcn")
-
 [node name="Tree2" parent="PremadeEntityTilemap" instance=ExtResource("5_squqo")]
 position = Vector2(-79, -76)
 
 [node name="Tree" parent="PremadeEntityTilemap" instance=ExtResource("5_squqo")]
 position = Vector2(-79, -84)
 
-[node name="PressKey" parent="PremadeEntityTilemap" instance=ExtResource("9_v477e")]
-position = Vector2(0, -82)
+[node name="BoneItemDrop" parent="PremadeEntityTilemap" instance=ExtResource("5_mudrc")]
+position = Vector2(-1, -93)
+item = ExtResource("6_w4ebe")
 
 [node name="WorldChunkLoader" type="Node" parent="." node_paths=PackedStringArray("ground_tile_map_layer", "entity_tile_map_layer")]
 script = ExtResource("4_jhibb")
 ground_tile_map_layer = NodePath("../PremadeGroundTilemap")
 entity_tile_map_layer = NodePath("../PremadeEntityTilemap")
-
-[editable path="PremadeEntityTilemap/SpellSupplier"]
